@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SMC Terminal | Watchlist</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#3f001a",
+                        "on-primary-container": "#623200",
+                        "secondary-fixed-dim": "#afc6ff",
+                        "on-secondary-fixed-variant": "#004299",
+                        "on-secondary-container": "#d5e0ff",
+                        "tertiary-container": "#ff82a7",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb1c4",
+                        "primary-container": "#ff8c00",
+                        "on-tertiary-container": "#7f003c",
+                        "on-surface": "#e2e2e2",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-dim": "#131313",
+                        "primary": "#ffb77d",
+                        "surface-tint": "#ffb77d",
+                        "on-primary-fixed": "#2f1500",
+                        "on-tertiary-fixed-variant": "#8f0044",
+                        "secondary-container": "#045dd0",
+                        "surface-container-highest": "#353535",
+                        "primary-fixed-dim": "#ffb77d",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#a48c7a",
+                        "surface-container-high": "#2a2a2a",
+                        "outline-variant": "#564334",
+                        "secondary-fixed": "#d9e2ff",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#ddc1ae",
+                        "on-primary-fixed-variant": "#6e3900",
+                        "surface-variant": "#353535",
+                        "surface-bright": "#393939",
+                        "on-secondary-fixed": "#001944",
+                        "inverse-primary": "#904d00",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary": "#ffb1c4",
+                        "on-primary": "#4d2600",
+                        "inverse-on-surface": "#303030",
+                        "surface-container-low": "#1b1b1b",
+                        "background": "#131313",
+                        "on-secondary": "#002d6d",
+                        "on-tertiary": "#65002e",
+                        "on-background": "#e2e2e2",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#ffd9e1",
+                        "surface": "#131313",
+                        "primary-fixed": "#ffdcc3",
+                        "surface-container": "#1f1f1f",
+                        "secondary": "#afc6ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(27, 27, 27, 0.4);
+            backdrop-filter: blur(20px);
+        }
+        .sparkline-svg {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 0;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30 min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#131313]/60 backdrop-blur-xl bg-[#1B1B1B] shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+<div class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a professional institutional trader with a serious expression and cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMTWAp5Ag9VzTtSnhUfRCqARJYLFhbmXHe8F3hh_kt-OOyPPSnNEMxlARUjoRThaFcG53M-ID-66_RNcXj4eedDvzMlO3BOsByxi-WlfwLKyjGgPHL1jursTZ0UFX80FMnuIHDh6N-r7MHcOHmP6MZogj248p85wIWQWZwaoK6oj8rNaGusNC85x1pWB503mTdNzTwtw_Bv_ZwFR6e57K12hwtnoI0MWWX3W0JSf1VxPtmVX4qFvRTB3YuKM3YFT6MovSDpEoZ7rI"/>
+</div>
+<h1 class="font-['Space_Grotesk'] font-bold tracking-tight uppercase text-xl font-black tracking-widest text-[#FF8C00]">SMC TERMINAL</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8 items-center">
+<span class="font-headline text-sm font-bold tracking-widest text-[#FFB77D] cursor-pointer">WATCHLIST</span>
+<span class="font-headline text-sm font-bold tracking-widest text-[#DDC1AE] hover:bg-[#2A2A2A] transition-colors px-3 py-1 rounded cursor-pointer">CHART</span>
+<span class="font-headline text-sm font-bold tracking-widest text-[#DDC1AE] hover:bg-[#2A2A2A] transition-colors px-3 py-1 rounded cursor-pointer">SIGNALS</span>
+</div>
+<button class="material-symbols-outlined text-[#FFB77D] text-2xl hover:bg-[#2A2A2A] p-2 rounded-full transition-colors active:scale-95 duration-150" data-icon="notifications">notifications</button>
+</div>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-7xl mx-auto">
+<!-- Market Status Header -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-12">
+<div class="md:col-span-8 flex flex-col justify-end">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-secondary font-headline font-bold text-xs tracking-widest uppercase">Institutional Pulse</span>
+</div>
+<h2 class="text-4xl md:text-6xl font-headline font-bold text-primary tracking-tighter leading-none mb-4">
+                    LONDON SESSION <span class="text-on-surface-variant font-light">OPEN</span>
+</h2>
+<p class="text-on-surface-variant max-w-xl text-sm leading-relaxed">
+                    Liquidity pools identified at <span class="text-primary">1.2640</span>. Volatility is currently trending above 14-day median. Institutional order flow remains concentrated in Major Pairs.
+                </p>
+</div>
+<div class="md:col-span-4 bg-surface-container-low p-6 rounded-xl border-l-2 border-primary">
+<div class="flex justify-between items-start mb-4">
+<span class="font-headline font-bold text-xs tracking-widest text-on-surface-variant uppercase">Volatility Index</span>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="monitoring">monitoring</span>
+</div>
+<div class="text-3xl font-headline font-bold text-on-surface mb-1">VIX: 18.42</div>
+<div class="text-secondary text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                    +4.2% (Moderate Risk)
+                </div>
+<div class="mt-6 h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+</div>
+</section>
+<!-- Filters and Search -->
+<div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+<div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 no-scrollbar">
+<button class="px-5 py-2 rounded-full bg-primary-container text-on-primary-container text-xs font-bold font-headline uppercase tracking-wider">All Assets</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold font-headline uppercase tracking-wider hover:bg-surface-bright transition-colors">Forex</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold font-headline uppercase tracking-wider hover:bg-surface-bright transition-colors">Crypto</button>
+<button class="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold font-headline uppercase tracking-wider hover:bg-surface-bright transition-colors">Indices</button>
+</div>
+<div class="relative w-full md:w-80 group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50 group-focus-within:text-primary transition-colors" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-primary/50 transition-all placeholder:text-on-surface-variant/30" placeholder="Search Symbols..." type="text"/>
+</div>
+</div>
+<!-- Watchlist Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Asset Card: BTCUSD -->
+<div class="bg-surface-container-low rounded-xl p-5 hover:bg-surface-container transition-all group border-l-2 border-primary">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-[#FF8C00]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#FF8C00]" data-icon="currency_bitcoin">currency_bitcoin</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg text-on-surface leading-tight">BTCUSD</h3>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Bitcoin / US Dollar</span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</button>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<div class="text-2xl font-headline font-black text-on-surface tracking-tight">64,281.50</div>
+<div class="text-secondary text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_drop_up">arrow_drop_up</span>
+                            +2.14%
+                        </div>
+</div>
+<div class="w-32 h-12 flex items-center justify-end">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 100 40">
+<path class="sparkline-svg" d="M0 35 Q10 32, 20 38 T40 25 T60 30 T80 10 T100 5" fill="none" stroke="#FFB77D" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Asset Card: EURUSD -->
+<div class="bg-surface-container-low rounded-xl p-5 hover:bg-surface-container transition-all group border-l-2 border-tertiary">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="euro">euro</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg text-on-surface leading-tight">EURUSD</h3>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Euro / US Dollar</span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" data-icon="star" style="font-variation-settings: 'FILL' 0;">star</button>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<div class="text-2xl font-headline font-black text-on-surface tracking-tight">1.08425</div>
+<div class="text-tertiary text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_drop_down">arrow_drop_down</span>
+                            -0.45%
+                        </div>
+</div>
+<div class="w-32 h-12 flex items-center justify-end">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 100 40">
+<path class="sparkline-svg" d="M0 5 Q10 8, 20 5 T40 20 T60 15 T80 35 T100 38" fill="none" stroke="#FF82A7" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Asset Card: NAS100 -->
+<div class="bg-surface-container-low rounded-xl p-5 hover:bg-surface-container transition-all group border-l-2 border-primary">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="query_stats">query_stats</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg text-on-surface leading-tight">NAS100</h3>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Nasdaq 100 Index</span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</button>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<div class="text-2xl font-headline font-black text-on-surface tracking-tight">18,245.20</div>
+<div class="text-secondary text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_drop_up">arrow_drop_up</span>
+                            +1.12%
+                        </div>
+</div>
+<div class="w-32 h-12 flex items-center justify-end">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 100 40">
+<path class="sparkline-svg" d="M0 30 Q10 25, 20 28 T40 15 T60 18 T80 10 T100 8" fill="none" stroke="#FFB77D" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Asset Card: GBPJPY -->
+<div class="bg-surface-container-low rounded-xl p-5 hover:bg-surface-container transition-all group border-l-2 border-primary">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="currency_pound">currency_pound</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg text-on-surface leading-tight">GBPJPY</h3>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Pound / Yen</span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" data-icon="star" style="font-variation-settings: 'FILL' 0;">star</button>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<div class="text-2xl font-headline font-black text-on-surface tracking-tight">191.458</div>
+<div class="text-secondary text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_drop_up">arrow_drop_up</span>
+                            +0.08%
+                        </div>
+</div>
+<div class="w-32 h-12 flex items-center justify-end">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 100 40">
+<path class="sparkline-svg" d="M0 25 Q10 24, 20 25 T40 23 T60 22 T80 20 T100 19" fill="none" stroke="#FFB77D" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Asset Card: Gold -->
+<div class="bg-surface-container-low rounded-xl p-5 hover:bg-surface-container transition-all group border-l-2 border-primary">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" data-icon="diamond">diamond</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg text-on-surface leading-tight">XAUUSD</h3>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Gold / US Dollar</span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</button>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<div class="text-2xl font-headline font-black text-on-surface tracking-tight">2,384.12</div>
+<div class="text-secondary text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_drop_up">arrow_drop_up</span>
+                            +0.52%
+                        </div>
+</div>
+<div class="w-32 h-12 flex items-center justify-end">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 100 40">
+<path class="sparkline-svg" d="M0 30 Q20 35, 40 25 T70 15 T100 5" fill="none" stroke="#FFB77D" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Asset Card: ETHUSD -->
+<div class="bg-surface-container-low rounded-xl p-5 hover:bg-surface-container transition-all group border-l-2 border-tertiary">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="token">token</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg text-on-surface leading-tight">ETHUSD</h3>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Ethereum / US Dollar</span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" data-icon="star" style="font-variation-settings: 'FILL' 0;">star</button>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<div class="text-2xl font-headline font-black text-on-surface tracking-tight">3,421.10</div>
+<div class="text-tertiary text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_drop_down">arrow_drop_down</span>
+                            -1.12%
+                        </div>
+</div>
+<div class="w-32 h-12 flex items-center justify-end">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 100 40">
+<path class="sparkline-svg" d="M0 10 Q20 5, 40 25 T70 35 T100 30" fill="none" stroke="#FF82A7" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Analysis Section -->
+<div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-6 mt-16 h-auto md:h-[400px]">
+<div class="md:col-span-2 md:row-span-2 bg-surface-container-low rounded-xl p-8 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative z-10 flex flex-col h-full">
+<div class="mb-6 flex items-center gap-3">
+<span class="p-2 bg-primary/20 rounded-lg material-symbols-outlined text-primary" data-icon="insights">insights</span>
+<h4 class="font-headline font-bold text-xl uppercase tracking-tight">Market Divergence Report</h4>
+</div>
+<div class="flex-grow">
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Smart Money Sentiment shows heavy accumulation in the USD/CHF pair near the H4 FVG. Retails are currently net short, providing liquidity for an institutional push higher.</p>
+<div class="space-y-4">
+<div class="flex justify-between items-center bg-surface-container-high p-3 rounded-lg">
+<span class="text-xs font-bold text-on-surface-variant">SMC Signal</span>
+<span class="text-xs font-bold text-primary">BULLISH ACCUMULATION</span>
+</div>
+<div class="flex justify-between items-center bg-surface-container-high p-3 rounded-lg">
+<span class="text-xs font-bold text-on-surface-variant">Probability</span>
+<span class="text-xs font-bold text-secondary">82% HIGH</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md:col-span-2 bg-surface-container-low rounded-xl p-6 flex items-center justify-between group cursor-pointer border border-transparent hover:border-primary/20">
+<div>
+<h4 class="font-headline font-bold text-on-surface mb-1">News Terminal</h4>
+<p class="text-xs text-on-surface-variant">US FOMC Meeting Minutes released in 4h 22m.</p>
+</div>
+<div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" data-icon="article">article</span>
+</div>
+</div>
+<div class="md:col-span-1 bg-surface-container-low rounded-xl p-6 flex flex-col justify-center text-center">
+<div class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Buy Volume</div>
+<div class="text-2xl font-headline font-black text-secondary">64.2%</div>
+</div>
+<div class="md:col-span-1 bg-surface-container-low rounded-xl p-6 flex flex-col justify-center text-center">
+<div class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Sell Volume</div>
+<div class="text-2xl font-headline font-black text-tertiary">35.8%</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#131313]/60 backdrop-blur-xl bg-[#1B1B1B] shadow-[0_-8px_32px_0_rgba(0,0,0,0.4)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-[#FFB77D] bg-[#FF8C00]/10 rounded-xl px-3 py-1 active:transform scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase">Watchlist</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="show_chart">show_chart</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase">Chart</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase">Signals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="article">article</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase">News</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase">Settings</span>
+</a>
+</nav>
+<!-- Floating Action Button -->
+<div class="fixed right-6 bottom-24 md:bottom-10 z-40">
+<button class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-container shadow-lg flex items-center justify-center text-on-primary-container active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-2xl" data-icon="add">add</span>
+</button>
+</div>
+</body></html>

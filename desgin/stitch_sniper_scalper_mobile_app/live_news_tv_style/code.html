@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#3f001a",
+                        "on-primary-container": "#623200",
+                        "secondary-fixed-dim": "#afc6ff",
+                        "on-secondary-fixed-variant": "#004299",
+                        "on-secondary-container": "#d5e0ff",
+                        "tertiary-container": "#ff82a7",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb1c4",
+                        "primary-container": "#ff8c00",
+                        "on-tertiary-container": "#7f003c",
+                        "on-surface": "#e2e2e2",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-dim": "#131313",
+                        "primary": "#ffb77d",
+                        "surface-tint": "#ffb77d",
+                        "on-primary-fixed": "#2f1500",
+                        "on-tertiary-fixed-variant": "#8f0044",
+                        "secondary-container": "#045dd0",
+                        "surface-container-highest": "#353535",
+                        "primary-fixed-dim": "#ffb77d",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#a48c7a",
+                        "surface-container-high": "#2a2a2a",
+                        "outline-variant": "#564334",
+                        "secondary-fixed": "#d9e2ff",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#ddc1ae",
+                        "on-primary-fixed-variant": "#6e3900",
+                        "surface-variant": "#353535",
+                        "surface-bright": "#393939",
+                        "on-secondary-fixed": "#001944",
+                        "inverse-primary": "#904d00",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary": "#ffb1c4",
+                        "on-primary": "#4d2600",
+                        "inverse-on-surface": "#303030",
+                        "surface-container-low": "#1b1b1b",
+                        "background": "#131313",
+                        "on-secondary": "#002d6d",
+                        "on-tertiary": "#65002e",
+                        "on-background": "#e2e2e2",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#ffd9e1",
+                        "surface": "#131313",
+                        "primary-fixed": "#ffdcc3",
+                        "surface-container": "#1f1f1f",
+                        "secondary": "#afc6ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .ticker-scroll {
+            animation: ticker 30s linear infinite;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30">
+<!-- Top Navigation Shell -->
+<header class="bg-[#131313]/60 backdrop-blur-xl fixed top-0 w-full z-50 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+<div class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline-variant/10">
+<img alt="Institutional Trader Profile" class="w-full h-full object-cover" data-alt="Professional portrait of a financial analyst in a dark suit against a neutral studio background, low-key lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcOgqPB-r0z-TjtUAF5aR6d_kWlHkfkJy9ElMzTVZF3o9gkCG3jLAKa88wFRACsk0vk-k1xFyvvl6lAi8_Vos7b6ysqoxsjWEznOrP2EGqMgCA1jAVkfxQrjjIx8f5huJxpPWM-B3L727H8EVr5EZbhBXl3los9cx5B1ZkGK2oUIu25mALRFPsc4Hx2zez5GQv78tzuQmBBmjmdxmhYGBBi1BnVhh3coJWW5R1TuwDx3oDp16H20u7N8pty5fEF0vcWFO5Xnd58vE"/>
+</div>
+<h1 class="font-headline font-black tracking-widest text-[#FF8C00] text-xl uppercase">SMC TERMINAL</h1>
+</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-[#DDC1AE] font-headline font-bold tracking-tight uppercase hover:text-[#FFB77D] transition-colors" href="#">Watchlist</a>
+<a class="text-[#DDC1AE] font-headline font-bold tracking-tight uppercase hover:text-[#FFB77D] transition-colors" href="#">Chart</a>
+<a class="text-[#DDC1AE] font-headline font-bold tracking-tight uppercase hover:text-[#FFB77D] transition-colors" href="#">Signals</a>
+<a class="text-[#FFB77D] font-headline font-bold tracking-tight uppercase" href="#">News</a>
+<a class="text-[#DDC1AE] font-headline font-bold tracking-tight uppercase hover:text-[#FFB77D] transition-colors" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#FFB77D] p-2 hover:bg-[#2A2A2A] rounded-full transition-colors active:scale-95 duration-150">notifications</button>
+<button class="md:hidden material-symbols-outlined text-[#FFB77D]">menu</button>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-28 px-4 max-w-7xl mx-auto min-h-screen">
+<!-- Breaking News Ticker -->
+<div class="w-full bg-surface-container-lowest h-10 mb-8 overflow-hidden flex items-center border-l-4 border-primary">
+<div class="bg-primary px-4 h-full flex items-center z-10 shrink-0">
+<span class="font-headline font-bold text-on-primary text-xs tracking-widest uppercase">BREAKING</span>
+</div>
+<div class="whitespace-nowrap flex items-center gap-12 ticker-scroll text-sm font-medium text-on-surface-variant">
+<span>$GOLD Hits All-Time High at 2154.30 Amid Global Uncertainty</span>
+<span class="text-primary">•</span>
+<span>FED Chair Powell Hints at Quantitative Tightening Strategy Shifts</span>
+<span class="text-primary">•</span>
+<span>$EURUSD Technical Rejection at Daily Supply Zone 1.09450</span>
+<span class="text-primary">•</span>
+<span>ECB Maintains Interest Rates; Lagarde Emphasizes Data-Dependent Approach</span>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- News Feed (Left Column) -->
+<section class="lg:col-span-8 space-y-6">
+<div class="flex items-baseline justify-between mb-2">
+<h2 class="font-headline text-2xl font-bold text-primary tracking-tight uppercase flex items-center gap-3">
+<span class="w-1 h-6 bg-primary"></span>
+                        Institutional Feed
+                    </h2>
+<span class="text-[10px] font-bold text-on-surface-variant tracking-[0.2em] uppercase bg-surface-container-high px-2 py-1 rounded">Real-Time WebSocket Active</span>
+</div>
+<!-- Feed Card 1 -->
+<article class="bg-surface-container-low p-6 transition-all hover:bg-surface-container hover:shadow-xl group">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-black text-primary bg-primary/10 px-2 py-0.5 tracking-tighter uppercase border border-primary/20">Bloomberg</span>
+<span class="text-[11px] text-on-surface-variant/60 font-medium">1m ago</span>
+</div>
+<div class="flex gap-2">
+<span class="bg-surface-container-high px-2 py-1 text-[10px] font-bold text-secondary tracking-wide">$EURUSD</span>
+<span class="bg-surface-container-high px-2 py-1 text-[10px] font-bold text-secondary tracking-wide">$DXY</span>
+</div>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors leading-tight">
+                        German Manufacturing PMI Drops to 42.1; Euro Slumps as Recession Fears Deepen
+                    </h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4 line-clamp-2">
+                        European markets react sharply as industrial output data from the Eurozone's largest economy misses estimates by a wide margin. Liquidity grabs observed at 1.08200 level...
+                    </p>
+<div class="flex items-center justify-between border-t border-outline-variant/10 pt-4">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">bookmark</span> Save
+                            </button>
+<button class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">share</span> Share
+                            </button>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-secondary cursor-pointer hover:underline">Analysis Available →</span>
+</div>
+</article>
+<!-- Feed Card 2 -->
+<article class="bg-surface-container-low p-6 transition-all hover:bg-surface-container hover:shadow-xl group">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-black text-primary bg-primary/10 px-2 py-0.5 tracking-tighter uppercase border border-primary/20">Archive Desk</span>
+<span class="text-[11px] text-on-surface-variant/60 font-medium">8m ago</span>
+</div>
+<div class="flex gap-2">
+<span class="bg-surface-container-high px-2 py-1 text-[10px] font-bold text-secondary tracking-wide">$GOLD</span>
+</div>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors leading-tight">
+                        Smart Money Order Flow: Significant Institutional Bids Spotted at $2140.00 Level
+                    </h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4 line-clamp-2">
+                        XAUUSD is currently testing a Daily FVG (Fair Value Gap). Order flow depth suggests massive accumulation by institutional desks before the NY open...
+                    </p>
+<div class="flex items-center justify-between border-t border-outline-variant/10 pt-4">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">bookmark</span> Save
+                            </button>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-tertiary">High Volatility Alert</span>
+</div>
+</article>
+<!-- Feed Card 3 (Image Focused) -->
+<article class="bg-surface-container-low overflow-hidden transition-all hover:bg-surface-container hover:shadow-xl group">
+<div class="h-48 w-full overflow-hidden">
+<img alt="Market Volatility Chart" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Digital trading screen showing complex candlestick charts and technical indicators in glowing blue and amber against a dark interface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKLQxgw9fDOrmLWD2-xsp-2oKbtdM5sOZOzROrkllGBs6-UlwkGc_ZxIbOQVj9Dgdn5xdzmH54a1os1tnU_b16tMtDzKctTXPJjtIfhzahO0XAS5Harpdhv9lhajQJ2Fcam6R0gvagKjWrd8tUk5PZi84k12Dji6gLXlDEfmaLay44pKfMR7gcItxbwBWIWSr92dvuuHnhhPKgXpRzjKqMVWbuuz4LcoTdPI42NFwXZTdfWJhv2zDSTa5GUB9XXZhdf-kFm5ata2U"/>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-black text-primary bg-primary/10 px-2 py-0.5 tracking-tighter uppercase border border-primary/20">Reuters</span>
+<span class="text-[11px] text-on-surface-variant/60 font-medium">14m ago</span>
+</div>
+<span class="bg-surface-container-high px-2 py-1 text-[10px] font-bold text-secondary tracking-wide">$BTC</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors leading-tight">
+                            ETF Inflows Surge as Institutional Adoption Reaches Critical Inflection Point
+                        </h3>
+<div class="flex items-center justify-between border-t border-outline-variant/10 pt-4">
+<button class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">bookmark</span> Save
+                            </button>
+<span class="text-[10px] font-bold uppercase tracking-widest text-secondary cursor-pointer hover:underline">Full Report →</span>
+</div>
+</div>
+</article>
+</section>
+<!-- Sidebar (Right Column) -->
+<aside class="lg:col-span-4 space-y-8">
+<!-- Economic Calendar -->
+<div class="bg-surface-container-low p-6 rounded-lg">
+<h2 class="font-headline text-lg font-bold text-primary tracking-tight uppercase mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">calendar_today</span>
+                        Economic Calendar
+                    </h2>
+<div class="space-y-4">
+<!-- Event 1 (High Impact) -->
+<div class="flex gap-4 p-3 bg-tertiary-container/5 rounded-lg border-l-2 border-tertiary">
+<div class="flex flex-col items-center justify-center min-w-[40px]">
+<span class="text-xs font-bold text-on-surface">14:30</span>
+<span class="text-[10px] font-bold text-on-surface-variant">USD</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface leading-tight">Core PPI m/m</p>
+<div class="flex justify-between mt-1">
+<span class="text-[10px] text-on-surface-variant uppercase font-medium">Forecast: 0.2%</span>
+<span class="text-[10px] text-tertiary font-bold uppercase tracking-widest">High Impact</span>
+</div>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="flex gap-4 p-3 bg-surface-container-high/50 rounded-lg border-l-2 border-secondary">
+<div class="flex flex-col items-center justify-center min-w-[40px]">
+<span class="text-xs font-bold text-on-surface">16:15</span>
+<span class="text-[10px] font-bold text-on-surface-variant">GBP</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface leading-tight">BOE Gov Bailey Speaks</p>
+<div class="flex justify-between mt-1">
+<span class="text-[10px] text-on-surface-variant uppercase font-medium">Impact: Med</span>
+<span class="text-[10px] text-secondary font-bold uppercase tracking-widest">Volatility Risk</span>
+</div>
+</div>
+</div>
+<!-- Event 3 -->
+<div class="flex gap-4 p-3 bg-surface-container-high/20 rounded-lg border-l-2 border-outline-variant">
+<div class="flex flex-col items-center justify-center min-w-[40px]">
+<span class="text-xs font-bold text-on-surface">19:00</span>
+<span class="text-[10px] font-bold text-on-surface-variant">NZD</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface leading-tight">Business Confidence</p>
+<div class="flex justify-between mt-1">
+<span class="text-[10px] text-on-surface-variant uppercase font-medium">Impact: Low</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 border border-outline/20 text-[10px] font-bold uppercase tracking-widest text-primary-fixed-dim hover:bg-primary/10 transition-colors">
+                        View Weekly Calendar
+                    </button>
+</div>
+<!-- Featured Analysis / Ad -->
+<div class="relative group cursor-pointer overflow-hidden rounded-lg">
+<img alt="Archive Analysis" class="w-full h-64 object-cover" data-alt="Abstract visualization of financial data flowing through space with neon lines and deep shadows, sophisticated institutional aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsJnMFmLhTKvzOhl9ZZhGOqywemxQMaQYNCMi8jHQAvvftN6vzjKM_wNG9aqfW9dukL3Wzroz-X5YIboktdEN2bKRLIzjDaf8UoRUZ8r1cA5MKn_jZ7ywN6_rY9GsSgWCV9tbfQK_kHJZLsXpIK-6MOgO7jA7xUPBc2ibrBI3d67v7wtWospljy3i3raJPwt7ZpSTCfxEsbKpT9J4FAWSvJR04R2gB-mkz_3Dlu3eYAwl-x2AyKuLxj6otZqXwB2hOHemstImz4lE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent"></div>
+<div class="absolute bottom-0 p-6">
+<span class="text-[10px] font-black text-primary-container bg-surface-container-lowest/80 px-2 py-0.5 tracking-widest uppercase mb-2 inline-block">Premium Insight</span>
+<h4 class="font-headline text-lg font-bold text-on-surface leading-tight">Q4 Market Outlook: The Liquidity Shift</h4>
+<p class="text-xs text-on-surface-variant/80 mt-2">Exclusive Archive Desk analysis on central bank digital currencies.</p>
+</div>
+</div>
+<!-- Quick Stats -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-4">
+<span class="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest">Sentiment</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-lg font-headline font-bold text-secondary">BULLISH</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 mt-2">
+<div class="bg-secondary h-full" style="width: 68%;"></div>
+</div>
+</div>
+<div class="bg-surface-container-low p-4">
+<span class="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest">Volatility Index</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-lg font-headline font-bold text-tertiary">18.42</span>
+<span class="material-symbols-outlined text-sm text-tertiary">trending_up</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 mt-2">
+<div class="bg-tertiary h-full" style="width: 42%;"></div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-[#131313]/60 backdrop-blur-xl flex justify-around items-center px-4 pb-6 pt-3 shadow-[0_-8px_32px_0_rgba(0,0,0,0.4)] rounded-t-xl">
+<button class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all active:transform active:scale-90 duration-200">
+<span class="material-symbols-outlined">star</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase mt-1">Watchlist</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all active:transform active:scale-90 duration-200">
+<span class="material-symbols-outlined">show_chart</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase mt-1">Chart</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all active:transform active:scale-90 duration-200">
+<span class="material-symbols-outlined">sensors</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase mt-1">Signals</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#FFB77D] bg-[#FF8C00]/10 rounded-xl px-3 py-1 active:transform active:scale-90 duration-200">
+<span class="material-symbols-outlined">article</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase mt-1">News</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all active:transform active:scale-90 duration-200">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase mt-1">Settings</span>
+</button>
+</nav>
+</body></html>

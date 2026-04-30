@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Inter:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#3f001a",
+                    "on-primary-container": "#623200",
+                    "secondary-fixed-dim": "#afc6ff",
+                    "on-secondary-fixed-variant": "#004299",
+                    "on-secondary-container": "#d5e0ff",
+                    "tertiary-container": "#ff82a7",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#ffb1c4",
+                    "primary-container": "#ff8c00",
+                    "on-tertiary-container": "#7f003c",
+                    "on-surface": "#e2e2e2",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface-dim": "#131313",
+                    "primary": "#ffb77d",
+                    "surface-tint": "#ffb77d",
+                    "on-primary-fixed": "#2f1500",
+                    "on-tertiary-fixed-variant": "#8f0044",
+                    "secondary-container": "#045dd0",
+                    "surface-container-highest": "#353535",
+                    "primary-fixed-dim": "#ffb77d",
+                    "on-error-container": "#ffdad6",
+                    "outline": "#a48c7a",
+                    "surface-container-high": "#2a2a2a",
+                    "outline-variant": "#564334",
+                    "secondary-fixed": "#d9e2ff",
+                    "on-error": "#690005",
+                    "on-surface-variant": "#ddc1ae",
+                    "on-primary-fixed-variant": "#6e3900",
+                    "surface-variant": "#353535",
+                    "surface-bright": "#393939",
+                    "on-secondary-fixed": "#001944",
+                    "inverse-primary": "#904d00",
+                    "inverse-surface": "#e2e2e2",
+                    "tertiary": "#ffb1c4",
+                    "on-primary": "#4d2600",
+                    "inverse-on-surface": "#303030",
+                    "surface-container-low": "#1b1b1b",
+                    "background": "#131313",
+                    "on-secondary": "#002d6d",
+                    "on-tertiary": "#65002e",
+                    "on-background": "#e2e2e2",
+                    "error-container": "#93000a",
+                    "tertiary-fixed": "#ffd9e1",
+                    "surface": "#131313",
+                    "primary-fixed": "#ffdcc3",
+                    "surface-container": "#1f1f1f",
+                    "secondary": "#afc6ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #131313; color: #e2e2e2; }
+        .font-headline { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen pb-32">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-[#131313]/60 backdrop-blur-xl bg-[#1B1B1B] shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+<div class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img alt="Institutional Trader Profile" class="w-full h-full object-cover" data-alt="minimalist geometric abstract avatar in shades of gold and charcoal gray for a professional trader profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx1hR8ZfkeuQ3VQ7oErnwuVpKue16zQT6fOV9WdiR_WcZFt0CMV4WO6VjRR1OpnIViChVoed6ztI-HR1i5NwdlMnWkrIL-JnHtqxjRdPU9Hhr1pLgF9LWnN0SDf0bGXoNm4brlLLcv8b7bnj1tPU9JE5iDDWr8855l2n1rqCpZ1GdI2cBafI8R_lMv77VidcWTzpIHMufuhPhFzRk7NkxI8rU-biB6RdfTeLanGFDhtz2PzakX0Dju9hJTSWGHRgbUYm98xoSLu38"/>
+</div>
+<span class="text-xl font-black tracking-widest text-[#FF8C00] font-['Space_Grotesk'] font-bold tracking-tight uppercase">SMC TERMINAL</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#DDC1AE] hover:bg-[#2A2A2A] transition-colors p-2 rounded-xl cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-[#DDC1AE] hover:bg-[#2A2A2A] transition-colors p-2 rounded-xl cursor-pointer">search</span>
+</div>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-4xl mx-auto">
+<!-- Hero Search Section -->
+<section class="mb-12">
+<h1 class="text-4xl md:text-5xl font-headline font-bold text-primary tracking-tight mb-4 uppercase">KNOWLEDGE BASE</h1>
+<p class="text-on-surface-variant mb-8 max-w-2xl leading-relaxed">Master the mechanics of Smart Money Concepts. Access institutional-grade documentation and operational guides.</p>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary transition-all text-on-surface placeholder:text-outline/50 font-body" placeholder="Search FAQs..." type="text"/>
+</div>
+</section>
+<!-- Category Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+<!-- SMC Logic -->
+<div class="p-6 bg-surface-container-low rounded-xl border-l-2 border-primary">
+<div class="flex items-center justify-between mb-2">
+<span class="text-primary font-headline font-bold uppercase tracking-widest text-xs">Category</span>
+<span class="material-symbols-outlined text-primary text-sm">psychology</span>
+</div>
+<h3 class="text-xl font-headline font-bold text-on-surface mb-4">SMC Logic</h3>
+<div class="space-y-4">
+<details class="group">
+<summary class="flex justify-between items-center cursor-pointer list-none py-2 border-b border-outline-variant/10">
+<span class="text-sm font-medium text-on-surface hover:text-primary transition-colors">What is a Fair Value Gap (FVG)?</span>
+<span class="material-symbols-outlined text-xs group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-3 pb-2 text-sm text-on-surface-variant leading-relaxed">
+                            A Fair Value Gap occurs when there is an imbalance in price movement where one side of the market is aggressively pushed, leaving a visual gap on the 3-candle sequence. Institutional traders look for these gaps to be filled as a retest of liquidity.
+                        </div>
+</details>
+<details class="group">
+<summary class="flex justify-between items-center cursor-pointer list-none py-2 border-b border-outline-variant/10">
+<span class="text-sm font-medium text-on-surface hover:text-primary transition-colors">How to identify Order Blocks?</span>
+<span class="material-symbols-outlined text-xs group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-3 pb-2 text-sm text-on-surface-variant leading-relaxed">
+                            An Order Block is the last opposite candle before a strong displacement in price. Bullish OBs are the last down candle before an upward move, while Bearish OBs are the last up candle before a downward move.
+                        </div>
+</details>
+</div>
+</div>
+<!-- Platform Navigation -->
+<div class="p-6 bg-surface-container-low rounded-xl border-l-2 border-secondary">
+<div class="flex items-center justify-between mb-2">
+<span class="text-secondary font-headline font-bold uppercase tracking-widest text-xs">Navigation</span>
+<span class="material-symbols-outlined text-secondary text-sm">explore</span>
+</div>
+<h3 class="text-xl font-headline font-bold text-on-surface mb-4">Platform Navigation</h3>
+<div class="space-y-4">
+<details class="group">
+<summary class="flex justify-between items-center cursor-pointer list-none py-2 border-b border-outline-variant/10">
+<span class="text-sm font-medium text-on-surface hover:text-secondary transition-colors">How to use the Heatmap?</span>
+<span class="material-symbols-outlined text-xs group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-3 pb-2 text-sm text-on-surface-variant leading-relaxed">
+                            The Institutional Heatmap visualizes pending orders in the limit order book. Darker regions indicate higher liquidity density, often serving as magnets for price movement.
+                        </div>
+</details>
+<details class="group">
+<summary class="flex justify-between items-center cursor-pointer list-none py-2 border-b border-outline-variant/10">
+<span class="text-sm font-medium text-on-surface hover:text-secondary transition-colors">Where are my saved watchlists?</span>
+<span class="material-symbols-outlined text-xs group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-3 pb-2 text-sm text-on-surface-variant leading-relaxed">
+                            Saved watchlists can be accessed via the 'Star' icon on the bottom navigation bar or the lateral sidebar on the desktop terminal view.
+                        </div>
+</details>
+</div>
+</div>
+<!-- Subscription Info -->
+<div class="p-6 bg-surface-container-low rounded-xl border-l-2 border-tertiary">
+<div class="flex items-center justify-between mb-2">
+<span class="text-tertiary font-headline font-bold uppercase tracking-widest text-xs">Accounts</span>
+<span class="material-symbols-outlined text-tertiary text-sm">payments</span>
+</div>
+<h3 class="text-xl font-headline font-bold text-on-surface mb-4">Subscription Info</h3>
+<div class="space-y-4">
+<details class="group">
+<summary class="flex justify-between items-center cursor-pointer list-none py-2 border-b border-outline-variant/10">
+<span class="text-sm font-medium text-on-surface hover:text-tertiary transition-colors">Can I upgrade mid-billing cycle?</span>
+<span class="material-symbols-outlined text-xs group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-3 pb-2 text-sm text-on-surface-variant leading-relaxed">
+                            Yes, upgrades are processed immediately with a pro-rated charge based on the remaining days of your current cycle.
+                        </div>
+</details>
+</div>
+</div>
+<!-- Risk Management -->
+<div class="p-6 bg-surface-container-low rounded-xl border-l-2 border-on-surface-variant">
+<div class="flex items-center justify-between mb-2">
+<span class="text-on-surface-variant font-headline font-bold uppercase tracking-widest text-xs">Strategic</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">shield</span>
+</div>
+<h3 class="text-xl font-headline font-bold text-on-surface mb-4">Risk Management</h3>
+<div class="space-y-4">
+<details class="group">
+<summary class="flex justify-between items-center cursor-pointer list-none py-2 border-b border-outline-variant/10">
+<span class="text-sm font-medium text-on-surface hover:text-primary transition-colors">How to calculate Lot Size?</span>
+<span class="material-symbols-outlined text-xs group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-3 pb-2 text-sm text-on-surface-variant leading-relaxed">
+                            Use the integrated calculator in the 'Signals' tab. Enter your account balance and risk percentage (0.5% - 1% recommended) to get precise lot sizes.
+                        </div>
+</details>
+</div>
+</div>
+</div>
+<!-- Call to Action -->
+<section class="mt-20 p-8 rounded-2xl bg-surface-container-high border border-outline-variant/10 text-center relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-primary-container to-secondary"></div>
+<h2 class="text-2xl font-headline font-bold text-primary mb-2">STILL HAVE QUESTIONS?</h2>
+<p class="text-on-surface-variant mb-6 font-body">Our institutional desk is available 24/5 to assist with your technical inquiries.</p>
+<button class="bg-primary-container text-on-primary-container px-8 py-3 rounded-md font-bold uppercase tracking-wide hover:opacity-90 active:scale-95 transition-all">
+                Contact Support
+            </button>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#131313]/60 backdrop-blur-xl bg-[#1B1B1B] shadow-[0_-8px_32px_0_rgba(0,0,0,0.4)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">star</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase">Watchlist</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">show_chart</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase">Chart</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">sensors</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase">Signals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE]/60 hover:text-[#FFB77D] transition-all" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">article</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase">News</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#FFB77D] bg-[#FF8C00]/10 rounded-xl px-3 py-1" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">settings</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide uppercase">Settings</span>
+</a>
+</nav>
+</body></html>

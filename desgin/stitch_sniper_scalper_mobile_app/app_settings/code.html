@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#6e3900",
+                        "secondary-fixed": "#d9e2ff",
+                        "primary-fixed-dim": "#ffb77d",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-fixed": "#ffdcc3",
+                        "secondary": "#afc6ff",
+                        "primary": "#ffb77d",
+                        "primary-container": "#ff8c00",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "on-primary": "#4d2600",
+                        "surface-bright": "#393939",
+                        "tertiary-fixed": "#ffd9e1",
+                        "on-surface": "#e2e2e2",
+                        "inverse-primary": "#904d00",
+                        "on-tertiary-fixed-variant": "#8f0044",
+                        "on-tertiary-fixed": "#3f001a",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary-container": "#045dd0",
+                        "on-secondary-container": "#d5e0ff",
+                        "outline-variant": "#564334",
+                        "on-surface-variant": "#ddc1ae",
+                        "error-container": "#93000a",
+                        "surface": "#131313",
+                        "on-tertiary": "#65002e",
+                        "outline": "#a48c7a",
+                        "surface-container-highest": "#353535",
+                        "error": "#ffb4ab",
+                        "background": "#131313",
+                        "surface-container-low": "#1b1b1b",
+                        "surface-dim": "#131313",
+                        "surface-container": "#1f1f1f",
+                        "tertiary-fixed-dim": "#ffb1c4",
+                        "tertiary": "#ffb1c4",
+                        "on-secondary": "#002d6d",
+                        "on-secondary-fixed-variant": "#004299",
+                        "on-secondary-fixed": "#001944",
+                        "on-background": "#e2e2e2",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-tint": "#ffb77d",
+                        "secondary-fixed-dim": "#afc6ff",
+                        "on-primary-fixed": "#2f1500",
+                        "surface-variant": "#353535",
+                        "on-tertiary-container": "#7f003c",
+                        "tertiary-container": "#ff82a7",
+                        "inverse-on-surface": "#303030",
+                        "on-primary-container": "#623200"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #131313; color: #e2e2e2; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-[#131313] dark:bg-[#131313]">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-screen-xl mx-auto bg-[#1B1B1B]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-amber-500 dark:text-amber-400">arrow_back</span>
+<h1 class="font-['Space_Grotesk'] tracking-tight text-xl font-bold tracking-widest text-amber-500 uppercase">SMC ELITE</h1>
+</div>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant/20">
+<img alt="User Profile" data-alt="High-resolution 3D character avatar with clean lighting and premium aesthetic representing a professional trader" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYQEHG8Sjg4DBHxPXB8KoGOGhKbjOVzmBwfsZyKTtvwsL9v0LLtD8XkFmyQmdip1-WaJI90l_i9aEi4sdTo0wDBE_9M5t-KLePs9YXPXM0EPj-PRgTViTatiIFjlRM-abYMXr5ogdJPwWHsv8Uurn-YggMAblCq_4RPFfBw3uPo4Yx6HLEcqQBhfCZIXYtPm4ImWrSLOTa7_Cq3rzX7-KaddJ1m4TCupgylMvNlVz5-a2LiAhe5XVec7lnIzAiEBIYc7hPajU1TIg"/>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-32 px-4 max-w-screen-md mx-auto">
+<!-- Profile Overview Section -->
+<section class="mb-10">
+<div class="flex items-center gap-6 p-6 bg-surface-container-low rounded-xl mb-4">
+<div class="relative">
+<img class="w-16 h-16 rounded-full" data-alt="Detailed avatar of a trader in a suit, minimalist style, professional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXViR_Mq___vi7g8PutfnlScTZK_LD4URq5nn7IM_Zs5nM7hmerDEuySo440cnPfLepMM7UJ_Q7wNFd14t0Lm2Vx-R_OSB4K42h1cDlt2v7D1dGXPzJ1NpJL8EvMl-ADXhbrTHwgs2hAPVjXwhFe2-TTw7-NgY-Wm2pGCe6WrftAZ1YeuLVxBoMxHnNS8oaSO7nXXvveJj3wtDD_SnsEgf2V0nVe2kICrhuanfj9AEKYTXUxUFYL71CAmplQV49z6_ngg8KJMJUzM"/>
+<div class="absolute bottom-0 right-0 w-4 h-4 bg-primary-container rounded-full border-2 border-surface"></div>
+</div>
+<div>
+<h2 class="text-xl font-headline font-bold text-primary">Alex Sterling</h2>
+<p class="text-on-surface-variant text-sm font-label">Institutional Tier Member</p>
+</div>
+</div>
+</section>
+<!-- Settings Groups -->
+<div class="space-y-8">
+<!-- Account Section -->
+<div class="space-y-3">
+<div class="flex items-center gap-2 px-2">
+<div class="w-1 h-4 bg-primary rounded-full"></div>
+<h3 class="font-headline text-xs font-bold uppercase tracking-widest text-primary-fixed-dim">Account</h3>
+</div>
+<div class="bg-surface-container-low rounded-xl overflow-hidden">
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright/40 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+<span class="font-body text-sm">Personal Information</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-sm">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright/40 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">verified_user</span>
+<div class="flex flex-col">
+<span class="font-body text-sm">Subscription Status</span>
+<span class="text-[10px] text-secondary font-bold uppercase">Pro Elite Plan</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-sm">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright/40 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">payments</span>
+<span class="font-body text-sm">Billing &amp; Invoices</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-sm">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Notifications Section -->
+<div class="space-y-3">
+<div class="flex items-center gap-2 px-2">
+<div class="w-1 h-4 bg-secondary rounded-full"></div>
+<h3 class="font-headline text-xs font-bold uppercase tracking-widest text-secondary">Notifications</h3>
+</div>
+<div class="bg-surface-container-low rounded-xl overflow-hidden">
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">notifications_active</span>
+<span class="font-body text-sm">Signal Alerts</span>
+</div>
+<div class="w-10 h-5 bg-primary-container rounded-full flex items-center px-1">
+<div class="w-3 h-3 bg-on-primary-container rounded-full ml-auto"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">newspaper</span>
+<span class="font-body text-sm">Market News Updates</span>
+</div>
+<div class="w-10 h-5 bg-surface-container-highest rounded-full flex items-center px-1">
+<div class="w-3 h-3 bg-outline rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">mail</span>
+<span class="font-body text-sm">Newsletter &amp; Insights</span>
+</div>
+<div class="w-10 h-5 bg-primary-container rounded-full flex items-center px-1">
+<div class="w-3 h-3 bg-on-primary-container rounded-full ml-auto"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Appearance Section -->
+<div class="space-y-3">
+<div class="flex items-center gap-2 px-2">
+<div class="w-1 h-4 bg-outline rounded-full"></div>
+<h3 class="font-headline text-xs font-bold uppercase tracking-widest text-on-surface-variant">Appearance</h3>
+</div>
+<div class="bg-surface-container-low rounded-xl overflow-hidden p-4">
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-3 p-3 bg-surface-container rounded-lg border border-primary/20 ring-1 ring-primary/40">
+<div class="h-16 bg-surface rounded-md flex flex-col gap-2 p-2">
+<div class="w-full h-2 bg-surface-container-high rounded"></div>
+<div class="w-1/2 h-2 bg-surface-container-high rounded"></div>
+</div>
+<span class="text-xs font-medium text-center text-primary">Archive Dark</span>
+</div>
+<div class="flex flex-col gap-3 p-3 bg-surface-container rounded-lg border border-transparent opacity-60">
+<div class="h-16 bg-slate-100 rounded-md flex flex-col gap-2 p-2">
+<div class="w-full h-2 bg-slate-200 rounded"></div>
+<div class="w-1/2 h-2 bg-slate-200 rounded"></div>
+</div>
+<span class="text-xs font-medium text-center">Modern Light</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Security Section -->
+<div class="space-y-3">
+<div class="flex items-center gap-2 px-2">
+<div class="w-1 h-4 bg-tertiary rounded-full"></div>
+<h3 class="font-headline text-xs font-bold uppercase tracking-widest text-tertiary">Security</h3>
+</div>
+<div class="bg-surface-container-low rounded-xl overflow-hidden">
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright/40 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">lock</span>
+<span class="font-body text-sm">Change Password</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-sm">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright/40 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">fingerprint</span>
+<span class="font-body text-sm">Biometric Authentication</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-sm">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-4 hover:bg-surface-bright/40 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">security</span>
+<div class="flex flex-col">
+<span class="font-body text-sm">Two-Factor Auth (2FA)</span>
+<span class="text-[10px] text-tertiary font-bold uppercase">Disabled</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-sm">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Danger Zone -->
+<div class="pt-6">
+<button class="w-full py-4 bg-tertiary-container/10 text-tertiary font-headline font-bold text-sm rounded-xl border border-tertiary/20 active:scale-95 transition-all">
+                    LOG OUT OF SESSION
+                </button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-[#131313]/60 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)] pb-safe">
+<a class="flex flex-col items-center justify-center text-[#DDC1AE] opacity-60 hover:text-amber-300 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Terminal</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE] opacity-60 hover:text-amber-300 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Signals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE] opacity-60 hover:text-amber-300 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Academy</span>
+</a>
+<a class="flex flex-col items-center justify-center text-amber-500 bg-amber-500/10 rounded-xl px-3 py-1 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Profile</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#6e3900",
+                    "secondary-fixed": "#d9e2ff",
+                    "primary-fixed-dim": "#ffb77d",
+                    "surface-container-lowest": "#0e0e0e",
+                    "primary-fixed": "#ffdcc3",
+                    "secondary": "#afc6ff",
+                    "primary": "#ffb77d",
+                    "primary-container": "#ff8c00",
+                    "on-error": "#690005",
+                    "on-error-container": "#ffdad6",
+                    "on-primary": "#4d2600",
+                    "surface-bright": "#393939",
+                    "tertiary-fixed": "#ffd9e1",
+                    "on-surface": "#e2e2e2",
+                    "inverse-primary": "#904d00",
+                    "on-tertiary-fixed-variant": "#8f0044",
+                    "on-tertiary-fixed": "#3f001a",
+                    "inverse-surface": "#e2e2e2",
+                    "secondary-container": "#045dd0",
+                    "on-secondary-container": "#d5e0ff",
+                    "outline-variant": "#564334",
+                    "on-surface-variant": "#ddc1ae",
+                    "error-container": "#93000a",
+                    "surface": "#131313",
+                    "on-tertiary": "#65002e",
+                    "outline": "#a48c7a",
+                    "surface-container-highest": "#353535",
+                    "error": "#ffb4ab",
+                    "background": "#131313",
+                    "surface-container-low": "#1b1b1b",
+                    "surface-dim": "#131313",
+                    "surface-container": "#1f1f1f",
+                    "tertiary-fixed-dim": "#ffb1c4",
+                    "tertiary": "#ffb1c4",
+                    "on-secondary": "#002d6d",
+                    "on-secondary-fixed-variant": "#004299",
+                    "on-secondary-fixed": "#001944",
+                    "on-background": "#e2e2e2",
+                    "surface-container-high": "#2a2a2a",
+                    "surface-tint": "#ffb77d",
+                    "secondary-fixed-dim": "#afc6ff",
+                    "on-primary-fixed": "#2f1500",
+                    "surface-variant": "#353535",
+                    "on-tertiary-container": "#7f003c",
+                    "tertiary-container": "#ff82a7",
+                    "inverse-on-surface": "#303030",
+                    "on-primary-container": "#623200"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(57, 57, 57, 0.4);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container/30">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#131313] transition-colors">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-amber-500 hover:bg-[#393939]/40 transition-colors p-2 rounded-lg active:scale-95">menu</button>
+<h1 class="text-xl font-bold tracking-widest text-amber-500 uppercase font-['Space_Grotesk']">SMC ELITE</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-8 text-[10px] uppercase tracking-widest font-headline font-bold text-[#DDC1AE]">
+<a class="hover:text-amber-400 transition-colors" href="#">Terminal</a>
+<a class="hover:text-amber-400 transition-colors" href="#">Signals</a>
+<a class="hover:text-amber-400 transition-colors text-amber-400" href="#">Support</a>
+</nav>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/20">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="professional portrait of a high-end financial trader in a dark studio setting with soft amber backlighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0lKI7E3n_h7GcmY87MToKrH0dDTy6vm4DwILV1yeBkBqh4YdLjj9XaFcjNH4YYSma4gCJKvWQ6FJnL-9p6LrsaYn7VaJUztj5hUh0mU9Ot6yKS7C6ygk2iBm_VMpxaZyyX2cYpW7NTo3zWZPUDOpfM0DtoskQnZ30esdXHIUTylEwRoROx_dqeq1Y2e_Rb8qyrGsFqxddcSr7N5fJi4i_RKPbkLitb30SiGgFq6rFfGK8YHMWktyip9cGLVhAxShNZQGNg6I3UHA"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-screen-xl mx-auto">
+<div class="flex flex-col lg:flex-row gap-12">
+<!-- Left Side: Editorial Introduction & Direct Support -->
+<div class="lg:w-5/12 space-y-12">
+<section>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-1 h-8 bg-primary"></div>
+<span class="font-headline font-bold text-primary tracking-widest uppercase text-sm">Institutional Access</span>
+</div>
+<h2 class="text-5xl md:text-6xl font-headline font-bold tracking-tighter text-primary-fixed-dim leading-none mb-6">
+                        DIRECT <br/>DESK SUPPORT
+                    </h2>
+<p class="text-on-surface-variant text-lg leading-relaxed max-w-md">
+                        Connect with our risk management specialists and technical support desk for immediate assistance with your trading environment.
+                    </p>
+</section>
+<section class="grid grid-cols-1 gap-4">
+<!-- WhatsApp -->
+<a class="group flex items-center justify-between p-6 bg-surface-container-low hover:bg-surface-container-high transition-all duration-300 rounded-xl" href="#">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">chat</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-on-surface uppercase tracking-tight">WhatsApp</h3>
+<p class="text-xs text-on-surface-variant">Real-time Trading Queries</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<!-- Telegram -->
+<a class="group flex items-center justify-between p-6 bg-surface-container-low hover:bg-surface-container-high transition-all duration-300 rounded-xl" href="#">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 flex items-center justify-center bg-secondary/10 rounded-lg group-hover:bg-secondary/20 transition-colors">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">send</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-on-surface uppercase tracking-tight">Telegram</h3>
+<p class="text-xs text-on-surface-variant">Signal &amp; Technical Desk</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<!-- Email -->
+<a class="group flex items-center justify-between p-6 bg-surface-container-low hover:bg-surface-container-high transition-all duration-300 rounded-xl" href="#">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 flex items-center justify-center bg-on-surface-variant/10 rounded-lg group-hover:bg-on-surface-variant/20 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">mail</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-on-surface uppercase tracking-tight">Support Email</h3>
+<p class="text-xs text-on-surface-variant">Corporate &amp; Technical Inquiries</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</section>
+<div class="relative overflow-hidden rounded-xl aspect-video md:aspect-auto md:h-48">
+<img alt="Operational Background" class="w-full h-full object-cover grayscale opacity-40" data-alt="abstract macro photography of high-end server blinking lights and glass reflections in a dark tech environment with orange highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9T6n5xeTwI6Wq-78lLWkHa3U7tLDwSGMf5bwc2yZEGtpPdobi4Ni52olvsdKn7xNQPISJPwVoDonc2mKBgluBiHTSlFjVkquQtbC4LB7zFEyQQrnXFzMIztNzRCMTOo3HSFGRKpkTgRyTsE0pT_NV6IB17vK-tqX5-FteoRb63n8XLHeyC_fVklSgrEylTC1lqhURO5BtxmjxcL-3x6XT60OmDYzM_U1JvjSxjK0CHDQ-Aol9IqTRgQnPkCBF2wuOG2dqqqLpbi8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute bottom-4 left-6">
+<p class="text-[10px] font-headline font-bold tracking-[0.3em] text-primary uppercase">Status: Desk Online</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Contact Form -->
+<div class="lg:w-7/12">
+<div class="bg-surface-container-low p-8 md:p-12 rounded-2xl relative overflow-hidden">
+<!-- Subtle Glow -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] -mr-32 -mt-32 rounded-full"></div>
+<div class="relative z-10">
+<div class="mb-10">
+<h2 class="text-2xl font-headline font-bold text-on-surface uppercase tracking-wide">Secure Communication</h2>
+<p class="text-on-surface-variant mt-2 text-sm">Inquiries are handled with institutional priority.</p>
+</div>
+<form action="#" class="space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="block text-[10px] font-headline font-bold text-primary uppercase tracking-[0.2em] ml-1">Full Name</label>
+<input class="w-full bg-surface-container-lowest border-none outline-none focus:ring-1 focus:ring-primary/40 rounded-lg p-4 text-on-surface placeholder:text-outline/40 transition-all" placeholder="Institutional Name" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="block text-[10px] font-headline font-bold text-primary uppercase tracking-[0.2em] ml-1">Email Address</label>
+<input class="w-full bg-surface-container-lowest border-none outline-none focus:ring-1 focus:ring-primary/40 rounded-lg p-4 text-on-surface placeholder:text-outline/40 transition-all" placeholder="official@domain.com" type="email"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-[10px] font-headline font-bold text-primary uppercase tracking-[0.2em] ml-1">Service category</label>
+<select class="w-full bg-surface-container-lowest border-none outline-none focus:ring-1 focus:ring-primary/40 rounded-lg p-4 text-on-surface transition-all appearance-none">
+<option>Technical Support</option>
+<option>Signal Desk Inquiry</option>
+<option>Institutional Membership</option>
+<option>Account Management</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="block text-[10px] font-headline font-bold text-primary uppercase tracking-[0.2em] ml-1">Message</label>
+<textarea class="w-full bg-surface-container-lowest border-none outline-none focus:ring-1 focus:ring-primary/40 rounded-lg p-4 text-on-surface placeholder:text-outline/40 transition-all resize-none" placeholder="Detailed technical description of your inquiry..." rows="6"></textarea>
+</div>
+<div class="pt-4">
+<button class="w-full md:w-auto px-12 py-4 bg-primary-container text-on-primary-container font-headline font-bold uppercase tracking-widest rounded-lg hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary-container/10" type="submit">
+                                    Transmit Message
+                                </button>
+</div>
+</form>
+</div>
+</div>
+<div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="p-6 bg-surface-container-low rounded-xl text-center">
+<div class="text-2xl font-headline font-bold text-primary-fixed-dim mb-1">24/7</div>
+<div class="text-[10px] font-headline font-bold uppercase text-on-surface-variant tracking-wider">Uptime Support</div>
+</div>
+<div class="p-6 bg-surface-container-low rounded-xl text-center">
+<div class="text-2xl font-headline font-bold text-primary-fixed-dim mb-1">&lt; 15m</div>
+<div class="text-[10px] font-headline font-bold uppercase text-on-surface-variant tracking-wider">Avg Response</div>
+</div>
+<div class="p-6 bg-surface-container-low rounded-xl text-center">
+<div class="text-2xl font-headline font-bold text-primary-fixed-dim mb-1">128-bit</div>
+<div class="text-[10px] font-headline font-bold uppercase text-on-surface-variant tracking-wider">Encrypted</div>
+</div>
+<div class="p-6 bg-surface-container-low rounded-xl text-center">
+<div class="text-2xl font-headline font-bold text-primary-fixed-dim mb-1">Global</div>
+<div class="text-[10px] font-headline font-bold uppercase text-on-surface-variant tracking-wider">Multi-region</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-[#131313]/60 backdrop-blur-xl flex justify-around items-center px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<a class="flex flex-col items-center justify-center text-[#DDC1AE] opacity-60 hover:text-amber-300 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined mb-1">terminal</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Terminal</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE] opacity-60 hover:text-amber-300 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined mb-1">analytics</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Signals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#DDC1AE] opacity-60 hover:text-amber-300 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined mb-1">school</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Academy</span>
+</a>
+<a class="flex flex-col items-center justify-center text-amber-500 bg-amber-500/10 rounded-xl px-3 py-1 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Profile</span>
+</a>
+</nav>
+</body></html>

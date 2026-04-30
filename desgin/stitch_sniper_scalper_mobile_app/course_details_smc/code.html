@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#6e3900",
+                    "secondary-fixed": "#d9e2ff",
+                    "primary-fixed-dim": "#ffb77d",
+                    "surface-container-lowest": "#0e0e0e",
+                    "primary-fixed": "#ffdcc3",
+                    "secondary": "#afc6ff",
+                    "primary": "#ffb77d",
+                    "primary-container": "#ff8c00",
+                    "on-error": "#690005",
+                    "on-error-container": "#ffdad6",
+                    "on-primary": "#4d2600",
+                    "surface-bright": "#393939",
+                    "tertiary-fixed": "#ffd9e1",
+                    "on-surface": "#e2e2e2",
+                    "inverse-primary": "#904d00",
+                    "on-tertiary-fixed-variant": "#8f0044",
+                    "on-tertiary-fixed": "#3f001a",
+                    "inverse-surface": "#e2e2e2",
+                    "secondary-container": "#045dd0",
+                    "on-secondary-container": "#d5e0ff",
+                    "outline-variant": "#564334",
+                    "on-surface-variant": "#ddc1ae",
+                    "error-container": "#93000a",
+                    "surface": "#131313",
+                    "on-tertiary": "#65002e",
+                    "outline": "#a48c7a",
+                    "surface-container-highest": "#353535",
+                    "error": "#ffb4ab",
+                    "background": "#131313",
+                    "surface-container-low": "#1b1b1b",
+                    "surface-dim": "#131313",
+                    "surface-container": "#1f1f1f",
+                    "tertiary-fixed-dim": "#ffb1c4",
+                    "tertiary": "#ffb1c4",
+                    "on-secondary": "#002d6d",
+                    "on-secondary-fixed-variant": "#004299",
+                    "on-secondary-fixed": "#001944",
+                    "on-background": "#e2e2e2",
+                    "surface-container-high": "#2a2a2a",
+                    "surface-tint": "#ffb77d",
+                    "secondary-fixed-dim": "#afc6ff",
+                    "on-primary-fixed": "#2f1500",
+                    "surface-variant": "#353535",
+                    "on-tertiary-container": "#7f003c",
+                    "tertiary-container": "#ff82a7",
+                    "inverse-on-surface": "#303030",
+                    "on-primary-container": "#623200"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": [
+                            "Space Grotesk"
+                    ],
+                    "body": [
+                            "Inter"
+                    ],
+                    "label": [
+                            "Inter"
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .video-gradient {
+            background: linear-gradient(0deg, rgba(19,19,19,1) 0%, rgba(19,19,19,0) 50%);
+        }
+        .signal-pulse {
+            box-shadow: 0 0 0 0 rgba(255, 183, 125, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 183, 125, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 183, 125, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 183, 125, 0); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-[#131313]">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-amber-500 cursor-pointer">menu</span>
+<h1 class="text-xl font-bold tracking-widest text-amber-500 uppercase font-headline">SMC ELITE</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-[#DDC1AE] hover:bg-[#393939]/40 transition-colors px-3 py-1 rounded font-headline text-sm uppercase tracking-wider" href="#">Terminal</a>
+<a class="text-[#DDC1AE] hover:bg-[#393939]/40 transition-colors px-3 py-1 rounded font-headline text-sm uppercase tracking-wider" href="#">Signals</a>
+<a class="text-amber-400 font-headline text-sm uppercase tracking-wider" href="#">Academy</a>
+</nav>
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline/10">
+<img alt="Avatar" class="w-full h-full object-cover" data-alt="close up professional male portrait with neutral background and clean lighting for profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9P7AqoMOk-kSWnqMQ9g1mXAA0CwVefV_adJOujdGKE19LxGUdoSwq_2B6h194KRSJaBMlqTyYXfxWaNCKzfusTSvq25DsD8Q1fpSWg10f4oFfjBuaeNGy9bhQDBhwm8ijkwPQkuNxPuKH6IQtyqB9lKtAmE3HyGwNx1jbkrLc8pvUvYGOYCl9ru_8W1T9vYU7s8M8zBph0B8V5ntB_J8dvqAcOCx3PxZlY5STVWgDLqnwV0RuRcqe5mWfi-WojruyPhmwR8jf1Ig"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-16 pb-24 max-w-screen-xl mx-auto px-6">
+<!-- Hero Video Section -->
+<section class="mt-8 relative aspect-video w-full rounded-xl overflow-hidden bg-surface-container-lowest border border-outline-variant/15 group">
+<img class="w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-700" data-alt="abstract dark trading chart interface with golden candlesticks and cinematic atmospheric lighting on high-end computer screens" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKM_abiBCN0QeuZWX52qAy1RJzNmrKj0q19R-YU3MwHPK6dLjsbZNfBDBVdyhlvpP2BQBDpRnpafxHEqR0nFWCdWuVDtUPPLz-81ghcriwVkyZ9gXZFgnapWSZmzMdzbndEZI2ibSl2pPg5433FEVRQrEFgypeoCPyesT8xF9SHLAMheuP3X-jNalpkwglvwtShJS_3LcUCr9j8KOG5XD3VzLz4M91fnBJ420mb2IQp7M7TGHPvDYj9G1dNUtMOcmwGD-J20mn9o0"/>
+<div class="absolute inset-0 video-gradient flex flex-col justify-end p-8 md:p-12">
+<div class="flex items-center gap-2 mb-4">
+<span class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest">Premium Course</span>
+<span class="text-on-surface-variant text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">visibility</span> 12.4k Students
+                    </span>
+</div>
+<h2 class="text-3xl md:text-5xl font-headline font-bold text-primary-fixed mb-4 max-w-2xl leading-tight">Mastering Institutional Order Flow &amp; Liquidity</h2>
+<div class="flex flex-wrap items-center gap-6">
+<button class="bg-primary-container text-on-primary-container px-8 py-3 rounded-md font-bold text-sm uppercase tracking-widest flex items-center gap-3 active:scale-95 transition-all shadow-lg shadow-primary-container/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                        Continue Learning
+                    </button>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter font-medium">Your Progress</p>
+<p class="text-sm font-headline text-primary">64% Complete</p>
+</div>
+<div class="w-32 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 64%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Play Overlay -->
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="w-20 h-20 rounded-full bg-primary-container/90 flex items-center justify-center cursor-pointer shadow-2xl">
+<span class="material-symbols-outlined text-white text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</section>
+<!-- Course Details Grid -->
+<div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Column: Syllabus -->
+<div class="lg:col-span-8">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-1 h-8 bg-primary"></div>
+<h3 class="text-2xl font-headline font-bold uppercase tracking-tight text-primary-fixed">Course Syllabus</h3>
+</div>
+<div class="space-y-4">
+<!-- Module 1 -->
+<div class="bg-surface-container-low rounded-xl p-6 border-l-2 border-primary/20">
+<div class="flex items-center justify-between mb-6">
+<div>
+<span class="text-[10px] text-primary uppercase font-bold tracking-[0.2em]">Module 01</span>
+<h4 class="text-xl font-headline font-semibold text-on-surface mt-1">Foundation of Smart Money</h4>
+</div>
+<span class="text-on-surface-variant text-xs font-mono">02:45:00 TOTAL</span>
+</div>
+<div class="space-y-4">
+<div class="group flex items-center justify-between p-4 bg-surface-container-highest/30 rounded-lg hover:bg-surface-container-highest/60 transition-colors cursor-pointer border border-transparent hover:border-primary/10">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="text-sm font-medium text-on-surface">The Myth of Retail Support/Resistance</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Lesson 1.1 • Video • 42 mins</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">description</span>
+</div>
+<div class="group flex items-center justify-between p-4 bg-surface-container-highest/30 rounded-lg border border-primary/40 shadow-inner">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center signal-pulse">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<div>
+<p class="text-sm font-bold text-primary">Market Structure &amp; Break of Structure (BOS)</p>
+<p class="text-[10px] text-primary-fixed-dim uppercase tracking-tighter">Current Lesson • 58 mins</p>
+</div>
+</div>
+<span class="bg-primary/10 text-primary text-[10px] px-2 py-1 rounded font-bold">WATCHING</span>
+</div>
+<div class="group flex items-center justify-between p-4 bg-surface-container-highest/30 rounded-lg hover:bg-surface-container-highest/60 transition-colors cursor-pointer border border-transparent hover:border-primary/10">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<div>
+<p class="text-sm font-medium text-on-surface opacity-60">Identifying Change of Character (CHOCH)</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Lesson 1.3 • Video • 65 mins</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/40">lock</span>
+</div>
+</div>
+</div>
+<!-- Module 2 -->
+<div class="bg-surface-container-low rounded-xl p-6 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+<div class="flex items-center justify-between mb-6">
+<div>
+<span class="text-[10px] text-on-surface-variant uppercase font-bold tracking-[0.2em]">Module 02</span>
+<h4 class="text-xl font-headline font-semibold text-on-surface mt-1">Liquidity Concepts &amp; FVG</h4>
+</div>
+<span class="text-on-surface-variant text-xs font-mono">03:12:00 TOTAL</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant italic text-xs">
+<span class="material-symbols-outlined text-sm">lock</span> Complete Module 01 to unlock institutional entry patterns.
+                        </div>
+</div>
+</div>
+</div>
+<!-- Right Column: Info & Resources -->
+<div class="lg:col-span-4 space-y-8">
+<!-- Instructor Card -->
+<div class="bg-surface-container-high rounded-xl p-6 border border-outline-variant/10">
+<h5 class="text-[10px] text-primary uppercase font-bold tracking-widest mb-4">Lead Instructor</h5>
+<div class="flex items-center gap-4 mb-6">
+<div class="w-16 h-16 rounded-lg overflow-hidden border-2 border-primary/30">
+<img alt="Instructor" class="w-full h-full object-cover" data-alt="professional portrait of a senior financial analyst with sophisticated lighting and dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHmj8IOB6mwWmbP5SIZ9I0buTDWhals7lDzcxEK4RwMnl0JUanfjwmqsBx-B03FM7g4N6oJlo8oFma_lCXTDSbxhTttEu8rR8UR84olO35YyvL0P12gN8tvK8Dje5exB7h3-RqXIOyglEPlCOC5-kJwd8fQTvuBxgpN2HAvvNpNcGGNjkhWPaiw1aeNEAkbBzLIJ2Cvxw0uDWI59uYHgtzfeQPW0Pgg0sPiSH6j3tzmNh1iRy9MxRmYLnRgGMOyBRFbsyAsc3KAbk"/>
+</div>
+<div>
+<p class="text-lg font-headline font-bold text-primary-fixed">Marcus Thorne</p>
+<p class="text-xs text-on-surface-variant">Former Institutional Desk Lead</p>
+</div>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+                        Specializing in high-frequency liquidity sweeps and fair value gap execution for tier-1 hedge funds.
+                    </p>
+<button class="w-full border border-outline/20 hover:bg-surface-bright/40 transition-colors py-3 rounded text-xs font-bold uppercase tracking-widest text-primary">View Full Profile</button>
+</div>
+<!-- Learning Resources -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden">
+<div class="p-6">
+<h5 class="text-[10px] text-primary uppercase font-bold tracking-widest mb-4">Archive Documents</h5>
+<ul class="space-y-4">
+<li class="flex items-center justify-between group cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">terminal</span>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">SMC Cheat Sheet.pdf</span>
+</div>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">download</span>
+</li>
+<li class="flex items-center justify-between group cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">analytics</span>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Liquidity Checklist</span>
+</div>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">download</span>
+</li>
+</ul>
+</div>
+<div class="bg-surface-container-highest/20 p-6">
+<div class="flex items-center gap-3 mb-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<p class="text-xs font-bold text-secondary uppercase tracking-tighter">Live Session Today</p>
+</div>
+<p class="text-sm text-on-surface-variant mb-4">Market Review: NY Session Open with Marcus</p>
+<button class="w-full bg-secondary-container text-on-secondary-container py-3 rounded text-xs font-bold uppercase tracking-widest active:scale-95 transition-all">Join Live Stream</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-[#131313]/60 backdrop-blur-xl md:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center justify-center text-[#DDC1AE] opacity-60 hover:text-amber-300 active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Terminal</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#DDC1AE] opacity-60 hover:text-amber-300 active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Signals</span>
+</div>
+<div class="flex flex-col items-center justify-center text-amber-500 bg-amber-500/10 rounded-xl px-3 py-1 active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined">school</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Academy</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#DDC1AE] opacity-60 hover:text-amber-300 active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter">Profile</span>
+</div>
+</nav>
+</body></html>
