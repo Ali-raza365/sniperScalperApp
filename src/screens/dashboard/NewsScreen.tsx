@@ -6,30 +6,11 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, StatusBar, Animated, Easing } from 'react-native';
 import { Colors } from '../../constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { newsRepository } from '../../data/repository';
+import type { CalendarImpact } from '../../data/types';
+import { showToast } from '../../utils/CustomToast';
 
-const TICKER_ITEMS = [
-  '$GOLD Hits All-Time High at 2154.30 Amid Global Uncertainty',
-  'FED Chair Powell Hints at Quantitative Tightening Strategy Shifts',
-  '$EURUSD Technical Rejection at Daily Supply Zone 1.09450',
-  'ECB Maintains Interest Rates; Lagarde Emphasizes Data-Dependent Approach',
-];
-
-interface NewsArticle {
-  source: string;
-  time: string;
-  tickers: string[];
-  title: string;
-  summary: string;
-  alert?: string;
-}
-
-const ARTICLES: NewsArticle[] = [
-  { source: 'Bloomberg', time: '1m ago', tickers: ['$EURUSD', '$DXY'], title: 'German Manufacturing PMI Drops to 42.1; Euro Slumps as Recession Fears Deepen', summary: 'European markets react sharply as industrial output data from the Eurozone\'s largest economy misses estimates by a wide margin. Liquidity grabs observed at 1.08200 level...' },
-  { source: 'Archive Desk', time: '8m ago', tickers: ['$GOLD'], title: 'Smart Money Order Flow: Significant Institutional Bids Spotted at $2140.00 Level', summary: 'XAUUSD is currently testing a Daily FVG (Fair Value Gap). Order flow depth suggests massive accumulation by institutional desks before the NY open...', alert: 'High Volatility Alert' },
-  { source: 'Reuters', time: '14m ago', tickers: ['$BTC'], title: 'ETF Inflows Surge as Institutional Adoption Reaches Critical Inflection Point', summary: 'Major asset managers signal increased allocation to digital assets as institutional infrastructure matures globally...' },
-];
-
-const CalendarEvent: FC<{ time: string; currency: string; title: string; impact: 'high' | 'medium' | 'low'; detail: string }> = ({ time, currency, title, impact, detail }) => {
+const CalendarEvent: FC<{ time: string; currency: string; title: string; impact: CalendarImpact; detail: string }> = ({ time, currency, title, impact, detail }) => {
   const color = impact === 'high' ? Colors.tertiary : impact === 'medium' ? Colors.secondary : Colors.onSurfaceVariant;
   const bg = impact === 'high' ? 'rgba(255,177,196,0.07)' : 'rgba(175,198,255,0.07)';
   return (
@@ -52,6 +33,7 @@ const CalendarEvent: FC<{ time: string; currency: string; title: string; impact:
 };
 
 const NewsScreen: FC = () => {
+  const feed = newsRepository.getFeed();
   const tickerAnim = useRef(new Animated.Value(0)).current;
   const [tickerWidth] = useState(600);
 
@@ -93,7 +75,7 @@ const NewsScreen: FC = () => {
         <View style={s.tickerBadge}><Text style={s.tickerBadgeTxt}>BREAKING</Text></View>
         <View style={s.tickerScroll}>
           <Animated.View style={[s.tickerInner, { transform: [{ translateX: tickerAnim }] }]}>
-            {TICKER_ITEMS.map((item, i) => (
+            {feed.tickerItems.map((item, i) => (
               <Text key={i} style={s.tickerItem}>{item}{'  •  '}</Text>
             ))}
           </Animated.View>
@@ -111,8 +93,8 @@ const NewsScreen: FC = () => {
         </View>
 
         {/* Articles */}
-        {ARTICLES.map((art, i) => (
-          <TouchableOpacity key={i} style={s.articleCard} activeOpacity={0.85}>
+        {feed.articles.map(art => (
+          <TouchableOpacity key={art.id} style={s.articleCard} activeOpacity={0.85} onPress={() => showToast.success('Full analysis is reserved for the archive desk.')}>
             <View style={s.articleHead}>
               <View style={s.articleMeta}>
                 <View style={s.sourceBadge}><Text style={s.sourceBadgeTxt}>{art.source}</Text></View>
@@ -152,10 +134,17 @@ const NewsScreen: FC = () => {
             <MaterialIcons name="calendar-today" size={18} color={Colors.primary} />
             <Text style={s.calHead}>Economic Calendar</Text>
           </View>
-          <CalendarEvent time="14:30" currency="USD" title="Core PPI m/m" impact="high" detail="Forecast: 0.2%" />
-          <CalendarEvent time="16:15" currency="GBP" title="BOE Gov Bailey Speaks" impact="medium" detail="Impact: Med" />
-          <CalendarEvent time="19:00" currency="NZD" title="Business Confidence" impact="low" detail="Impact: Low" />
-          <TouchableOpacity style={s.calViewAllBtn} activeOpacity={0.8}>
+          {feed.calendar.map(event => (
+            <CalendarEvent
+              key={event.id}
+              time={event.time}
+              currency={event.currency}
+              title={event.title}
+              impact={event.impact}
+              detail={event.detail}
+            />
+          ))}
+          <TouchableOpacity style={s.calViewAllBtn} activeOpacity={0.8} onPress={() => showToast.success('Weekly calendar is loaded from the archive.')}>
             <Text style={s.calViewAllTxt}>VIEW WEEKLY CALENDAR</Text>
           </TouchableOpacity>
         </View>
@@ -164,16 +153,16 @@ const NewsScreen: FC = () => {
         <View style={s.statsRow}>
           <View style={s.statCard}>
             <Text style={s.statLabel}>Sentiment</Text>
-            <Text style={[s.statValue, { color: Colors.secondary }]}>BULLISH</Text>
-            <View style={s.statBar}><View style={[s.statFill, { width: '68%', backgroundColor: Colors.secondary }]} /></View>
+            <Text style={[s.statValue, { color: Colors.secondary }]}>{feed.sentiment.label}</Text>
+            <View style={s.statBar}><View style={[s.statFill, { width: `${feed.sentiment.value}%`, backgroundColor: Colors.secondary }]} /></View>
           </View>
           <View style={s.statCard}>
             <Text style={s.statLabel}>Volatility Index</Text>
             <View style={s.statValueRow}>
-              <Text style={[s.statValue, { color: Colors.tertiary }]}>18.42</Text>
+              <Text style={[s.statValue, { color: Colors.tertiary }]}>{feed.volatility.value}</Text>
               <MaterialIcons name="trending-up" size={14} color={Colors.tertiary} />
             </View>
-            <View style={s.statBar}><View style={[s.statFill, { width: '42%', backgroundColor: Colors.tertiary }]} /></View>
+            <View style={s.statBar}><View style={[s.statFill, { width: `${feed.volatility.fill}%`, backgroundColor: Colors.tertiary }]} /></View>
           </View>
         </View>
 

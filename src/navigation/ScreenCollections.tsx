@@ -1,12 +1,24 @@
+import type { ComponentType } from 'react';
 import BottomTab from './BottomTab';
+import WatchlistScreen from '../screens/dashboard/WatchlistScreen';
+import AboutUsScreen from '../screens/dashboard/AboutUsScreen';
+import ContactUsScreen from '../screens/dashboard/ContactUsScreen';
+import FaqsScreen from '../screens/dashboard/FaqsScreen';
+import type { RootStackParamList } from './types';
 
-// ── Main App Screens ───────────────────────────────────────
-export const dashboardStack = [
+type StackEntry = {
+  name: keyof RootStackParamList;
+  component: ComponentType<any>;
+};
+
+export const dashboardStack: StackEntry[] = [
   { name: 'BottomTab', component: BottomTab },
+  { name: 'Watchlist', component: WatchlistScreen },
+  { name: 'AboutUs', component: AboutUsScreen },
+  { name: 'ContactUs', component: ContactUsScreen },
+  { name: 'Faqs', component: FaqsScreen },
 ];
 
-// ── Auth Stack ─────────────────────────────────────────────
-export const authStack: { name: string; component: any }[] = [];
+export const authStack: StackEntry[] = [];
 
-// Merged — BottomTab is the initial route
-export const mergedStacks = [...dashboardStack, ...authStack];
+export const mergedStacks: StackEntry[] = [...dashboardStack, ...authStack];

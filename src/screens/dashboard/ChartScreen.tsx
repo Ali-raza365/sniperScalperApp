@@ -4,17 +4,20 @@
  */
 import React, { FC, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Colors } from '../../constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { marketRepository } from '../../data/repository';
+import type { RootStackParamList } from '../../navigation/types';
+import { showToast } from '../../utils/CustomToast';
 
-const TIMEFRAMES = ['1m', '5m', '15m', '1h', '4h', 'D'];
-const CANDLES = [
-  { h: 60, bear: false }, { h: 80, bear: false }, { h: 50, bear: true },
-  { h: 100, bear: false }, { h: 75, bear: false }, { h: 45, bear: true }, { h: 90, bear: false },
-];
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 const ChartScreen: FC = () => {
-  const [activeTF, setActiveTF] = useState(2); // 15m default
+  const navigation = useNavigation<Nav>();
+  const snapshot = marketRepository.getChartSnapshot();
+  const [activeTF, setActiveTF] = useState(snapshot.defaultTimeframeIndex);
 
   return (
     <View style={s.root}>
@@ -28,7 +31,7 @@ const ChartScreen: FC = () => {
           </View>
           <Text style={s.headerTitle}>SMC TERMINAL</Text>
         </View>
-        <TouchableOpacity style={s.notifBtn} activeOpacity={0.75}>
+        <TouchableOpacity style={s.notifBtn} activeOpacity={0.75} onPress={() => navigation.navigate('Watchlist')}>
           <MaterialIcons name="notifications" size={22} color={Colors.primary} />
         </TouchableOpacity>
       </View>
@@ -37,7 +40,7 @@ const ChartScreen: FC = () => {
         {/* Timeframe Selector */}
         <View style={s.toolbar}>
           <View style={s.tfRow}>
-            {TIMEFRAMES.map((tf, i) => (
+            {snapshot.timeframes.map((tf, i) => (
               <TouchableOpacity
                 key={tf}
                 style={[s.tfBtn, i === activeTF && s.tfBtnActive]}
@@ -48,11 +51,11 @@ const ChartScreen: FC = () => {
             ))}
           </View>
           <View style={s.toolbarRight}>
-            <TouchableOpacity style={s.toolBtn} activeOpacity={0.8}>
+            <TouchableOpacity style={s.toolBtn} activeOpacity={0.8} onPress={() => showToast.success('Indicator overlays are loaded from the archive snapshot.')}>
               <MaterialIcons name="settings-input-component" size={16} color={Colors.text} />
               <Text style={s.toolBtnTxt}>Indicators</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={s.toolBtn} activeOpacity={0.8}>
+            <TouchableOpacity style={s.toolBtn} activeOpacity={0.8} onPress={() => showToast.success('Chart snapshot captured.')}>
               <MaterialIcons name="camera-alt" size={16} color={Colors.text} />
             </TouchableOpacity>
           </View>
@@ -62,29 +65,29 @@ const ChartScreen: FC = () => {
         <View style={s.chartBox}>
           {/* Volume overlay */}
           <View style={s.chartOverlay}>
-            <Text style={s.volLabel}>Volume (24h)</Text>
-            <Text style={s.volValue}>12.4B USD</Text>
+            <Text style={s.volLabel}>{snapshot.volumeLabel}</Text>
+            <Text style={s.volValue}>{snapshot.volumeValue}</Text>
           </View>
           {/* FVG Zone */}
           <View style={s.fvgZone}>
-            <Text style={s.fvgLabel}>FVG Bearish</Text>
+            <Text style={s.fvgLabel}>{snapshot.fvgLabel}</Text>
           </View>
           {/* Order Block */}
           <View style={s.obZone}>
-            <Text style={s.obLabel}>H4 Bullish OB</Text>
+            <Text style={s.obLabel}>{snapshot.obLabel}</Text>
           </View>
           {/* Candles */}
           <View style={s.candleArea}>
-            {CANDLES.map((c, i) => (
+            {snapshot.candles.map((c, i) => (
               <View key={i} style={s.candleCol}>
                 <View style={[s.wick, { height: c.h * 0.35, backgroundColor: c.bear ? 'rgba(255,177,196,0.45)' : 'rgba(175,198,255,0.45)' }]} />
                 <View style={[s.candleBody, {
                   height: c.h,
                   backgroundColor: c.bear ? Colors.tertiaryContainer : Colors.secondaryContainer,
-                  ...(i === CANDLES.length - 1 && { shadowColor: Colors.secondary, shadowOpacity: 0.4, shadowRadius: 8, elevation: 4 }),
+                  ...(i === snapshot.candles.length - 1 && { shadowColor: Colors.secondary, shadowOpacity: 0.4, shadowRadius: 8, elevation: 4 }),
                 }]} />
                 <View style={[s.wick, { height: c.h * 0.2, backgroundColor: c.bear ? 'rgba(255,177,196,0.45)' : 'rgba(175,198,255,0.45)' }]} />
-                {i === CANDLES.length - 1 && (
+                {i === snapshot.candles.length - 1 && (
                   <View style={s.sellSignal}><Text style={s.sellSignalTxt}>SELL SIGNAL</Text></View>
                 )}
               </View>
@@ -92,13 +95,13 @@ const ChartScreen: FC = () => {
           </View>
           {/* Price Scale */}
           <View style={s.priceScale}>
-            {['2045', '2040', '2035', '2034', '2030', '2025'].map((p, i) => (
-              <Text key={i} style={[s.priceLabel, i === 3 && s.priceLabelActive]}>{p}</Text>
+            {snapshot.priceScale.map((p, i) => (
+              <Text key={i} style={[s.priceLabel, i === snapshot.activePriceIndex && s.priceLabelActive]}>{p}</Text>
             ))}
           </View>
           {/* Time Scale */}
           <View style={s.timeScale}>
-            {['10:00', '11:00', '12:00', '13:00', '14:00', '15:00'].map(t => (
+            {snapshot.timeScale.map(t => (
               <Text key={t} style={s.timeLabel}>{t}</Text>
             ))}
           </View>
@@ -110,33 +113,34 @@ const ChartScreen: FC = () => {
           <View style={[s.statCard, { flex: 1 }]}>
             <View style={s.statAccent} />
             <Text style={s.statTitle}>Sentiment Matrix</Text>
-            <View style={s.statItem}>
-              <Text style={s.statLabel}>Retail Shorts</Text>
-              <Text style={[s.statValue, { color: Colors.tertiary }]}>72%</Text>
-            </View>
-            <View style={s.progressBg}><View style={[s.progressFill, { width: '72%', backgroundColor: Colors.tertiary }]} /></View>
-            <View style={{ height: 12 }} />
-            <View style={s.statItem}>
-              <Text style={s.statLabel}>Inst. Longs</Text>
-              <Text style={[s.statValue, { color: Colors.secondary }]}>88%</Text>
-            </View>
-            <View style={s.progressBg}><View style={[s.progressFill, { width: '88%', backgroundColor: Colors.secondary }]} /></View>
+            {snapshot.sentiment.map((item, index) => (
+              <View key={item.label}>
+                {index > 0 ? <View style={{ height: 12 }} /> : null}
+                <View style={s.statItem}>
+                  <Text style={s.statLabel}>{item.label}</Text>
+                  <Text style={[s.statValue, { color: item.tone === 'bearish' ? Colors.tertiary : Colors.secondary }]}>{item.value}%</Text>
+                </View>
+                <View style={s.progressBg}>
+                  <View style={[s.progressFill, { width: `${item.value}%`, backgroundColor: item.tone === 'bearish' ? Colors.tertiary : Colors.secondary }]} />
+                </View>
+              </View>
+            ))}
           </View>
 
           {/* Execution Engine */}
           <View style={[s.statCard, { flex: 1.6 }]}>
             <Text style={s.statTitle}>Execution Engine</Text>
-            <Text style={s.execDesc}>Liquidity identified at 2030.12. Execute with precision.</Text>
+            <Text style={s.execDesc}>{snapshot.executionNote}</Text>
             <View style={s.execChips}>
-              <View style={s.execChip}><Text style={s.execChipLabel}>Spread</Text><Text style={s.execChipValue}>0.4 pips</Text></View>
-              <View style={s.execChip}><Text style={s.execChipLabel}>Leverage</Text><Text style={s.execChipValue}>1:100</Text></View>
+              <View style={s.execChip}><Text style={s.execChipLabel}>Spread</Text><Text style={s.execChipValue}>{snapshot.spread}</Text></View>
+              <View style={s.execChip}><Text style={s.execChipLabel}>Leverage</Text><Text style={s.execChipValue}>{snapshot.leverage}</Text></View>
             </View>
             <View style={s.execBtns}>
-              <TouchableOpacity style={[s.execBtn, { backgroundColor: Colors.secondaryContainer }]} activeOpacity={0.85}>
+              <TouchableOpacity style={[s.execBtn, { backgroundColor: Colors.secondaryContainer }]} activeOpacity={0.85} onPress={() => showToast.success('Buy ticket queued against the liquidity map.')}>
                 <MaterialIcons name="trending-up" size={18} color={Colors.text} />
                 <Text style={s.execBtnTxt}>INSTITUTIONAL BUY</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[s.execBtn, { backgroundColor: Colors.tertiaryContainer }]} activeOpacity={0.85}>
+              <TouchableOpacity style={[s.execBtn, { backgroundColor: Colors.tertiaryContainer }]} activeOpacity={0.85} onPress={() => showToast.success('Sell ticket queued against the liquidity map.')}>
                 <MaterialIcons name="trending-down" size={18} color={Colors.text} />
                 <Text style={s.execBtnTxt}>LIQUIDITY SELL</Text>
               </TouchableOpacity>

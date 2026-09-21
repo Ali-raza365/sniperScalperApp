@@ -8,8 +8,9 @@ import ChartScreen from '../screens/dashboard/ChartScreen';
 import AcademyScreen from '../screens/dashboard/AcademyScreen';
 import NewsScreen from '../screens/dashboard/NewsScreen';
 import SettingsScreen from '../screens/dashboard/SettingsScreen';
+import type { TabParamList } from './types';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabParamList>();
 
 interface TabIconProps {
   name: string;
@@ -20,7 +21,7 @@ interface TabIconProps {
 const SMCTabIcon: FC<TabIconProps> = ({ name, focused, label }) => (
   <View style={[styles.tabItem, focused && styles.tabItemActive]}>
     <MaterialIcons
-      name={name}
+      name={name as any}
       size={22}
       color={focused ? Colors.primary : 'rgba(221,193,174,0.60)'}
     />

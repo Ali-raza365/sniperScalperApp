@@ -4,10 +4,16 @@
  */
 import React, { FC } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Colors } from '../../constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { academyRepository } from '../../data/repository';
+import type { LessonState } from '../../data/types';
+import type { RootStackParamList } from '../../navigation/types';
+import { showToast } from '../../utils/CustomToast';
 
-type LessonState = 'done' | 'current' | 'locked';
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 interface LessonRowProps {
   state: LessonState;
@@ -42,7 +48,11 @@ const LessonRow: FC<LessonRowProps> = ({ state, title, meta, badge }) => {
   );
 };
 
-const AcademyScreen: FC = () => (
+const AcademyScreen: FC = () => {
+  const navigation = useNavigation<Nav>();
+  const course = academyRepository.getCourse();
+
+  return (
   <View style={s.root}>
     <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
 
@@ -64,27 +74,27 @@ const AcademyScreen: FC = () => (
         <View style={s.videoGrad} />
         <View style={s.bannerContent}>
           <View style={s.badgeRow}>
-            <View style={s.premiumBadge}><Text style={s.premiumBadgeTxt}>Premium Course</Text></View>
+            <View style={s.premiumBadge}><Text style={s.premiumBadgeTxt}>{course.badge}</Text></View>
             <View style={s.viewersRow}>
               <MaterialIcons name="visibility" size={11} color={Colors.onSurfaceVariant} />
-              <Text style={s.viewersTxt}>12.4k Students</Text>
+              <Text style={s.viewersTxt}>{course.students}</Text>
             </View>
           </View>
-          <Text style={s.bannerTitle}>Mastering Institutional Order Flow & Liquidity</Text>
+          <Text style={s.bannerTitle}>{course.title}</Text>
           <View style={s.progressRow}>
-            <TouchableOpacity style={s.continueBtn} activeOpacity={0.85}>
+            <TouchableOpacity style={s.continueBtn} activeOpacity={0.85} onPress={() => showToast.success('Resuming the current lesson from the archive.')}>
               <MaterialIcons name="play-arrow" size={20} color={Colors.background} />
               <Text style={s.continueTxt}>Continue Learning</Text>
             </TouchableOpacity>
             <View>
               <Text style={s.progressLabel}>Your Progress</Text>
-              <Text style={s.progressPct}>64% Complete</Text>
-              <View style={s.progressBg}><View style={[s.progressFill, { width: '64%' }]} /></View>
+              <Text style={s.progressPct}>{course.progress}% Complete</Text>
+              <View style={s.progressBg}><View style={[s.progressFill, { width: `${course.progress}%` }]} /></View>
             </View>
           </View>
         </View>
         {/* Play overlay */}
-        <TouchableOpacity style={s.playOverlay} activeOpacity={0.8}>
+        <TouchableOpacity style={s.playOverlay} activeOpacity={0.8} onPress={() => showToast.success('Lesson player is queued.')}>
           <View style={s.playCircle}>
             <MaterialIcons name="play-arrow" size={36} color={Colors.text} />
           </View>
@@ -97,34 +107,27 @@ const AcademyScreen: FC = () => (
         <Text style={s.syllabusTitle}>COURSE SYLLABUS</Text>
       </View>
 
-      {/* Module 1 */}
-      <View style={s.moduleCard}>
-        <View style={s.moduleHeader}>
-          <View>
-            <Text style={s.moduleNum}>Module 01</Text>
-            <Text style={s.moduleName}>Foundation of Smart Money</Text>
+      {course.modules.map(mod => (
+        <View key={mod.id} style={[s.moduleCard, mod.locked && s.moduleLocked]}>
+          <View style={s.moduleHeader}>
+            <View>
+              <Text style={[s.moduleNum, mod.locked && { color: Colors.onSurfaceVariant }]}>{mod.number}</Text>
+              <Text style={s.moduleName}>{mod.name}</Text>
+            </View>
+            <Text style={s.moduleDuration}>{mod.duration}</Text>
           </View>
-          <Text style={s.moduleDuration}>02:45:00 TOTAL</Text>
+          {mod.locked ? (
+            <View style={s.lockedRow}>
+              <MaterialIcons name="lock" size={14} color={Colors.onSurfaceVariant} />
+              <Text style={s.lockedTxt}>{mod.lockHint}</Text>
+            </View>
+          ) : (
+            mod.lessons.map(lesson => (
+              <LessonRow key={lesson.id} state={lesson.state} title={lesson.title} meta={lesson.meta} badge={lesson.badge} />
+            ))
+          )}
         </View>
-        <LessonRow state="done" title="The Myth of Retail Support/Resistance" meta="Lesson 1.1 • Video • 42 mins" />
-        <LessonRow state="current" title="Market Structure & Break of Structure (BOS)" meta="Current Lesson • 58 mins" badge="WATCHING" />
-        <LessonRow state="locked" title="Identifying Change of Character (CHOCH)" meta="Lesson 1.3 • Video • 65 mins" />
-      </View>
-
-      {/* Module 2 — locked */}
-      <View style={[s.moduleCard, s.moduleLocked]}>
-        <View style={s.moduleHeader}>
-          <View>
-            <Text style={[s.moduleNum, { color: Colors.onSurfaceVariant }]}>Module 02</Text>
-            <Text style={s.moduleName}>Liquidity Concepts & FVG</Text>
-          </View>
-          <Text style={s.moduleDuration}>03:12:00 TOTAL</Text>
-        </View>
-        <View style={s.lockedRow}>
-          <MaterialIcons name="lock" size={14} color={Colors.onSurfaceVariant} />
-          <Text style={s.lockedTxt}>Complete Module 01 to unlock institutional entry patterns.</Text>
-        </View>
-      </View>
+      ))}
 
       {/* Instructor Card */}
       <View style={s.instructorCard}>
@@ -134,12 +137,12 @@ const AcademyScreen: FC = () => (
             <MaterialIcons name="person" size={28} color={Colors.onSurfaceVariant} />
           </View>
           <View>
-            <Text style={s.instructorName}>FX Ramzan</Text>
-            <Text style={s.instructorRole}>Founder & Lead Strategist</Text>
+            <Text style={s.instructorName}>{course.instructor.name}</Text>
+            <Text style={s.instructorRole}>{course.instructor.role}</Text>
           </View>
         </View>
-        <Text style={s.instructorBio}>Specializing in high-frequency liquidity sweeps and fair value gap execution for tier-1 institutional desks.</Text>
-        <TouchableOpacity style={s.viewProfileBtn} activeOpacity={0.8}>
+        <Text style={s.instructorBio}>{course.instructor.bio}</Text>
+        <TouchableOpacity style={s.viewProfileBtn} activeOpacity={0.8} onPress={() => navigation.navigate('AboutUs')}>
           <Text style={s.viewProfileTxt}>VIEW FULL PROFILE</Text>
         </TouchableOpacity>
       </View>
@@ -147,24 +150,21 @@ const AcademyScreen: FC = () => (
       {/* Archive Docs */}
       <View style={s.docsCard}>
         <Text style={s.docsLabel}>ARCHIVE DOCUMENTS</Text>
-        {[
-          { icon: 'terminal', name: 'SMC Cheat Sheet.pdf' },
-          { icon: 'analytics', name: 'Liquidity Checklist' },
-        ].map((doc, i) => (
-          <View key={i} style={s.docRow}>
+        {course.documents.map((doc, i) => (
+          <TouchableOpacity key={i} style={s.docRow} activeOpacity={0.8} onPress={() => showToast.success(`${doc.name} queued for download.`)}>
             <MaterialIcons name={doc.icon as any} size={18} color={Colors.secondary} />
             <Text style={s.docName}>{doc.name}</Text>
             <MaterialIcons name="download" size={14} color={Colors.onSurfaceVariant} />
-          </View>
+          </TouchableOpacity>
         ))}
         <View style={s.liveSession}>
           <View style={s.liveSessionDot} />
           <View style={{ flex: 1 }}>
-            <Text style={s.liveSessionLabel}>Live Session Today</Text>
-            <Text style={s.liveSessionDesc}>Market Review: NY Session Open with FX Ramzan</Text>
+            <Text style={s.liveSessionLabel}>{course.liveSession.label}</Text>
+            <Text style={s.liveSessionDesc}>{course.liveSession.desc}</Text>
           </View>
         </View>
-        <TouchableOpacity style={s.joinLiveBtn} activeOpacity={0.85}>
+        <TouchableOpacity style={s.joinLiveBtn} activeOpacity={0.85} onPress={() => showToast.success('Live stream desk is standing by.')}>
           <Text style={s.joinLiveTxt}>JOIN LIVE STREAM</Text>
         </TouchableOpacity>
       </View>
@@ -172,7 +172,8 @@ const AcademyScreen: FC = () => (
       <View style={{ height: 100 }} />
     </ScrollView>
   </View>
-);
+  );
+};
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: Colors.background },

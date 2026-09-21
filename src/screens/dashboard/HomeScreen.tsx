@@ -3,123 +3,158 @@ import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet,
   Platform, Dimensions, StatusBar,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Colors } from '../../constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { marketRepository } from '../../data/repository';
+import type { CoursePreview, HomeBento, Signal } from '../../data/types';
+import type { RootStackParamList } from '../../navigation/types';
+import { openExternal } from '../../utils/linking';
 
 const { width: W } = Dimensions.get('window');
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
-const SignalCard: FC<{ pair: string; bias: string; biasColor: string; icon: string; desc: string; time: string }> = ({
-  pair, bias, biasColor, icon, desc, time,
-}) => (
-  <View style={s.signalCard}>
-    <View style={[s.signalIcon, { backgroundColor: Colors.surfaceContainerHigh }]}>
-      <MaterialIcons name={icon} size={20} color={biasColor} />
-    </View>
-    <View style={{ flex: 1 }}>
-      <View style={s.signalRow}>
-        <Text style={[s.signalPair, { color: biasColor }]}>{pair} • {bias}</Text>
-        <Text style={s.signalTime}>{time}</Text>
+const BIAS_COLOR = { BULLISH: Colors.secondary, BEARISH: Colors.tertiary };
+const TONE_COLOR = { primary: Colors.primary, secondary: Colors.secondary, tertiary: Colors.tertiary };
+const BENTO_THEME: Record<string, { iconColor: string; bg: string }> = {
+  calendar: { iconColor: Colors.primary, bg: 'rgba(255,183,125,0.12)' },
+  news: { iconColor: Colors.secondary, bg: 'rgba(175,198,255,0.12)' },
+};
+
+const SignalCard: FC<{ signal: Signal }> = ({ signal }) => {
+  const biasColor = BIAS_COLOR[signal.bias];
+  return (
+    <View style={s.signalCard}>
+      <View style={[s.signalIcon, { backgroundColor: Colors.surfaceContainerHigh }]}>
+        <MaterialIcons name={signal.icon as any} size={20} color={biasColor} />
       </View>
-      <Text style={s.signalDesc}>{desc}</Text>
+      <View style={{ flex: 1 }}>
+        <View style={s.signalRow}>
+          <Text style={[s.signalPair, { color: biasColor }]}>{signal.pair} • {signal.bias}</Text>
+          <Text style={s.signalTime}>{signal.time}</Text>
+        </View>
+        <Text style={s.signalDesc}>{signal.desc}</Text>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
-const BentoCard: FC<{ icon: string; iconColor: string; bg: string; title: string; sub: string }> = ({
-  icon, iconColor, bg, title, sub,
-}) => (
-  <View style={s.bentoCard}>
-    <View style={[s.bentoIcon, { backgroundColor: bg }]}>
-      <MaterialIcons name={icon} size={22} color={iconColor} />
-    </View>
-    <Text style={s.bentoTitle}>{title}</Text>
-    <Text style={s.bentoSub}>{sub}</Text>
-  </View>
-);
+const BentoCard: FC<{ item: HomeBento; onPress: () => void }> = ({ item, onPress }) => {
+  const theme = BENTO_THEME[item.id] ?? BENTO_THEME.news;
+  return (
+    <TouchableOpacity style={s.bentoCard} onPress={onPress} activeOpacity={0.8}>
+      <View style={[s.bentoIcon, { backgroundColor: theme.bg }]}>
+        <MaterialIcons name={item.icon as any} size={22} color={theme.iconColor} />
+      </View>
+      <Text style={s.bentoTitle}>{item.title}</Text>
+      <Text style={s.bentoSub}>{item.sub}</Text>
+    </TouchableOpacity>
+  );
+};
 
-const CourseCard: FC<{ label: string; labelColor: string; title: string; sub: string; progress: number }> = ({
-  label, labelColor, title, sub, progress,
-}) => (
-  <View style={s.courseCard}>
+const CourseCard: FC<{ course: CoursePreview; onPress: () => void }> = ({ course, onPress }) => (
+  <TouchableOpacity style={s.courseCard} onPress={onPress} activeOpacity={0.85}>
     <View style={s.courseBanner}>
-      <Text style={[s.courseLabel, { color: labelColor }]}>{label}</Text>
+      <Text style={[s.courseLabel, { color: TONE_COLOR[course.tone] }]}>{course.label}</Text>
     </View>
     <View style={s.courseBody}>
-      <Text style={s.courseTitle}>{title}</Text>
-      <Text style={s.courseSub}>{sub}</Text>
+      <Text style={s.courseTitle}>{course.title}</Text>
+      <Text style={s.courseSub}>{course.sub}</Text>
       <View style={s.progressBg}>
-        <View style={[s.progressFill, { width: `${progress * 100}%` as any }]} />
+        <View style={[s.progressFill, { width: `${course.progress * 100}%` as any }]} />
       </View>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
-const EnquiryBtn: FC<{ icon: string; color: string; label: string }> = ({ icon, color, label }) => (
-  <TouchableOpacity style={s.enquiryBtn} activeOpacity={0.75}>
-    <MaterialIcons name={icon} size={18} color={color} />
+const EnquiryBtn: FC<{ icon: string; color: string; label: string; onPress: () => void }> = ({
+  icon, color, label, onPress,
+}) => (
+  <TouchableOpacity style={s.enquiryBtn} activeOpacity={0.75} onPress={onPress}>
+    <MaterialIcons name={icon as any} size={18} color={color} />
     <Text style={s.enquiryLabel}>{label}</Text>
   </TouchableOpacity>
 );
 
-const HomeScreen: FC = () => (
+const HomeScreen: FC = () => {
+  const navigation = useNavigation<Nav>();
+  const signals = marketRepository.getSignals();
+  const bento = marketRepository.getHomeBento();
+  const courses = marketRepository.getCoursePreviews();
+  const enquiries = marketRepository.getEnquiryChannels();
+  const candles = marketRepository.getHomeChartCandles();
+  const chart = marketRepository.getChartSnapshot();
+
+  return (
   <View style={s.root}>
     <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
-    {/* Header */}
     <View style={s.header}>
       <View style={s.headerLeft}>
         <MaterialIcons name="menu" size={22} color={Colors.primary} />
         <Text style={s.headerTitle}>INSTITUTIONAL ARCHIVE</Text>
       </View>
-      <MaterialIcons name="monitoring" size={22} color={Colors.primary} />
+      <TouchableOpacity onPress={() => navigation.navigate('Watchlist')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+        <MaterialIcons name="monitoring" size={22} color={Colors.primary} />
+      </TouchableOpacity>
     </View>
 
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
-      {/* Hero */}
       <View style={s.hero}>
         <View style={s.heroIconBox}>
           <MaterialIcons name="inventory-2" size={44} color={Colors.primary} />
         </View>
         <Text style={s.heroH1}>ACCESSING THE{'\n'}<Text style={s.heroH1Sub}>Institutional Archive</Text></Text>
         <Text style={s.heroDesc}>Public portal to high-frequency market intelligence, liquidity maps, and professional Smart Money Concepts.</Text>
-        <TouchableOpacity style={s.heroBtn} activeOpacity={0.85}>
+        <TouchableOpacity style={s.heroBtn} activeOpacity={0.85} onPress={() => navigation.navigate('Watchlist')}>
           <Text style={s.heroBtnText}>VIEW INTEL</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Live Signals */}
       <View style={s.section}>
         <View style={s.sectionHead}>
           <View style={s.sectionLeft}>
             <View style={s.accent} /><Text style={s.sectionTitle}>LIVE SIGNALS</Text>
           </View>
-          <Text style={s.viewAll}>View Archive</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Watchlist')}>
+            <Text style={s.viewAll}>View Archive</Text>
+          </TouchableOpacity>
         </View>
-        <SignalCard pair="EURUSD" bias="BULLISH" biasColor={Colors.secondary} icon="trending-up" desc="FVG identified at 1.0845. Institutional accumulation detected on 15m TF." time="2m ago" />
-        <View style={{ height: 10 }} />
-        <SignalCard pair="GBPUSD" bias="BEARISH" biasColor={Colors.tertiary} icon="trending-down" desc="Liquidity sweep at 1.2650. Market Structure Shift confirmed. Entry targets: 1.2610." time="15m ago" />
+        {signals.map((signal, index) => (
+          <View key={signal.id} style={{ marginBottom: index === signals.length - 1 ? 0 : 10 }}>
+            <SignalCard signal={signal} />
+          </View>
+        ))}
       </View>
 
-      {/* Bento Grid */}
       <View style={s.bentoGrid}>
-        <BentoCard icon="event" iconColor={Colors.primary} bg="rgba(255,183,125,0.12)" title="Economic Calendar" sub="High Impact Events Only" />
-        <BentoCard icon="newspaper" iconColor={Colors.secondary} bg="rgba(175,198,255,0.12)" title="Market News" sub="Global Macro Insights" />
+        {bento.map(item => (
+          <BentoCard
+            key={item.id}
+            item={item}
+            onPress={() =>
+              item.destination === 'Watchlist'
+                ? navigation.navigate('Watchlist')
+                : navigation.navigate('BottomTab', { screen: item.destination })
+            }
+          />
+        ))}
       </View>
 
-      {/* Chart Terminal */}
       <View style={s.section}>
         <View style={s.sectionHead}>
           <View style={s.sectionLeft}><View style={s.accent} /><Text style={s.sectionTitle}>CHART TERMINAL</Text></View>
         </View>
         <View style={s.chartBox}>
           <View style={s.chartTop}>
-            <View style={s.chartPill}><Text style={s.chartPillTxt}>XAUUSD M15</Text></View>
+            <View style={s.chartPill}><Text style={s.chartPillTxt}>{chart.symbol} {chart.timeframe}</Text></View>
             <View style={s.liveRow}>
               <View style={s.liveDot} />
               <Text style={s.liveTxt}>LIVE</Text>
             </View>
           </View>
           <View style={s.candles}>
-            {[40, 60, 80, 65, 90, 55, 75].map((h, i) => (
+            {candles.map((h, i) => (
               <View key={i} style={s.candle}>
                 <View style={[s.wick, { height: h * 0.3 }]} />
                 <View style={[s.body, { height: h, backgroundColor: i % 2 === 0 ? Colors.tertiaryContainer : Colors.secondaryContainer }]} />
@@ -127,40 +162,48 @@ const HomeScreen: FC = () => (
               </View>
             ))}
           </View>
-          <TouchableOpacity style={s.fsBtn} activeOpacity={0.8}>
+          <TouchableOpacity style={s.fsBtn} activeOpacity={0.8} onPress={() => navigation.navigate('BottomTab', { screen: 'Charts' })}>
             <MaterialIcons name="fullscreen" size={16} color={Colors.text} />
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Curriculum */}
       <View style={s.section}>
         <View style={s.sectionHead}>
           <View style={s.sectionLeft}><View style={s.accent} /><Text style={s.sectionTitle}>CURRICULUM</Text></View>
-          <Text style={s.viewAll}>3 Modules</Text>
+          <Text style={s.viewAll}>{courses.length} Modules</Text>
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 14 }}>
-          <CourseCard label="SMC" labelColor={Colors.primary} title="Smart Money Concepts" sub="Orderblocks & Liquidity" progress={0.66} />
-          <CourseCard label="VSA" labelColor={Colors.secondary} title="Volume Spread" sub="Professional Accumulation" progress={0} />
-          <CourseCard label="ICT" labelColor={Colors.tertiary} title="Inner Circle Trader" sub="Time and Price Theory" progress={0} />
+          {courses.map(course => (
+            <CourseCard
+              key={course.id}
+              course={course}
+              onPress={() => navigation.navigate('BottomTab', { screen: 'Academy' })}
+            />
+          ))}
         </ScrollView>
       </View>
 
-      {/* Enquiries */}
       <View style={s.enquiriesBox}>
         <Text style={s.enquiriesTitle}>ENQUIRIES</Text>
         <Text style={s.enquiriesSub}>Public desk for archive access requests</Text>
         <View style={s.enquiriesGrid}>
-          <EnquiryBtn icon="call" color={Colors.primary} label="Inquiry Line" />
-          <EnquiryBtn icon="chat" color="#4ADE80" label="WhatsApp" />
-          <EnquiryBtn icon="send" color={Colors.secondary} label="Telegram" />
-          <EnquiryBtn icon="mail" color={Colors.tertiary} label="Email Archival" />
+          {enquiries.map(channel => (
+            <EnquiryBtn
+              key={channel.id}
+              icon={channel.icon}
+              color={channel.color}
+              label={channel.label}
+              onPress={() => (channel.id === 'phone' ? navigation.navigate('ContactUs') : openExternal(channel.url))}
+            />
+          ))}
         </View>
       </View>
       <View style={{ height: 100 }} />
     </ScrollView>
   </View>
-);
+  );
+};
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: Colors.background },

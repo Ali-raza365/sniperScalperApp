@@ -9,6 +9,13 @@ import {
 } from 'react-native';
 import { Colors } from '../../constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { accountRepository } from '../../data/repository';
+import type { RootStackParamList } from '../../navigation/types';
+import { showToast } from '../../utils/CustomToast';
+
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 // ── Reusable row types ─────────────────────────────────────
 interface SettingsRowProps {
@@ -69,6 +76,8 @@ const SectionHeader: FC<{ accentColor: string; label: string }> = ({ accentColor
 
 // ── Main Screen ────────────────────────────────────────────
 const SettingsScreen: FC = () => {
+  const navigation = useNavigation<Nav>();
+  const profile = accountRepository.getProfile();
   const [signalAlerts, setSignalAlerts] = useState(true);
   const [newsUpdates, setNewsUpdates] = useState(false);
   const [newsletter, setNewsletter] = useState(true);
@@ -97,19 +106,19 @@ const SettingsScreen: FC = () => {
             <View style={s.onlineDot} />
           </View>
           <View>
-            <Text style={s.profileName}>Alex Sterling</Text>
-            <Text style={s.profileRole}>Institutional Tier Member</Text>
+            <Text style={s.profileName}>{profile.name}</Text>
+            <Text style={s.profileRole}>{profile.role}</Text>
           </View>
         </View>
 
         {/* ── Account ── */}
         <SectionHeader accentColor={Colors.primary} label="ACCOUNT" />
         <View style={s.group}>
-          <SettingsRow icon="person" label="Personal Information" />
+          <SettingsRow icon="person" label="Personal Information" onPress={() => showToast.success('Profile records are locked to the archive desk.')} />
           <View style={s.divider} />
-          <SettingsRow icon="verified-user" label="Subscription Status" sublabel="Pro Elite Plan" sublabelColor={Colors.secondary} />
+          <SettingsRow icon="verified-user" label="Subscription Status" sublabel={profile.plan} sublabelColor={Colors.secondary} onPress={() => showToast.success('Pro Elite remains active.')} />
           <View style={s.divider} />
-          <SettingsRow icon="payments" label="Billing & Invoices" />
+          <SettingsRow icon="payments" label="Billing & Invoices" onPress={() => showToast.success('Billing statements are available from the desk.')} />
         </View>
 
         {/* ── Notifications ── */}
@@ -148,30 +157,31 @@ const SettingsScreen: FC = () => {
         {/* ── Security ── */}
         <SectionHeader accentColor={Colors.tertiary} label="SECURITY" />
         <View style={s.group}>
-          <SettingsRow icon="lock" label="Change Password" />
+          <SettingsRow icon="lock" label="Change Password" onPress={() => showToast.success('Password changes require desk verification.')} />
           <View style={s.divider} />
-          <SettingsRow icon="fingerprint" label="Biometric Authentication" />
+          <SettingsRow icon="fingerprint" label="Biometric Authentication" onPress={() => showToast.success('Biometric unlock is available on supported devices.')} />
           <View style={s.divider} />
           <SettingsRow
             icon="security"
             label="Two-Factor Auth (2FA)"
             sublabel="Disabled"
             sublabelColor={Colors.tertiary}
+            onPress={() => showToast.success('Enable 2FA from the security desk.')}
           />
         </View>
 
         {/* About & Contact quick links */}
         <SectionHeader accentColor={Colors.onSurfaceVariant} label="INFORMATION" />
         <View style={s.group}>
-          <SettingsRow icon="info" label="About Us" />
+          <SettingsRow icon="info" label="About Us" onPress={() => navigation.navigate('AboutUs')} />
           <View style={s.divider} />
-          <SettingsRow icon="contact-support" label="Contact & Support" />
+          <SettingsRow icon="contact-support" label="Contact & Support" onPress={() => navigation.navigate('ContactUs')} />
           <View style={s.divider} />
-          <SettingsRow icon="quiz" label="FAQs & Knowledge Base" />
+          <SettingsRow icon="quiz" label="FAQs & Knowledge Base" onPress={() => navigation.navigate('Faqs')} />
         </View>
 
         {/* Logout */}
-        <TouchableOpacity style={s.logoutBtn} activeOpacity={0.85}>
+        <TouchableOpacity style={s.logoutBtn} activeOpacity={0.85} onPress={() => showToast.success('Demo session remains open — auth is not connected yet.')}>
           <Text style={s.logoutTxt}>LOG OUT OF SESSION</Text>
         </TouchableOpacity>
 
