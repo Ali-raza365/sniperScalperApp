@@ -10,7 +10,9 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Colors } from '../../constants/Colors';
+import { FONTS } from '../../constants/Fonts';
 import ScreenHeader from '../../components/global/ScreenHeader';
+import ArchiveText from '../../components/archive/ArchiveText';
 import { supportRepository } from '../../data/repository';
 import type { FaqCategory } from '../../data/types';
 import type { RootStackParamList } from '../../navigation/types';
@@ -35,10 +37,10 @@ const FaqsScreen: FC = () => {
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
       <ScreenHeader title="SMC TERMINAL" rightIcon="search" />
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll} keyboardShouldPersistTaps="handled">
-        <Text style={s.hero}>KNOWLEDGE BASE</Text>
-        <Text style={s.lead}>
+        <ArchiveText variant="display" style={s.hero}>KNOWLEDGE BASE</ArchiveText>
+        <ArchiveText variant="body" color={Colors.onSurfaceVariant} style={s.lead}>
           Master the mechanics of Smart Money Concepts. Access institutional-grade documentation and operational guides.
-        </Text>
+        </ArchiveText>
         <View style={s.searchBox}>
           <MaterialIcons name="search" size={18} color={Colors.outline} />
           <TextInput
@@ -104,26 +106,25 @@ const FaqsScreen: FC = () => {
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: Colors.background },
   scroll: { paddingHorizontal: 20, paddingTop: 22 },
-  hero: { fontSize: 30, fontWeight: '800', color: Colors.primary, letterSpacing: -0.4, marginBottom: 10 },
-  lead: { fontSize: 14, color: Colors.onSurfaceVariant, lineHeight: 22, marginBottom: 18 },
+  hero: { fontSize: 30, letterSpacing: -0.4, marginBottom: 10 },
+  lead: { fontSize: 14, lineHeight: 22, marginBottom: 18 },
   searchBox: {
-    flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: Colors.surfaceContainerLowest,
+    flexDirection: 'row', alignItems: 'center', gap: 10,     backgroundColor: Colors.surfaceContainerLowest,
     borderRadius: 14, paddingHorizontal: 14, marginBottom: 20,
-    borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.15)',
   },
   searchInput: { flex: 1, color: Colors.text, paddingVertical: 14, fontSize: 14 },
   card: { backgroundColor: Colors.surfaceContainerLow, borderRadius: 16, padding: 16, marginBottom: 12, borderLeftWidth: 2 },
   cardHead: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
   eyebrow: { fontSize: 10, fontWeight: '700', letterSpacing: 2, textTransform: 'uppercase' },
-  cardTitle: { fontSize: 18, fontWeight: '800', color: Colors.text, marginBottom: 12 },
-  faqItem: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: 'rgba(86,67,52,0.12)' },
+  cardTitle: { fontSize: 18, fontFamily: FONTS.Bold, color: Colors.text, marginBottom: 12 },
+  faqItem: { paddingTop: 2 },
   faqQ: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, gap: 10 },
   question: { flex: 1, fontSize: 13, fontWeight: '600', color: Colors.text },
   answer: { fontSize: 13, color: Colors.onSurfaceVariant, lineHeight: 20, paddingBottom: 12 },
   empty: { color: Colors.onSurfaceVariant, textAlign: 'center', marginVertical: 20 },
   cta: {
     backgroundColor: Colors.surfaceContainerHigh, borderRadius: 18, padding: 22, alignItems: 'center', marginTop: 12,
-    overflow: 'hidden', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.12)',
+    overflow: 'hidden',
   },
   ctaBar: { position: 'absolute', top: 0, left: 0, right: 0, height: 3, backgroundColor: Colors.primaryContainer },
   ctaTitle: { fontSize: 18, fontWeight: '800', color: Colors.primary, marginBottom: 8, marginTop: 8 },

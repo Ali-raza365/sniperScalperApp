@@ -3,6 +3,7 @@ import { View, Text, Platform, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Colors } from '../constants/Colors';
+import { FONTS } from '../constants/Fonts';
 import HomeScreen from '../screens/dashboard/HomeScreen';
 import ChartScreen from '../screens/dashboard/ChartScreen';
 import AcademyScreen from '../screens/dashboard/AcademyScreen';
@@ -39,7 +40,7 @@ const BottomTab: FC = () => {
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: 'rgba(19,19,19,0.92)',
+          backgroundColor: 'rgba(57,57,57,0.72)',
           borderTopWidth: 0,
           height: Platform.OS === 'ios' ? 85 : 68,
           paddingBottom: Platform.OS === 'ios' ? 20 : 8,
@@ -48,8 +49,8 @@ const BottomTab: FC = () => {
           elevation: 20,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: -8 },
-          shadowOpacity: 0.5,
-          shadowRadius: 32,
+          shadowOpacity: 0.35,
+          shadowRadius: 24,
         },
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: 'rgba(221,193,174,0.60)',
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontSize: 8.5,
-    fontWeight: '700',
+    fontFamily: FONTS.SemiBold,
     letterSpacing: 1.1,
     marginTop: 2,
     textTransform: 'uppercase',

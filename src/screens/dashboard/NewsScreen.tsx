@@ -3,12 +3,15 @@
  * Pixel-perfect from: desgin/stitch_sniper_scalper_mobile_app/live_news_tv_style/code.html
  */
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, StatusBar, Animated, Easing } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, Animated, Easing } from 'react-native';
 import { Colors } from '../../constants/Colors';
+import { FONTS } from '../../constants/Fonts';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { newsRepository } from '../../data/repository';
 import type { CalendarImpact } from '../../data/types';
 import { showToast } from '../../utils/CustomToast';
+import ScreenHeader from '../../components/global/ScreenHeader';
+import ArchiveText from '../../components/archive/ArchiveText';
 
 const CalendarEvent: FC<{ time: string; currency: string; title: string; impact: CalendarImpact; detail: string }> = ({ time, currency, title, impact, detail }) => {
   const color = impact === 'high' ? Colors.tertiary : impact === 'medium' ? Colors.secondary : Colors.onSurfaceVariant;
@@ -53,22 +56,7 @@ const NewsScreen: FC = () => {
   return (
     <View style={s.root}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
-
-      {/* Header */}
-      <View style={s.header}>
-        <View style={s.headerLeft}>
-          <View style={s.avatar}><MaterialIcons name="person" size={18} color={Colors.onSurfaceVariant} /></View>
-          <Text style={s.headerTitle}>SMC TERMINAL</Text>
-        </View>
-        <View style={s.headerRight}>
-          <TouchableOpacity style={s.iconBtn} activeOpacity={0.75}>
-            <MaterialIcons name="notifications" size={22} color={Colors.primary} />
-          </TouchableOpacity>
-          <TouchableOpacity style={s.iconBtn} activeOpacity={0.75}>
-            <MaterialIcons name="menu" size={22} color={Colors.primary} />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <ScreenHeader title="SMC TERMINAL" showBack={false} rightIcon="notifications" />
 
       {/* Breaking Ticker */}
       <View style={s.ticker}>
@@ -87,7 +75,7 @@ const NewsScreen: FC = () => {
         <View style={s.feedHeader}>
           <View style={s.feedHeaderLeft}>
             <View style={s.accentBar} />
-            <Text style={s.feedTitle}>Institutional Feed</Text>
+            <ArchiveText variant="title">Institutional Feed</ArchiveText>
           </View>
           <View style={s.liveBadge}><Text style={s.liveBadgeTxt}>Real-Time WebSocket Active</Text></View>
         </View>
@@ -174,22 +162,9 @@ const NewsScreen: FC = () => {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: Colors.background },
-  header: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'ios' ? 54 : (StatusBar.currentHeight ?? 24) + 10,
-    paddingBottom: 14,
-    backgroundColor: 'rgba(19,19,19,0.92)',
-    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(86,67,52,0.12)',
-  },
-  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  avatar: { width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.surfaceContainerHigh, alignItems: 'center', justifyContent: 'center', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.2)' },
-  headerTitle: { fontSize: 17, fontWeight: '900', color: Colors.primaryContainer, letterSpacing: 2 },
-  headerRight: { flexDirection: 'row', gap: 4 },
-  iconBtn: { padding: 6 },
   ticker: { flexDirection: 'row', height: 38, backgroundColor: Colors.surfaceContainerLowest, borderLeftWidth: 3, borderLeftColor: Colors.primary, overflow: 'hidden' },
   tickerBadge: { backgroundColor: Colors.primary, paddingHorizontal: 12, justifyContent: 'center', zIndex: 2 },
-  tickerBadgeTxt: { fontSize: 9, fontWeight: '900', color: Colors.background, letterSpacing: 1.5 },
+  tickerBadgeTxt: { fontSize: 9, fontFamily: FONTS.Bold, color: Colors.background, letterSpacing: 1.5 },
   tickerScroll: { flex: 1, overflow: 'hidden', justifyContent: 'center' },
   tickerInner: { flexDirection: 'row', alignItems: 'center' },
   tickerItem: { fontSize: 12, color: Colors.onSurfaceVariant, fontWeight: '500', paddingLeft: 16, flexShrink: 0 },
@@ -197,21 +172,20 @@ const s = StyleSheet.create({
   feedHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   feedHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   accentBar: { width: 3, height: 22, backgroundColor: Colors.primary, borderRadius: 2 },
-  feedTitle: { fontSize: 18, fontWeight: '700', color: Colors.primary, letterSpacing: 0.3 },
   liveBadge: { backgroundColor: Colors.surfaceContainerHigh, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 },
   liveBadgeTxt: { fontSize: 8, fontWeight: '700', color: Colors.onSurfaceVariant, letterSpacing: 0.5 },
-  articleCard: { backgroundColor: Colors.surfaceContainerLow, padding: 18, marginBottom: 3 },
+  articleCard: { backgroundColor: Colors.surfaceContainerLow, padding: 18, marginBottom: 16, borderLeftWidth: 2, borderLeftColor: Colors.primary, borderRadius: 16 },
   articleHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 },
   articleMeta: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  sourceBadge: { backgroundColor: 'rgba(255,183,125,0.10)', paddingHorizontal: 8, paddingVertical: 2, borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,183,125,0.2)' },
+  sourceBadge: { backgroundColor: 'rgba(255,183,125,0.10)', paddingHorizontal: 8, paddingVertical: 2 },
   sourceBadgeTxt: { fontSize: 9, fontWeight: '900', color: Colors.primary, textTransform: 'uppercase', letterSpacing: 0.5 },
   articleTime: { fontSize: 10, color: 'rgba(221,193,174,0.6)' },
   tickerTags: { flexDirection: 'row', gap: 6 },
   tickerTag: { backgroundColor: Colors.surfaceContainerHigh, paddingHorizontal: 6, paddingVertical: 3 },
   tickerTagTxt: { fontSize: 9, fontWeight: '700', color: Colors.secondary },
-  articleTitle: { fontSize: 16, fontWeight: '700', color: Colors.text, lineHeight: 22, marginBottom: 10 },
-  articleSummary: { fontSize: 12.5, color: Colors.onSurfaceVariant, lineHeight: 18, marginBottom: 14 },
-  articleFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: 'rgba(86,67,52,0.12)', paddingTop: 12 },
+  articleTitle: { fontSize: 16, fontFamily: FONTS.SemiBold, color: Colors.text, lineHeight: 22, marginBottom: 10 },
+  articleSummary: { fontSize: 12.5, fontFamily: FONTS.BodyRegular, color: Colors.onSurfaceVariant, lineHeight: 18, marginBottom: 14 },
+  articleFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12 },
   articleActions: { flexDirection: 'row', gap: 16 },
   actionBtn: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   actionTxt: { fontSize: 9, fontWeight: '700', color: Colors.onSurfaceVariant, textTransform: 'uppercase', letterSpacing: 1 },
@@ -219,7 +193,7 @@ const s = StyleSheet.create({
   alertTxt: { fontSize: 9, fontWeight: '700', color: Colors.tertiary, textTransform: 'uppercase', letterSpacing: 1 },
   calCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: 12, padding: 18, marginTop: 16, marginBottom: 16 },
   calHeadRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 18 },
-  calHead: { fontSize: 15, fontWeight: '700', color: Colors.primary, textTransform: 'uppercase', letterSpacing: 0.5 },
+  calHead: { fontSize: 15, fontFamily: FONTS.Bold, color: Colors.primary, textTransform: 'uppercase', letterSpacing: 0.5 },
   calEvent: { flexDirection: 'row', gap: 14, padding: 12, borderRadius: 10, borderLeftWidth: 2, marginBottom: 10 },
   calTime: { alignItems: 'center', justifyContent: 'center', minWidth: 40 },
   calTimeTxt: { fontSize: 11, fontWeight: '700', color: Colors.text },
@@ -228,7 +202,7 @@ const s = StyleSheet.create({
   calBottom: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 2 },
   calDetail: { fontSize: 9.5, color: Colors.onSurfaceVariant, textTransform: 'uppercase' },
   calImpact: { fontSize: 9.5, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
-  calViewAllBtn: { borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(164,140,122,0.2)', paddingVertical: 12, alignItems: 'center', marginTop: 8 },
+  calViewAllBtn: { backgroundColor: Colors.surfaceContainerHigh, paddingVertical: 12, alignItems: 'center', marginTop: 8, borderRadius: 8 },
   calViewAllTxt: { fontSize: 9, fontWeight: '700', color: Colors.onSurfaceVariant, letterSpacing: 2, textTransform: 'uppercase' },
   statsRow: { flexDirection: 'row', gap: 12 },
   statCard: { flex: 1, backgroundColor: Colors.surfaceContainerLow, padding: 14 },
