@@ -3,16 +3,14 @@
  * Pixel-perfect from: desgin/stitch_sniper_scalper_mobile_app/live_chart_tv_style/code.html
  */
 import React, { FC, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Colors } from '../../constants/Colors';
-import { FONTS } from '../../constants/Fonts';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { marketRepository } from '../../data/repository';
 import type { RootStackParamList } from '../../navigation/types';
 import { showToast } from '../../utils/CustomToast';
-import ScreenHeader from '../../components/global/ScreenHeader';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -24,12 +22,19 @@ const ChartScreen: FC = () => {
   return (
     <View style={s.root}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
-      <ScreenHeader
-        title="SMC TERMINAL"
-        showBack={false}
-        rightIcon="notifications"
-        onRightPress={() => navigation.navigate('Watchlist')}
-      />
+
+      {/* Header */}
+      <View style={s.header}>
+        <View style={s.headerLeft}>
+          <View style={s.avatar}>
+            <MaterialIcons name="person" size={18} color={Colors.onSurfaceVariant} />
+          </View>
+          <Text style={s.headerTitle}>SMC TERMINAL</Text>
+        </View>
+        <TouchableOpacity style={s.notifBtn} activeOpacity={0.75} onPress={() => navigation.navigate('Watchlist')}>
+          <MaterialIcons name="notifications" size={22} color={Colors.primary} />
+        </TouchableOpacity>
+      </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
         {/* Timeframe Selector */}
@@ -155,20 +160,32 @@ const ChartScreen: FC = () => {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: Colors.background },
+  header: {
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 54 : (StatusBar.currentHeight ?? 24) + 10,
+    paddingBottom: 14,
+    backgroundColor: 'rgba(19,19,19,0.92)',
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(86,67,52,0.12)',
+  },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  avatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.surfaceContainerHigh, alignItems: 'center', justifyContent: 'center', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.2)' },
+  headerTitle: { fontSize: 18, fontWeight: '900', color: Colors.primaryContainer, letterSpacing: 2 },
+  notifBtn: { padding: 6 },
   scroll: { paddingHorizontal: 16, paddingTop: 8 },
   toolbar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, gap: 10 },
   tfRow: { flexDirection: 'row', backgroundColor: Colors.surfaceContainerLow, borderRadius: 12, padding: 4, gap: 2 },
   tfBtn: { paddingHorizontal: 10, paddingVertical: 7, borderRadius: 8 },
   tfBtnActive: { backgroundColor: 'rgba(255,183,125,0.12)' },
-  tfTxt: { fontSize: 11, fontFamily: FONTS.Bold, color: Colors.onSurfaceVariant },
+  tfTxt: { fontSize: 11, fontWeight: '700', color: Colors.onSurfaceVariant },
   tfTxtActive: { color: Colors.primary },
   toolbarRight: { flexDirection: 'row', gap: 8 },
   toolBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: Colors.surfaceContainerHigh, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10 },
-  toolBtnTxt: { fontSize: 11, fontFamily: FONTS.Bold, color: Colors.text },
-  chartBox: { backgroundColor: Colors.surfaceContainerLowest, borderRadius: 20, overflow: 'hidden', minHeight: 260, marginBottom: 20, position: 'relative' },
+  toolBtnTxt: { fontSize: 11, fontWeight: '700', color: Colors.text },
+  chartBox: { backgroundColor: Colors.surfaceContainerLowest, borderRadius: 20, overflow: 'hidden', minHeight: 260, marginBottom: 20, borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.10)', position: 'relative' },
   chartOverlay: { position: 'absolute', top: 14, left: 16, zIndex: 2 },
   volLabel: { fontSize: 9, fontWeight: '700', color: Colors.onSurfaceVariant, textTransform: 'uppercase', letterSpacing: 1 },
-  volValue: { fontSize: 18, fontFamily: FONTS.Bold, color: Colors.text },
+  volValue: { fontSize: 18, fontWeight: '700', color: Colors.text },
   fvgZone: { position: 'absolute', top: '20%', left: '18%', width: '18%', height: '14%', backgroundColor: 'rgba(175,198,255,0.10)', borderTopWidth: 1, borderBottomWidth: 1, borderColor: 'rgba(175,198,255,0.4)', borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center', zIndex: 2 },
   fvgLabel: { fontSize: 7, fontWeight: '900', color: Colors.secondary, letterSpacing: 1, textTransform: 'uppercase' },
   obZone: { position: 'absolute', bottom: '20%', right: '8%', width: '28%', height: '18%', backgroundColor: 'rgba(255,183,125,0.10)', borderLeftWidth: 2, borderColor: Colors.primary, justifyContent: 'flex-start', padding: 6, zIndex: 2 },
@@ -187,7 +204,7 @@ const s = StyleSheet.create({
   statsRow: { flexDirection: 'row', gap: 14, marginBottom: 20 },
   statCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: 16, padding: 16, position: 'relative', overflow: 'hidden' },
   statAccent: { position: 'absolute', top: 0, left: 0, width: 3, height: '100%', backgroundColor: Colors.primary },
-  statTitle: { fontSize: 9, fontFamily: FONTS.Bold, color: Colors.onSurfaceVariant, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 },
+  statTitle: { fontSize: 9, fontWeight: '900', color: Colors.onSurfaceVariant, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 },
   statItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 6 },
   statLabel: { fontSize: 10, fontWeight: '700', color: 'rgba(226,226,226,0.6)', textTransform: 'uppercase' },
   statValue: { fontSize: 18, fontWeight: '700' },
@@ -195,12 +212,12 @@ const s = StyleSheet.create({
   progressFill: { height: '100%', borderRadius: 4 },
   execDesc: { fontSize: 10, color: 'rgba(226,226,226,0.4)', marginBottom: 14, lineHeight: 14 },
   execChips: { flexDirection: 'row', gap: 8, marginBottom: 16 },
-  execChip: { backgroundColor: Colors.surfaceContainerHigh, borderRadius: 12, padding: 10, alignItems: 'center', flex: 1 },
+  execChip: { backgroundColor: Colors.surfaceContainerHigh, borderRadius: 12, padding: 10, alignItems: 'center', flex: 1, borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.10)' },
   execChipLabel: { fontSize: 8, color: Colors.onSurfaceVariant, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 2 },
   execChipValue: { fontSize: 12, fontWeight: '700', color: Colors.text },
   execBtns: { gap: 10 },
   execBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 14, borderRadius: 12 },
-  execBtnTxt: { fontSize: 10, fontFamily: FONTS.Bold, color: Colors.text, letterSpacing: 1.5 },
+  execBtnTxt: { fontSize: 10, fontWeight: '900', color: Colors.text, letterSpacing: 1.5 },
   glowTL: { position: 'absolute', top: -80, left: -80, width: 200, height: 200, backgroundColor: 'rgba(255,183,125,0.04)', borderRadius: 100 },
   glowBR: { position: 'absolute', bottom: -80, right: -80, width: 200, height: 200, backgroundColor: 'rgba(175,198,255,0.04)', borderRadius: 100 },
 });

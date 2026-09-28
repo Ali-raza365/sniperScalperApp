@@ -5,17 +5,15 @@
 import React, { FC, useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, StatusBar, Switch,
+  StyleSheet, Platform, StatusBar, Switch,
 } from 'react-native';
 import { Colors } from '../../constants/Colors';
-import { FONTS } from '../../constants/Fonts';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { accountRepository } from '../../data/repository';
 import type { RootStackParamList } from '../../navigation/types';
 import { showToast } from '../../utils/CustomToast';
-import ScreenHeader from '../../components/global/ScreenHeader';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -87,7 +85,17 @@ const SettingsScreen: FC = () => {
   return (
     <View style={s.root}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
-      <ScreenHeader title="SMC ELITE" showBack={false} />
+
+      {/* Header */}
+      <View style={s.header}>
+        <View style={s.headerLeft}>
+          <MaterialIcons name="arrow-back" size={22} color={Colors.primary} />
+          <Text style={s.headerTitle}>SMC ELITE</Text>
+        </View>
+        <View style={s.avatar}>
+          <MaterialIcons name="person" size={18} color={Colors.onSurfaceVariant} />
+        </View>
+      </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
 
@@ -186,28 +194,44 @@ const SettingsScreen: FC = () => {
 // ── Styles ─────────────────────────────────────────────────
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: Colors.background },
+  header: {
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 54 : (StatusBar.currentHeight ?? 24) + 10,
+    paddingBottom: 14,
+    backgroundColor: Colors.surfaceContainerLow,
+  },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  headerTitle: { fontSize: 18, fontWeight: '900', color: Colors.primaryContainer, letterSpacing: 2 },
+  avatar: {
+    width: 32, height: 32, borderRadius: 16,
+    backgroundColor: Colors.surfaceContainerHigh,
+    alignItems: 'center', justifyContent: 'center',
+    borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.2)',
+    overflow: 'hidden',
+  },
   scroll: { paddingHorizontal: 16, paddingTop: 20 },
   // Profile
   profileCard: {
     flexDirection: 'row', alignItems: 'center', gap: 16,
     backgroundColor: Colors.surfaceContainerLow, borderRadius: 16,
-    padding: 18, marginBottom: 28, borderLeftWidth: 2, borderLeftColor: Colors.primary,
+    padding: 18, marginBottom: 28,
   },
   profileAvatar: { position: 'relative', width: 60, height: 60, borderRadius: 30, backgroundColor: Colors.surfaceContainerHighest, alignItems: 'center', justifyContent: 'center' },
   onlineDot: { position: 'absolute', bottom: 1, right: 1, width: 14, height: 14, borderRadius: 7, backgroundColor: Colors.primaryContainer, borderWidth: 2, borderColor: Colors.surfaceContainerLow },
-  profileName: { fontSize: 18, fontFamily: FONTS.Bold, color: Colors.primary },
-  profileRole: { fontSize: 12, fontFamily: FONTS.BodyRegular, color: Colors.onSurfaceVariant, marginTop: 2 },
+  profileName: { fontSize: 18, fontWeight: '700', color: Colors.primary },
+  profileRole: { fontSize: 12, color: Colors.onSurfaceVariant, marginTop: 2 },
   // Section header
   sectionHead: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 4, marginBottom: 10, marginTop: 4 },
   sectionAccent: { width: 3, height: 14, borderRadius: 2 },
-  sectionLabel: { fontSize: 10, fontFamily: FONTS.Bold, letterSpacing: 2, textTransform: 'uppercase' },
+  sectionLabel: { fontSize: 10, fontWeight: '700', letterSpacing: 2, textTransform: 'uppercase' },
   // Group
   group: { backgroundColor: Colors.surfaceContainerLow, borderRadius: 16, marginBottom: 20, overflow: 'hidden' },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 14 },
   rowLeft: { flexDirection: 'row', alignItems: 'center', gap: 14, flex: 1 },
-  rowLabel: { fontSize: 13.5, fontFamily: FONTS.BodyRegular, color: Colors.text },
+  rowLabel: { fontSize: 13.5, color: Colors.text },
   rowSublabel: { fontSize: 10, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 1 },
-  divider: { height: 1, backgroundColor: Colors.surfaceContainerHighest, marginLeft: 50 },
+  divider: { height: StyleSheet.hairlineWidth, backgroundColor: 'rgba(86,67,52,0.12)', marginLeft: 50 },
   // Appearance
   themeGrid: { flexDirection: 'row', gap: 14 },
   themeCard: { flex: 1, gap: 10, padding: 10, backgroundColor: Colors.surfaceContainer, borderRadius: 10, borderWidth: 1, borderColor: 'transparent' },
@@ -223,7 +247,7 @@ const s = StyleSheet.create({
     paddingVertical: 16, borderRadius: 16, alignItems: 'center',
     marginBottom: 12,
   },
-  logoutTxt: { fontSize: 12, fontFamily: FONTS.Bold, color: Colors.tertiary, letterSpacing: 2, textTransform: 'uppercase' },
+  logoutTxt: { fontSize: 12, fontWeight: '700', color: Colors.tertiary, letterSpacing: 2, textTransform: 'uppercase' },
 });
 
 export default SettingsScreen;

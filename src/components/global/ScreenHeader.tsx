@@ -1,10 +1,8 @@
 import React, { FC } from 'react';
-import { View, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Colors } from '../../constants/Colors';
-import { FONTS } from '../../constants/Fonts';
 import { goBack } from '../../utils/NavigationUtil';
-import ArchiveText from '../archive/ArchiveText';
 
 interface ScreenHeaderProps {
   title: string;
@@ -28,9 +26,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
       ) : (
         <MaterialIcons name="menu" size={22} color={Colors.primary} />
       )}
-      <ArchiveText variant="title" color={Colors.primaryContainer} style={styles.title}>
-        {title}
-      </ArchiveText>
+      <Text style={styles.title}>{title}</Text>
     </View>
     {rightIcon ? (
       <TouchableOpacity onPress={onRightPress} style={styles.avatar} activeOpacity={0.75}>
@@ -52,14 +48,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: Platform.OS === 'ios' ? 54 : (StatusBar.currentHeight ?? 24) + 10,
     paddingBottom: 14,
-    backgroundColor: 'rgba(57,57,57,0.6)',
+    backgroundColor: Colors.surfaceContainerLow,
   },
-  left: { flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 },
+  left: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   title: {
-    fontFamily: FONTS.Brand,
-    fontSize: 15,
+    fontSize: 16,
+    fontWeight: '900',
+    color: Colors.primaryContainer,
     letterSpacing: 2,
-    textTransform: 'uppercase',
   },
   avatar: {
     width: 32,
@@ -68,6 +64,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.surfaceContainerHigh,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(86,67,52,0.2)',
   },
 });
 

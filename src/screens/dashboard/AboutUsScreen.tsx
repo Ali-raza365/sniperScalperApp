@@ -8,9 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Colors } from '../../constants/Colors';
-import { FONTS } from '../../constants/Fonts';
 import ScreenHeader from '../../components/global/ScreenHeader';
-import ArchiveText from '../../components/archive/ArchiveText';
 import { supportRepository } from '../../data/repository';
 import type { RootStackParamList } from '../../navigation/types';
 
@@ -27,14 +25,14 @@ const AboutUsScreen: FC = () => {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
         <View style={s.pulse}>
           <View style={s.pulseDot} />
-          <ArchiveText variant="label" color={Colors.secondary} style={s.pulseTxt}>The Institutional Archive</ArchiveText>
+          <Text style={s.pulseTxt}>The Institutional Archive</Text>
         </View>
-        <ArchiveText variant="display" style={s.hero}>
-          Sniper{'\n'}<ArchiveText variant="display" color={Colors.text} style={s.heroAlt}>Scalper</ArchiveText>
-        </ArchiveText>
-        <ArchiveText variant="body" color={Colors.onSurfaceVariant} style={s.lead}>
+        <Text style={s.hero}>
+          Sniper{'\n'}<Text style={s.heroAlt}>Scalper</Text>
+        </Text>
+        <Text style={s.lead}>
           Precision is not an act, but a habit. We distill the chaos of global liquidity into institutional-grade signals.
-        </ArchiveText>
+        </Text>
         <TouchableOpacity style={s.primaryBtn} activeOpacity={0.85} onPress={() => navigation.navigate('Watchlist')}>
           <Text style={s.primaryTxt}>ACCESS ARCHIVE</Text>
         </TouchableOpacity>
@@ -111,21 +109,21 @@ const s = StyleSheet.create({
     backgroundColor: 'rgba(4,93,208,0.12)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, marginBottom: 16,
   },
   pulseDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.secondary },
-  pulseTxt: { letterSpacing: 1.8 },
-  hero: { fontSize: 42, lineHeight: 46, marginBottom: 14 },
-  heroAlt: { fontSize: 42, lineHeight: 46 },
-  lead: { fontSize: 16, lineHeight: 24, marginBottom: 22 },
+  pulseTxt: { fontSize: 10, fontWeight: '700', color: Colors.secondary, letterSpacing: 1.8, textTransform: 'uppercase' },
+  hero: { fontSize: 42, fontWeight: '800', color: Colors.primary, lineHeight: 46, marginBottom: 14 },
+  heroAlt: { color: Colors.text },
+  lead: { fontSize: 16, color: Colors.onSurfaceVariant, lineHeight: 24, marginBottom: 22 },
   primaryBtn: { backgroundColor: Colors.primaryContainer, paddingVertical: 14, borderRadius: 8, alignItems: 'center', marginBottom: 24 },
   primaryTxt: { fontSize: 12, fontWeight: '800', color: '#623200', letterSpacing: 2 },
   founderCard: {
     flexDirection: 'row', alignItems: 'center', gap: 14, backgroundColor: Colors.surfaceContainerHigh,
-    padding: 16, borderRadius: 14, marginBottom: 16,
+    padding: 16, borderRadius: 14, marginBottom: 16, borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.12)',
   },
   founderAvatar: {
     width: 64, height: 80, borderRadius: 10, backgroundColor: Colors.surfaceContainerHighest,
     alignItems: 'center', justifyContent: 'center', borderLeftWidth: 2, borderLeftColor: Colors.primary,
   },
-  founderName: { fontSize: 18, fontFamily: FONTS.Bold, color: Colors.primary },
+  founderName: { fontSize: 18, fontWeight: '800', color: Colors.primary },
   founderRole: { fontSize: 11, color: Colors.onSurfaceVariant, letterSpacing: 2, textTransform: 'uppercase', marginTop: 4 },
   missionCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: 16, padding: 20, marginBottom: 12 },
   goldRule: { width: 40, height: 2, backgroundColor: Colors.primary, marginBottom: 14 },
@@ -133,7 +131,7 @@ const s = StyleSheet.create({
   missionBody: { fontSize: 14, color: Colors.onSurfaceVariant, lineHeight: 22 },
   statCard: {
     backgroundColor: 'rgba(255,140,0,0.08)', borderRadius: 16, padding: 22, alignItems: 'center',
-    marginBottom: 28,
+    marginBottom: 28, borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,183,125,0.15)',
   },
   statValue: { fontSize: 22, fontWeight: '800', color: Colors.primary, letterSpacing: 1, textTransform: 'uppercase', marginTop: 8 },
   statSub: { fontSize: 12, color: Colors.onSurfaceVariant, marginTop: 4 },
@@ -152,7 +150,7 @@ const s = StyleSheet.create({
   ctaSub: { fontSize: 13, color: Colors.onSurfaceVariant, textAlign: 'center', marginBottom: 18, lineHeight: 20 },
   ctaPrimary: { backgroundColor: Colors.primary, paddingVertical: 14, paddingHorizontal: 28, borderRadius: 8, marginBottom: 10, width: '100%', alignItems: 'center' },
   ctaPrimaryTxt: { fontSize: 12, fontWeight: '800', color: '#4d2600', letterSpacing: 2 },
-  ctaGhost: { backgroundColor: Colors.surfaceContainerHigh, paddingVertical: 14, borderRadius: 8, width: '100%', alignItems: 'center' },
+  ctaGhost: { borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(164,140,122,0.3)', paddingVertical: 14, borderRadius: 8, width: '100%', alignItems: 'center' },
   ctaGhostTxt: { fontSize: 12, fontWeight: '800', color: Colors.text, letterSpacing: 2 },
 });
 

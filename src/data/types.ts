@@ -4,9 +4,6 @@ export type CalendarImpact = 'high' | 'medium' | 'low';
 export type AssetCategory = 'forex' | 'crypto' | 'indices' | 'metals';
 export type ContactChannelKind = 'whatsapp' | 'telegram' | 'email' | 'phone';
 
-export type SignalSide = 'BUY' | 'SELL';
-export type SignalStatus = 'open' | 'closed';
-
 export interface Signal {
   id: string;
   pair: string;
@@ -14,17 +11,6 @@ export interface Signal {
   icon: string;
   desc: string;
   time: string;
-  ticket?: string | number;
-  symbol?: string;
-  side?: SignalSide;
-  volume?: number;
-  price?: number | string;
-  sl?: number | string;
-  tp?: number | string;
-  comment?: string;
-  openedAt?: string;
-  status?: SignalStatus;
-  profit?: number;
 }
 
 export interface CoursePreview {

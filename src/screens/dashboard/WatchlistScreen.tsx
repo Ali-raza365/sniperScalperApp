@@ -11,9 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Colors } from '../../constants/Colors';
-import { FONTS } from '../../constants/Fonts';
 import ScreenHeader from '../../components/global/ScreenHeader';
-import ArchiveText from '../../components/archive/ArchiveText';
 import { marketRepository } from '../../data/repository';
 import type { AssetCategory, WatchlistAsset } from '../../data/types';
 import type { RootStackParamList } from '../../navigation/types';
@@ -89,14 +87,14 @@ const WatchlistScreen: FC = () => {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
         <View style={s.liveRow}>
           <View style={s.liveDot} />
-          <ArchiveText variant="label" color={Colors.secondary} style={s.liveTxt}>Institutional Pulse</ArchiveText>
+          <Text style={s.liveTxt}>Institutional Pulse</Text>
         </View>
-        <ArchiveText variant="display" style={s.heroTitle}>
-          {pulse.session} <ArchiveText variant="display" color={Colors.onSurfaceVariant} style={s.heroMuted}>{pulse.sessionState}</ArchiveText>
-        </ArchiveText>
-        <ArchiveText variant="body" color={Colors.onSurfaceVariant} style={s.heroNote}>
-          Liquidity pools identified at <ArchiveText variant="body" color={Colors.primary}>{pulse.liquidityLevel}</ArchiveText>. {pulse.note}
-        </ArchiveText>
+        <Text style={s.heroTitle}>
+          {pulse.session} <Text style={s.heroMuted}>{pulse.sessionState}</Text>
+        </Text>
+        <Text style={s.heroNote}>
+          Liquidity pools identified at <Text style={{ color: Colors.primary }}>{pulse.liquidityLevel}</Text>. {pulse.note}
+        </Text>
 
         <View style={s.vixCard}>
           <View style={s.vixHead}>
@@ -187,10 +185,10 @@ const s = StyleSheet.create({
   scroll: { paddingHorizontal: 20, paddingTop: 22 },
   liveRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   liveDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.secondary },
-  liveTxt: { fontSize: 10, letterSpacing: 1.6 },
-  heroTitle: { fontSize: 28, letterSpacing: -0.6, marginBottom: 10 },
-  heroMuted: { fontSize: 28, fontFamily: FONTS.Light },
-  heroNote: { marginBottom: 18 },
+  liveTxt: { fontSize: 10, fontWeight: '700', color: Colors.secondary, letterSpacing: 1.6, textTransform: 'uppercase' },
+  heroTitle: { fontSize: 28, fontWeight: '800', color: Colors.primary, letterSpacing: -0.6, marginBottom: 10 },
+  heroMuted: { color: Colors.onSurfaceVariant, fontWeight: '300' },
+  heroNote: { fontSize: 13, color: Colors.onSurfaceVariant, lineHeight: 20, marginBottom: 18 },
   vixCard: {
     backgroundColor: Colors.surfaceContainerLow, borderRadius: 16, padding: 16,
     borderLeftWidth: 2, borderLeftColor: Colors.primary, marginBottom: 20,
@@ -208,8 +206,9 @@ const s = StyleSheet.create({
   filterTxt: { fontSize: 11, fontWeight: '700', color: Colors.onSurfaceVariant, letterSpacing: 0.8, textTransform: 'uppercase' },
   filterTxtActive: { color: '#623200' },
   searchBox: {
-    flexDirection: 'row', alignItems: 'center', gap: 10,     backgroundColor: Colors.surfaceContainerLowest,
+    flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: Colors.surfaceContainerLowest,
     borderRadius: 14, paddingHorizontal: 14, marginBottom: 16,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.15)',
   },
   searchInput: { flex: 1, color: Colors.text, paddingVertical: 12, fontSize: 14 },
   assetCard: {
@@ -219,7 +218,7 @@ const s = StyleSheet.create({
   assetTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 18 },
   assetIdentity: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   assetIcon: { width: 40, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
-  assetSymbol: { fontSize: 16, fontFamily: FONTS.Bold, color: Colors.text },
+  assetSymbol: { fontSize: 16, fontWeight: '700', color: Colors.text },
   assetName: { fontSize: 10, fontWeight: '700', color: Colors.onSurfaceVariant, letterSpacing: 1, textTransform: 'uppercase', marginTop: 2 },
   assetBottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' },
   assetPrice: { fontSize: 22, fontWeight: '900', color: Colors.text },

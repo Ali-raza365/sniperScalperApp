@@ -9,7 +9,6 @@ export type TabParamList = {
 export type RootStackParamList = {
   BottomTab: { screen?: keyof TabParamList } | undefined;
   Watchlist: undefined;
-  Signals: undefined;
   AboutUs: undefined;
   ContactUs: undefined;
   Faqs: undefined;

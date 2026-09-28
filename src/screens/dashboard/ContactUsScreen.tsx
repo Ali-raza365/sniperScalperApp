@@ -8,9 +8,7 @@ import {
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Colors } from '../../constants/Colors';
-import { FONTS } from '../../constants/Fonts';
 import ScreenHeader from '../../components/global/ScreenHeader';
-import ArchiveText from '../../components/archive/ArchiveText';
 import { supportRepository } from '../../data/repository';
 import { openExternal } from '../../utils/linking';
 import { showToast } from '../../utils/CustomToast';
@@ -48,12 +46,12 @@ const ContactUsScreen: FC = () => {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll} keyboardShouldPersistTaps="handled">
         <View style={s.kickerRow}>
           <View style={s.accent} />
-          <ArchiveText variant="label" color={Colors.primary} style={s.kicker}>Institutional Access</ArchiveText>
+          <Text style={s.kicker}>Institutional Access</Text>
         </View>
-        <ArchiveText variant="display" style={s.hero}>DIRECT{'\n'}DESK SUPPORT</ArchiveText>
-        <ArchiveText variant="body" color={Colors.onSurfaceVariant} style={s.lead}>
+        <Text style={s.hero}>DIRECT{'\n'}DESK SUPPORT</Text>
+        <Text style={s.lead}>
           Connect with our risk management specialists and technical support desk for immediate assistance with your trading environment.
-        </ArchiveText>
+        </Text>
 
         {channels.map(channel => {
           const color = CHANNEL_COLORS[channel.id] ?? Colors.primary;
@@ -148,17 +146,16 @@ const s = StyleSheet.create({
   scroll: { paddingHorizontal: 20, paddingTop: 22 },
   kickerRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12 },
   accent: { width: 3, height: 22, backgroundColor: Colors.primary, borderRadius: 2 },
-  kicker: { fontSize: 12, letterSpacing: 2 },
-  hero: { fontSize: 36, lineHeight: 40, marginBottom: 12 },
-  lead: { fontSize: 14, lineHeight: 22, marginBottom: 20 },
+  kicker: { fontSize: 12, fontWeight: '700', color: Colors.primary, letterSpacing: 2, textTransform: 'uppercase' },
+  hero: { fontSize: 36, fontWeight: '800', color: Colors.primary, lineHeight: 40, marginBottom: 12 },
+  lead: { fontSize: 14, color: Colors.onSurfaceVariant, lineHeight: 22, marginBottom: 20 },
   channel: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
     backgroundColor: Colors.surfaceContainerLow, borderRadius: 16, padding: 16, marginBottom: 10,
-    borderLeftWidth: 2, borderLeftColor: Colors.primary,
   },
   channelLeft: { flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 },
   channelIcon: { width: 44, height: 44, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
-  channelLabel: { fontSize: 14, fontFamily: FONTS.Bold, color: Colors.text, letterSpacing: 0.6, textTransform: 'uppercase' },
+  channelLabel: { fontSize: 14, fontWeight: '800', color: Colors.text, letterSpacing: 0.6, textTransform: 'uppercase' },
   channelSub: { fontSize: 11, color: Colors.onSurfaceVariant, marginTop: 2 },
   statusBanner: { backgroundColor: Colors.surfaceContainerHigh, borderRadius: 12, padding: 16, marginVertical: 8 },
   statusTxt: { fontSize: 10, fontWeight: '800', color: Colors.primary, letterSpacing: 2.4, textTransform: 'uppercase' },

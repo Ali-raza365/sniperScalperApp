@@ -1,29 +1,43 @@
 import React, { FC } from 'react';
 import {
-  View, ScrollView, TouchableOpacity, StyleSheet,
-  Dimensions, StatusBar,
+  View, Text, ScrollView, TouchableOpacity, StyleSheet,
+  Platform, Dimensions, StatusBar,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Colors } from '../../constants/Colors';
-import { FONTS } from '../../constants/Fonts';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { marketRepository } from '../../data/repository';
-import type { CoursePreview, HomeBento } from '../../data/types';
+import type { CoursePreview, HomeBento, Signal } from '../../data/types';
 import type { RootStackParamList } from '../../navigation/types';
 import { openExternal } from '../../utils/linking';
-import ArchiveText from '../../components/archive/ArchiveText';
-import SignalCard from '../../components/archive/SignalCard';
-import ScreenHeader from '../../components/global/ScreenHeader';
-import { useLiveSignals } from '../../hooks/useLiveSignals';
 
 const { width: W } = Dimensions.get('window');
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
+const BIAS_COLOR = { BULLISH: Colors.secondary, BEARISH: Colors.tertiary };
 const TONE_COLOR = { primary: Colors.primary, secondary: Colors.secondary, tertiary: Colors.tertiary };
 const BENTO_THEME: Record<string, { iconColor: string; bg: string }> = {
   calendar: { iconColor: Colors.primary, bg: 'rgba(255,183,125,0.12)' },
   news: { iconColor: Colors.secondary, bg: 'rgba(175,198,255,0.12)' },
+};
+
+const SignalCard: FC<{ signal: Signal }> = ({ signal }) => {
+  const biasColor = BIAS_COLOR[signal.bias];
+  return (
+    <View style={s.signalCard}>
+      <View style={[s.signalIcon, { backgroundColor: Colors.surfaceContainerHigh }]}>
+        <MaterialIcons name={signal.icon as any} size={20} color={biasColor} />
+      </View>
+      <View style={{ flex: 1 }}>
+        <View style={s.signalRow}>
+          <Text style={[s.signalPair, { color: biasColor }]}>{signal.pair} • {signal.bias}</Text>
+          <Text style={s.signalTime}>{signal.time}</Text>
+        </View>
+        <Text style={s.signalDesc}>{signal.desc}</Text>
+      </View>
+    </View>
+  );
 };
 
 const BentoCard: FC<{ item: HomeBento; onPress: () => void }> = ({ item, onPress }) => {
@@ -33,8 +47,8 @@ const BentoCard: FC<{ item: HomeBento; onPress: () => void }> = ({ item, onPress
       <View style={[s.bentoIcon, { backgroundColor: theme.bg }]}>
         <MaterialIcons name={item.icon as any} size={22} color={theme.iconColor} />
       </View>
-      <ArchiveText variant="title" color={Colors.text} style={s.bentoTitle}>{item.title}</ArchiveText>
-      <ArchiveText variant="label">{item.sub}</ArchiveText>
+      <Text style={s.bentoTitle}>{item.title}</Text>
+      <Text style={s.bentoSub}>{item.sub}</Text>
     </TouchableOpacity>
   );
 };
@@ -42,13 +56,11 @@ const BentoCard: FC<{ item: HomeBento; onPress: () => void }> = ({ item, onPress
 const CourseCard: FC<{ course: CoursePreview; onPress: () => void }> = ({ course, onPress }) => (
   <TouchableOpacity style={s.courseCard} onPress={onPress} activeOpacity={0.85}>
     <View style={s.courseBanner}>
-      <ArchiveText variant="display" color={TONE_COLOR[course.tone]} style={s.courseLabel}>
-        {course.label}
-      </ArchiveText>
+      <Text style={[s.courseLabel, { color: TONE_COLOR[course.tone] }]}>{course.label}</Text>
     </View>
     <View style={s.courseBody}>
-      <ArchiveText variant="title" color={Colors.text} style={s.courseTitle}>{course.title}</ArchiveText>
-      <ArchiveText variant="label" style={s.courseSub}>{course.sub}</ArchiveText>
+      <Text style={s.courseTitle}>{course.title}</Text>
+      <Text style={s.courseSub}>{course.sub}</Text>
       <View style={s.progressBg}>
         <View style={[s.progressFill, { width: `${course.progress * 100}%` as any }]} />
       </View>
@@ -61,14 +73,13 @@ const EnquiryBtn: FC<{ icon: string; color: string; label: string; onPress: () =
 }) => (
   <TouchableOpacity style={s.enquiryBtn} activeOpacity={0.75} onPress={onPress}>
     <MaterialIcons name={icon as any} size={18} color={color} />
-    <ArchiveText variant="label" color={Colors.text} style={s.enquiryLabel}>{label}</ArchiveText>
+    <Text style={s.enquiryLabel}>{label}</Text>
   </TouchableOpacity>
 );
 
 const HomeScreen: FC = () => {
   const navigation = useNavigation<Nav>();
-  const { signals, live } = useLiveSignals('all');
-  const latest = signals.slice(0, 3);
+  const signals = marketRepository.getSignals();
   const bento = marketRepository.getHomeBento();
   const courses = marketRepository.getCoursePreviews();
   const enquiries = marketRepository.getEnquiryChannels();
@@ -76,230 +87,221 @@ const HomeScreen: FC = () => {
   const chart = marketRepository.getChartSnapshot();
 
   return (
-    <View style={s.root}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
-      <ScreenHeader
-        title="Institutional Archive"
-        showBack={false}
-        rightIcon="monitoring"
-        onRightPress={() => navigation.navigate('Watchlist')}
-      />
+  <View style={s.root}>
+    <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+    <View style={s.header}>
+      <View style={s.headerLeft}>
+        <MaterialIcons name="menu" size={22} color={Colors.primary} />
+        <Text style={s.headerTitle}>INSTITUTIONAL ARCHIVE</Text>
+      </View>
+      <TouchableOpacity onPress={() => navigation.navigate('Watchlist')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+        <MaterialIcons name="monitoring" size={22} color={Colors.primary} />
+      </TouchableOpacity>
+    </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
-        <View style={s.hero}>
-          <View style={s.heroIconBox}>
-            <MaterialIcons name="inventory-2" size={44} color={Colors.primary} />
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
+      <View style={s.hero}>
+        <View style={s.heroIconBox}>
+          <MaterialIcons name="inventory-2" size={44} color={Colors.primary} />
+        </View>
+        <Text style={s.heroH1}>ACCESSING THE{'\n'}<Text style={s.heroH1Sub}>Institutional Archive</Text></Text>
+        <Text style={s.heroDesc}>Public portal to high-frequency market intelligence, liquidity maps, and professional Smart Money Concepts.</Text>
+        <TouchableOpacity style={s.heroBtn} activeOpacity={0.85} onPress={() => navigation.navigate('Watchlist')}>
+          <Text style={s.heroBtnText}>VIEW INTEL</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={s.section}>
+        <View style={s.sectionHead}>
+          <View style={s.sectionLeft}>
+            <View style={s.accent} /><Text style={s.sectionTitle}>LIVE SIGNALS</Text>
           </View>
-          <ArchiveText variant="display" style={s.heroH1}>
-            ACCESSING THE{'\n'}
-            <ArchiveText variant="display" color={Colors.text} style={s.heroH1Sub}>Institutional Archive</ArchiveText>
-          </ArchiveText>
-          <ArchiveText variant="body" color={Colors.onSurfaceVariant} style={s.heroDesc}>
-            Public portal to high-frequency market intelligence, liquidity maps, and professional Smart Money Concepts.
-          </ArchiveText>
-          <TouchableOpacity style={s.heroBtn} activeOpacity={0.85} onPress={() => navigation.navigate('Watchlist')}>
-            <ArchiveText variant="label" color={Colors.text} style={s.heroBtnText}>VIEW INTEL</ArchiveText>
+          <TouchableOpacity onPress={() => navigation.navigate('Watchlist')}>
+            <Text style={s.viewAll}>View Archive</Text>
           </TouchableOpacity>
         </View>
-
-        <View style={s.section}>
-          <View style={s.sectionHead}>
-            <View style={s.sectionLeft}>
-              <View style={s.accent} />
-              <ArchiveText variant="title">LIVE SIGNALS</ArchiveText>
-              <View style={[s.pulseChip, live ? s.pulseLive : s.pulseMock]}>
-                <View style={[s.pulseDot, live ? s.pulseDotLive : s.pulseDotMock]} />
-                <ArchiveText variant="label" color={live ? Colors.secondary : Colors.onSurfaceVariant} style={s.pulseTxt}>
-                  {live ? 'Connected' : 'Fallback'}
-                </ArchiveText>
-              </View>
-            </View>
-            <TouchableOpacity onPress={() => navigation.navigate('Signals')}>
-              <ArchiveText variant="label">View Archive</ArchiveText>
-            </TouchableOpacity>
+        {signals.map((signal, index) => (
+          <View key={signal.id} style={{ marginBottom: index === signals.length - 1 ? 0 : 10 }}>
+            <SignalCard signal={signal} />
           </View>
-          {latest.length === 0 ? (
-            <View style={s.emptyCard}>
-              <ArchiveText variant="body" color={Colors.onSurfaceVariant}>
-                Desk quiet — waiting on MT5
-              </ArchiveText>
-            </View>
-          ) : (
-            latest.map(signal => (
-              <View key={signal.id} style={s.signalWrap}>
-                <SignalCard signal={signal} />
-              </View>
-            ))
-          )}
-        </View>
+        ))}
+      </View>
 
-        <View style={s.bentoGrid}>
-          {bento.map(item => (
-            <BentoCard
-              key={item.id}
-              item={item}
-              onPress={() =>
-                item.destination === 'Watchlist'
-                  ? navigation.navigate('Watchlist')
-                  : navigation.navigate('BottomTab', { screen: item.destination })
-              }
+      <View style={s.bentoGrid}>
+        {bento.map(item => (
+          <BentoCard
+            key={item.id}
+            item={item}
+            onPress={() =>
+              item.destination === 'Watchlist'
+                ? navigation.navigate('Watchlist')
+                : navigation.navigate('BottomTab', { screen: item.destination })
+            }
+          />
+        ))}
+      </View>
+
+      <View style={s.section}>
+        <View style={s.sectionHead}>
+          <View style={s.sectionLeft}><View style={s.accent} /><Text style={s.sectionTitle}>CHART TERMINAL</Text></View>
+        </View>
+        <View style={s.chartBox}>
+          <View style={s.chartTop}>
+            <View style={s.chartPill}><Text style={s.chartPillTxt}>{chart.symbol} {chart.timeframe}</Text></View>
+            <View style={s.liveRow}>
+              <View style={s.liveDot} />
+              <Text style={s.liveTxt}>LIVE</Text>
+            </View>
+          </View>
+          <View style={s.candles}>
+            {candles.map((h, i) => (
+              <View key={i} style={s.candle}>
+                <View style={[s.wick, { height: h * 0.3 }]} />
+                <View style={[s.body, { height: h, backgroundColor: i % 2 === 0 ? Colors.tertiaryContainer : Colors.secondaryContainer }]} />
+                <View style={[s.wick, { height: h * 0.2 }]} />
+              </View>
+            ))}
+          </View>
+          <TouchableOpacity style={s.fsBtn} activeOpacity={0.8} onPress={() => navigation.navigate('BottomTab', { screen: 'Charts' })}>
+            <MaterialIcons name="fullscreen" size={16} color={Colors.text} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={s.section}>
+        <View style={s.sectionHead}>
+          <View style={s.sectionLeft}><View style={s.accent} /><Text style={s.sectionTitle}>CURRICULUM</Text></View>
+          <Text style={s.viewAll}>{courses.length} Modules</Text>
+        </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 14 }}>
+          {courses.map(course => (
+            <CourseCard
+              key={course.id}
+              course={course}
+              onPress={() => navigation.navigate('BottomTab', { screen: 'Academy' })}
+            />
+          ))}
+        </ScrollView>
+      </View>
+
+      <View style={s.enquiriesBox}>
+        <Text style={s.enquiriesTitle}>ENQUIRIES</Text>
+        <Text style={s.enquiriesSub}>Public desk for archive access requests</Text>
+        <View style={s.enquiriesGrid}>
+          {enquiries.map(channel => (
+            <EnquiryBtn
+              key={channel.id}
+              icon={channel.icon}
+              color={channel.color}
+              label={channel.label}
+              onPress={() => (channel.id === 'phone' ? navigation.navigate('ContactUs') : openExternal(channel.url))}
             />
           ))}
         </View>
-
-        <View style={s.section}>
-          <View style={s.sectionHead}>
-            <View style={s.sectionLeft}>
-              <View style={s.accent} />
-              <ArchiveText variant="title">CHART TERMINAL</ArchiveText>
-            </View>
-          </View>
-          <View style={s.chartBox}>
-            <View style={s.chartTop}>
-              <View style={s.chartPill}>
-                <ArchiveText variant="label" color={Colors.text}>{chart.symbol} {chart.timeframe}</ArchiveText>
-              </View>
-              <View style={s.liveRow}>
-                <View style={s.liveDot} />
-                <ArchiveText variant="label" color={Colors.text}>LIVE</ArchiveText>
-              </View>
-            </View>
-            <View style={s.candles}>
-              {candles.map((h, i) => (
-                <View key={i} style={s.candle}>
-                  <View style={[s.wick, { height: h * 0.3 }]} />
-                  <View style={[s.body, { height: h, backgroundColor: i % 2 === 0 ? Colors.tertiaryContainer : Colors.secondaryContainer }]} />
-                  <View style={[s.wick, { height: h * 0.2 }]} />
-                </View>
-              ))}
-            </View>
-            <TouchableOpacity style={s.fsBtn} activeOpacity={0.8} onPress={() => navigation.navigate('BottomTab', { screen: 'Charts' })}>
-              <MaterialIcons name="fullscreen" size={16} color={Colors.text} />
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={s.section}>
-          <View style={s.sectionHead}>
-            <View style={s.sectionLeft}>
-              <View style={s.accent} />
-              <ArchiveText variant="title">CURRICULUM</ArchiveText>
-            </View>
-            <ArchiveText variant="label">{courses.length} Modules</ArchiveText>
-          </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 16 }}>
-            {courses.map(course => (
-              <CourseCard
-                key={course.id}
-                course={course}
-                onPress={() => navigation.navigate('BottomTab', { screen: 'Academy' })}
-              />
-            ))}
-          </ScrollView>
-        </View>
-
-        <View style={s.enquiriesBox}>
-          <ArchiveText variant="display" style={s.enquiriesTitle}>ENQUIRIES</ArchiveText>
-          <ArchiveText variant="body" color={Colors.onSurfaceVariant} style={s.enquiriesSub}>
-            Public desk for archive access requests
-          </ArchiveText>
-          <View style={s.enquiriesGrid}>
-            {enquiries.map(channel => (
-              <EnquiryBtn
-                key={channel.id}
-                icon={channel.icon}
-                color={channel.color}
-                label={channel.label}
-                onPress={() => (channel.id === 'phone' ? navigation.navigate('ContactUs') : openExternal(channel.url))}
-              />
-            ))}
-          </View>
-        </View>
-        <View style={{ height: 100 }} />
-      </ScrollView>
-    </View>
+      </View>
+      <View style={{ height: 100 }} />
+    </ScrollView>
+  </View>
   );
 };
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: Colors.background },
+  header: {
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 54 : (StatusBar.currentHeight ?? 24) + 10,
+    paddingBottom: 14,
+    backgroundColor: 'rgba(19,19,19,0.95)',
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(86,67,52,0.15)',
+  },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  headerTitle: { fontSize: 14, fontWeight: '900', color: Colors.primaryContainer, letterSpacing: 0.5 },
   scroll: { paddingHorizontal: 20, paddingTop: 24 },
   hero: { alignItems: 'center', marginBottom: 40, paddingTop: 16 },
   heroIconBox: {
     width: 88, height: 88, borderRadius: 20, backgroundColor: Colors.surfaceContainerHigh,
     alignItems: 'center', justifyContent: 'center', marginBottom: 20,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.2)',
   },
-  heroH1: { textAlign: 'center', lineHeight: 36, marginBottom: 12, fontFamily: FONTS.Black },
-  heroH1Sub: { fontSize: 26, textTransform: 'uppercase', fontFamily: FONTS.Bold },
-  heroDesc: { textAlign: 'center', maxWidth: W * 0.78, marginBottom: 24 },
+  heroH1: { fontSize: 30, fontWeight: '900', color: Colors.primary, textAlign: 'center', lineHeight: 36, marginBottom: 12 },
+  heroH1Sub: { color: Colors.text, fontSize: 28, fontWeight: '900', textTransform: 'uppercase' },
+  heroDesc: { fontSize: 13, color: Colors.onSurfaceVariant, textAlign: 'center', maxWidth: W * 0.72, lineHeight: 20, marginBottom: 24 },
   heroBtn: {
-    backgroundColor: Colors.surfaceContainerHighest, paddingVertical: 14, paddingHorizontal: 32, borderRadius: 8,
+    backgroundColor: Colors.surfaceContainerHighest, paddingVertical: 14, paddingHorizontal: 32,
+    borderRadius: 12, borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.2)',
   },
-  heroBtnText: { letterSpacing: 1.5, fontFamily: FONTS.SemiBold },
+  heroBtnText: { color: Colors.text, fontSize: 12, fontWeight: '700', letterSpacing: 1.5 },
   section: { marginBottom: 36 },
-  sectionHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  sectionLeft: { flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1, flexWrap: 'wrap' },
-  accent: { width: 2, height: 22, backgroundColor: Colors.primary, borderRadius: 1 },
-  pulseChip: {
-    flexDirection: 'row', alignItems: 'center', gap: 6,
-    paddingHorizontal: 8, paddingVertical: 4, borderRadius: 20,
+  sectionHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
+  sectionLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  accent: { width: 3, height: 22, backgroundColor: Colors.primaryContainer, borderRadius: 2 },
+  sectionTitle: { fontSize: 17, fontWeight: '700', color: Colors.primary, letterSpacing: 0.3 },
+  viewAll: { fontSize: 9, fontWeight: '700', color: Colors.onSurfaceVariant, letterSpacing: 2, textTransform: 'uppercase' },
+  signalCard: {
+    backgroundColor: Colors.surfaceContainerLow, borderRadius: 14, padding: 14,
+    flexDirection: 'row', alignItems: 'flex-start', gap: 12,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.07)',
   },
-  pulseLive: { backgroundColor: 'rgba(175,198,255,0.12)' },
-  pulseMock: { backgroundColor: Colors.surfaceContainerHigh },
-  pulseDot: { width: 7, height: 7, borderRadius: 4 },
-  pulseDotLive: { backgroundColor: Colors.secondary },
-  pulseDotMock: { backgroundColor: Colors.outline },
-  pulseTxt: { letterSpacing: 1.2 },
-  emptyCard: {
-    backgroundColor: Colors.surfaceContainerLow, borderRadius: 16, padding: 16,
-    borderLeftWidth: 2, borderLeftColor: Colors.primary,
-  },
-  signalWrap: { marginBottom: 16 },
-  bentoGrid: { flexDirection: 'row', gap: 16, marginBottom: 36 },
+  signalIcon: { width: 40, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  signalRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
+  signalPair: { fontSize: 9.5, fontWeight: '700', letterSpacing: 0.5, textTransform: 'uppercase' },
+  signalTime: { fontSize: 9.5, color: Colors.onSurfaceVariant },
+  signalDesc: { fontSize: 12.5, color: Colors.text, lineHeight: 18, fontWeight: '500' },
+  bentoGrid: { flexDirection: 'row', gap: 14, marginBottom: 36 },
   bentoCard: {
     flex: 1, backgroundColor: Colors.surfaceContainerHigh, borderRadius: 20, padding: 18, aspectRatio: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.10)',
   },
   bentoIcon: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginBottom: 'auto' as any },
-  bentoTitle: { fontSize: 14, color: Colors.text, marginBottom: 4 },
+  bentoTitle: { fontSize: 14, fontWeight: '700', color: Colors.text, marginBottom: 2 },
+  bentoSub: { fontSize: 9.5, color: Colors.onSurfaceVariant, fontWeight: '500' },
   chartBox: {
     backgroundColor: Colors.surfaceContainerLowest, borderRadius: 18, aspectRatio: 16 / 9,
     padding: 12, justifyContent: 'space-between',
+    borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.10)',
   },
   chartTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   chartPill: {
-    backgroundColor: Colors.surfaceContainerLow, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20,
+    backgroundColor: 'rgba(19,19,19,0.85)', paddingHorizontal: 10, paddingVertical: 4,
+    borderRadius: 20, borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,255,255,0.06)',
   },
+  chartPillTxt: { fontSize: 9, fontWeight: '700', color: Colors.text },
   liveRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  liveDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: Colors.secondary },
+  liveDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: '#4ADE80' },
+  liveTxt: { fontSize: 9, fontWeight: '700', color: Colors.text, letterSpacing: 2 },
   candles: { flexDirection: 'row', alignItems: 'flex-end', gap: 6, flex: 1, paddingTop: 12, paddingBottom: 4 },
   candle: { flex: 1, alignItems: 'center', justifyContent: 'flex-end' },
   wick: { width: 1.5, backgroundColor: 'rgba(175,198,255,0.5)' },
   body: { width: 8, borderRadius: 2, opacity: 0.85 },
   fsBtn: {
     alignSelf: 'flex-end', backgroundColor: 'rgba(57,57,57,0.5)', padding: 6, borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(255,255,255,0.10)',
   },
   courseCard: {
     width: 190, backgroundColor: Colors.surfaceContainerLow, borderRadius: 18, overflow: 'hidden',
+    borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.07)',
   },
   courseBanner: { height: 80, backgroundColor: Colors.surfaceContainerHighest, alignItems: 'center', justifyContent: 'center' },
-  courseLabel: { fontSize: 30, opacity: 0.35 },
+  courseLabel: { fontSize: 30, fontWeight: '900', opacity: 0.3 },
   courseBody: { padding: 14 },
-  courseTitle: { fontSize: 13, color: Colors.text, marginBottom: 4 },
-  courseSub: { marginBottom: 10 },
+  courseTitle: { fontSize: 12.5, fontWeight: '700', color: Colors.text, marginBottom: 2 },
+  courseSub: { fontSize: 9.5, color: Colors.onSurfaceVariant, marginBottom: 10 },
   progressBg: { height: 3, backgroundColor: Colors.surfaceContainerHigh, borderRadius: 4, overflow: 'hidden' },
   progressFill: { height: '100%', backgroundColor: Colors.primaryContainer, borderRadius: 4 },
   enquiriesBox: {
-    backgroundColor: Colors.surfaceContainerLowest, borderRadius: 24, padding: 20, marginBottom: 8,
+    backgroundColor: Colors.surfaceContainerLowest, borderRadius: 24, padding: 20,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.07)', marginBottom: 8,
   },
-  enquiriesTitle: { letterSpacing: -0.5, textAlign: 'center' },
-  enquiriesSub: { marginTop: 4, marginBottom: 20, textAlign: 'center' },
-  enquiriesGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 16 },
+  enquiriesTitle: { fontSize: 20, fontWeight: '900', color: Colors.primary, letterSpacing: -0.5, textAlign: 'center' },
+  enquiriesSub: { fontSize: 11, color: Colors.onSurfaceVariant, marginTop: 2, marginBottom: 20, textAlign: 'center' },
+  enquiriesGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   enquiryBtn: {
     width: (W - 80) / 2, flexDirection: 'row', alignItems: 'center', gap: 10,
     backgroundColor: Colors.surfaceContainerHigh, padding: 12, borderRadius: 12,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.12)',
   },
-  enquiryLabel: { letterSpacing: 0.8 },
+  enquiryLabel: { fontSize: 11, fontWeight: '700', color: Colors.text },
 });
 
 export default HomeScreen;
