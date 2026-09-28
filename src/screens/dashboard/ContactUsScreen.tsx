@@ -6,7 +6,7 @@ import React, { FC, useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar, TextInput,
 } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Colors } from '../../constants/Colors';
 import ScreenHeader from '../../components/global/ScreenHeader';
 import { supportRepository } from '../../data/repository';

@@ -3,6 +3,8 @@ export type LessonState = 'done' | 'current' | 'locked';
 export type CalendarImpact = 'high' | 'medium' | 'low';
 export type AssetCategory = 'forex' | 'crypto' | 'indices' | 'metals';
 export type ContactChannelKind = 'whatsapp' | 'telegram' | 'email' | 'phone';
+export type SignalSide = 'BUY' | 'SELL';
+export type SignalStatus = 'open' | 'closed';
 
 export interface Signal {
   id: string;
@@ -11,6 +13,27 @@ export interface Signal {
   icon: string;
   desc: string;
   time: string;
+  /** Present when this signal was sourced live from the MT5 ingest server. */
+  ticket?: string;
+  symbol?: string;
+  side?: SignalSide;
+  status?: SignalStatus;
+  comment?: string;
+  openedAt?: string;
+  volume?: number;
+  price?: number;
+  sl?: number;
+  tp?: number;
+  profit?: number;
+}
+
+export interface OhlcBar {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
 }
 
 export interface CoursePreview {

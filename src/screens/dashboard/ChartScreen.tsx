@@ -4,20 +4,28 @@
  */
 import React, { FC, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Colors } from '../../constants/Colors';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { marketRepository } from '../../data/repository';
-import type { RootStackParamList } from '../../navigation/types';
+import LiveChartTerminal from '../../components/charts/LiveChartTerminal';
+import type { RootStackParamList, TabParamList } from '../../navigation/types';
 import { showToast } from '../../utils/CustomToast';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
+type ChartsRoute = RouteProp<TabParamList, 'Charts'>;
 
 const ChartScreen: FC = () => {
   const navigation = useNavigation<Nav>();
+  const route = useRoute<ChartsRoute>();
   const snapshot = marketRepository.getChartSnapshot();
   const [activeTF, setActiveTF] = useState(snapshot.defaultTimeframeIndex);
+
+  // A symbol tapped from Watchlist overrides the default archive snapshot symbol.
+  const displaySymbol = route.params?.symbol ?? snapshot.symbol;
+  const displayCategory = route.params?.category ?? 'metals';
+  const activeTimeframe = snapshot.timeframes[activeTF];
 
   return (
     <View style={s.root}>
@@ -29,7 +37,10 @@ const ChartScreen: FC = () => {
           <View style={s.avatar}>
             <MaterialIcons name="person" size={18} color={Colors.onSurfaceVariant} />
           </View>
-          <Text style={s.headerTitle}>SMC TERMINAL</Text>
+          <View>
+            <Text style={s.headerTitle}>SMC TERMINAL</Text>
+            <Text style={s.headerSymbol}>{displaySymbol}</Text>
+          </View>
         </View>
         <TouchableOpacity style={s.notifBtn} activeOpacity={0.75} onPress={() => navigation.navigate('Watchlist')}>
           <MaterialIcons name="notifications" size={22} color={Colors.primary} />
@@ -61,49 +72,53 @@ const ChartScreen: FC = () => {
           </View>
         </View>
 
-        {/* Main Chart */}
+        {/* Main Chart — live TradingView terminal, falls back to the archive snapshot canvas offline */}
         <View style={s.chartBox}>
-          {/* Volume overlay */}
-          <View style={s.chartOverlay}>
+          <LiveChartTerminal
+            symbol={displaySymbol}
+            category={displayCategory}
+            timeframe={activeTimeframe}
+            height={260}>
+            {/* Offline fallback: SMC archive snapshot canvas */}
+            <View style={s.candleArea}>
+              {snapshot.candles.map((c, i) => (
+                <View key={i} style={s.candleCol}>
+                  <View style={[s.wick, { height: c.h * 0.35, backgroundColor: c.bear ? 'rgba(255,177,196,0.45)' : 'rgba(175,198,255,0.45)' }]} />
+                  <View style={[s.candleBody, {
+                    height: c.h,
+                    backgroundColor: c.bear ? Colors.tertiaryContainer : Colors.secondaryContainer,
+                    ...(i === snapshot.candles.length - 1 && { shadowColor: Colors.secondary, shadowOpacity: 0.4, shadowRadius: 8, elevation: 4 }),
+                  }]} />
+                  <View style={[s.wick, { height: c.h * 0.2, backgroundColor: c.bear ? 'rgba(255,177,196,0.45)' : 'rgba(175,198,255,0.45)' }]} />
+                  {i === snapshot.candles.length - 1 && (
+                    <View style={s.sellSignal}><Text style={s.sellSignalTxt}>SELL SIGNAL</Text></View>
+                  )}
+                </View>
+              ))}
+            </View>
+            <View style={s.priceScale}>
+              {snapshot.priceScale.map((p, i) => (
+                <Text key={i} style={[s.priceLabel, i === snapshot.activePriceIndex && s.priceLabelActive]}>{p}</Text>
+              ))}
+            </View>
+            <View style={s.timeScale}>
+              {snapshot.timeScale.map(t => (
+                <Text key={t} style={s.timeLabel}>{t}</Text>
+              ))}
+            </View>
+          </LiveChartTerminal>
+
+          {/* Institutional annotation chrome from the live_chart_tv_style design —
+              always visible on top of the chart, live or offline. */}
+          <View style={s.chartOverlay} pointerEvents="none">
             <Text style={s.volLabel}>{snapshot.volumeLabel}</Text>
             <Text style={s.volValue}>{snapshot.volumeValue}</Text>
           </View>
-          {/* FVG Zone */}
-          <View style={s.fvgZone}>
+          <View style={s.fvgZone} pointerEvents="none">
             <Text style={s.fvgLabel}>{snapshot.fvgLabel}</Text>
           </View>
-          {/* Order Block */}
-          <View style={s.obZone}>
+          <View style={s.obZone} pointerEvents="none">
             <Text style={s.obLabel}>{snapshot.obLabel}</Text>
-          </View>
-          {/* Candles */}
-          <View style={s.candleArea}>
-            {snapshot.candles.map((c, i) => (
-              <View key={i} style={s.candleCol}>
-                <View style={[s.wick, { height: c.h * 0.35, backgroundColor: c.bear ? 'rgba(255,177,196,0.45)' : 'rgba(175,198,255,0.45)' }]} />
-                <View style={[s.candleBody, {
-                  height: c.h,
-                  backgroundColor: c.bear ? Colors.tertiaryContainer : Colors.secondaryContainer,
-                  ...(i === snapshot.candles.length - 1 && { shadowColor: Colors.secondary, shadowOpacity: 0.4, shadowRadius: 8, elevation: 4 }),
-                }]} />
-                <View style={[s.wick, { height: c.h * 0.2, backgroundColor: c.bear ? 'rgba(255,177,196,0.45)' : 'rgba(175,198,255,0.45)' }]} />
-                {i === snapshot.candles.length - 1 && (
-                  <View style={s.sellSignal}><Text style={s.sellSignalTxt}>SELL SIGNAL</Text></View>
-                )}
-              </View>
-            ))}
-          </View>
-          {/* Price Scale */}
-          <View style={s.priceScale}>
-            {snapshot.priceScale.map((p, i) => (
-              <Text key={i} style={[s.priceLabel, i === snapshot.activePriceIndex && s.priceLabelActive]}>{p}</Text>
-            ))}
-          </View>
-          {/* Time Scale */}
-          <View style={s.timeScale}>
-            {snapshot.timeScale.map(t => (
-              <Text key={t} style={s.timeLabel}>{t}</Text>
-            ))}
           </View>
         </View>
 
@@ -171,6 +186,7 @@ const s = StyleSheet.create({
   headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   avatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.surfaceContainerHigh, alignItems: 'center', justifyContent: 'center', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.2)' },
   headerTitle: { fontSize: 18, fontWeight: '900', color: Colors.primaryContainer, letterSpacing: 2 },
+  headerSymbol: { fontSize: 10, fontWeight: '700', color: Colors.onSurfaceVariant, letterSpacing: 1, marginTop: 1 },
   notifBtn: { padding: 6 },
   scroll: { paddingHorizontal: 16, paddingTop: 8 },
   toolbar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, gap: 10 },

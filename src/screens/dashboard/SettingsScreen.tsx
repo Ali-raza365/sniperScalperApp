@@ -8,7 +8,7 @@ import {
   StyleSheet, Platform, StatusBar, Switch,
 } from 'react-native';
 import { Colors } from '../../constants/Colors';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { accountRepository } from '../../data/repository';

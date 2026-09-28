@@ -1,0 +1,14 @@
+{
+  "name": "sniper-scalper-signals",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MT5 ingest server for Sniper Scalper — live tickets + OHLC bars",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

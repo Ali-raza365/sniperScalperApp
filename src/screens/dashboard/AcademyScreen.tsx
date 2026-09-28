@@ -7,7 +7,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, StatusB
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Colors } from '../../constants/Colors';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { academyRepository } from '../../data/repository';
 import type { LessonState } from '../../data/types';
 import type { RootStackParamList } from '../../navigation/types';
@@ -190,7 +190,7 @@ const s = StyleSheet.create({
   scroll: { paddingHorizontal: 20, paddingTop: 8 },
   // Hero Banner
   heroBanner: { borderRadius: 18, overflow: 'hidden', aspectRatio: 16 / 9, backgroundColor: Colors.surfaceContainerLowest, marginBottom: 28, borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.15)', position: 'relative' },
-  videoGrad: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(19,19,19,0.55)' },
+  videoGrad: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(19,19,19,0.55)' },
   bannerContent: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: 18 },
   badgeRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 8 },
   premiumBadge: { backgroundColor: Colors.secondaryContainer, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
@@ -205,7 +205,7 @@ const s = StyleSheet.create({
   progressPct: { fontSize: 12, fontWeight: '700', color: Colors.primary },
   progressBg: { width: 80, height: 5, backgroundColor: Colors.surfaceContainerHighest, borderRadius: 4, overflow: 'hidden', marginTop: 2 },
   progressFill: { height: '100%', backgroundColor: Colors.primaryContainer, borderRadius: 4 },
-  playOverlay: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center' },
+  playOverlay: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
   playCircle: { width: 64, height: 64, borderRadius: 32, backgroundColor: 'rgba(255,140,0,0.85)', alignItems: 'center', justifyContent: 'center' },
   // Syllabus
   syllabusHead: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 16 },

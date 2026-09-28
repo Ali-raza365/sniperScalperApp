@@ -6,11 +6,12 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Colors } from '../../constants/Colors';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { marketRepository } from '../../data/repository';
 import type { CoursePreview, HomeBento, Signal } from '../../data/types';
 import type { RootStackParamList } from '../../navigation/types';
 import { openExternal } from '../../utils/linking';
+import { useLiveSignals } from '../../hooks/useLiveSignals';
 
 const { width: W } = Dimensions.get('window');
 type Nav = NativeStackNavigationProp<RootStackParamList>;
@@ -79,7 +80,7 @@ const EnquiryBtn: FC<{ icon: string; color: string; label: string; onPress: () =
 
 const HomeScreen: FC = () => {
   const navigation = useNavigation<Nav>();
-  const signals = marketRepository.getSignals();
+  const { signals, live: signalsLive } = useLiveSignals('open');
   const bento = marketRepository.getHomeBento();
   const courses = marketRepository.getCoursePreviews();
   const enquiries = marketRepository.getEnquiryChannels();
@@ -95,7 +96,7 @@ const HomeScreen: FC = () => {
         <Text style={s.headerTitle}>INSTITUTIONAL ARCHIVE</Text>
       </View>
       <TouchableOpacity onPress={() => navigation.navigate('Watchlist')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-        <MaterialIcons name="monitoring" size={22} color={Colors.primary} />
+        <MaterialIcons name="monitor" size={22} color={Colors.primary} />
       </TouchableOpacity>
     </View>
 
@@ -114,7 +115,9 @@ const HomeScreen: FC = () => {
       <View style={s.section}>
         <View style={s.sectionHead}>
           <View style={s.sectionLeft}>
-            <View style={s.accent} /><Text style={s.sectionTitle}>LIVE SIGNALS</Text>
+            <View style={s.accent} />
+            <Text style={s.sectionTitle}>LIVE SIGNALS</Text>
+            {signalsLive && <View style={s.liveDot} />}
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('Watchlist')}>
             <Text style={s.viewAll}>View Archive</Text>

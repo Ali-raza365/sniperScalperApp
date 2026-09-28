@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { View, Text, Platform, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Colors } from '../constants/Colors';
 import HomeScreen from '../screens/dashboard/HomeScreen';
 import ChartScreen from '../screens/dashboard/ChartScreen';

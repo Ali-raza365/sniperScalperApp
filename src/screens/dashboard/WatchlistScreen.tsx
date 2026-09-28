@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Colors } from '../../constants/Colors';
 import ScreenHeader from '../../components/global/ScreenHeader';
 import { marketRepository } from '../../data/repository';
@@ -99,7 +99,7 @@ const WatchlistScreen: FC = () => {
         <View style={s.vixCard}>
           <View style={s.vixHead}>
             <Text style={s.vixLabel}>Volatility Index</Text>
-            <MaterialIcons name="monitoring" size={18} color={Colors.primary} />
+            <MaterialIcons name="insights" size={18} color={Colors.primary} />
           </View>
           <Text style={s.vixValue}>VIX: {pulse.vix}</Text>
           <View style={s.changeRow}>
@@ -141,7 +141,12 @@ const WatchlistScreen: FC = () => {
           <AssetCard
             key={asset.id}
             asset={asset}
-            onPress={() => navigation.navigate('BottomTab', { screen: 'Charts' })}
+            onPress={() =>
+              navigation.navigate('BottomTab', {
+                screen: 'Charts',
+                params: { symbol: asset.symbol, category: asset.category },
+              })
+            }
           />
         ))}
 

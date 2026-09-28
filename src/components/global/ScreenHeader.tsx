@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Colors } from '../../constants/Colors';
 import { goBack } from '../../utils/NavigationUtil';
 

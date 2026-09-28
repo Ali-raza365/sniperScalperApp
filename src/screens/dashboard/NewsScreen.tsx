@@ -5,7 +5,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, StatusBar, Animated, Easing } from 'react-native';
 import { Colors } from '../../constants/Colors';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { newsRepository } from '../../data/repository';
 import type { CalendarImpact } from '../../data/types';
 import { showToast } from '../../utils/CustomToast';
