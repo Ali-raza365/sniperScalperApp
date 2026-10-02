@@ -24,7 +24,11 @@ const SMCTabIcon: FC<TabIconProps> = ({ name, focused, label }) => (
       size={22}
       color={focused ? Colors.primary : 'rgba(221,193,174,0.60)'}
     />
-    <Text style={[styles.tabLabel, focused ? styles.tabLabelActive : styles.tabLabelInactive]}>
+    <Text
+      numberOfLines={1}
+      adjustsFontSizeToFit
+      minimumFontScale={0.75}
+      style={[styles.tabLabel, focused ? styles.tabLabelActive : styles.tabLabelInactive]}>
       {label}
     </Text>
   </View>
@@ -111,20 +115,23 @@ const styles = StyleSheet.create({
   tabItem: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 4,
     paddingVertical: 4,
     borderRadius: 12,
-    minWidth: 56,
+    minWidth: 64,
+    maxWidth: 76,
   },
   tabItemActive: {
     backgroundColor: 'rgba(255,140,0,0.12)',
   },
   tabLabel: {
-    fontSize: 8.5,
+    fontSize: 8,
     fontWeight: '700',
-    letterSpacing: 1.1,
+    letterSpacing: 0.4,
     marginTop: 2,
     textTransform: 'uppercase',
+    textAlign: 'center',
+    width: '100%',
   },
   tabLabelActive: {
     color: Colors.primary,
