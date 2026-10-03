@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "169188114633",
+    "project_id": "sniper-scalper-763c5",
+    "storage_bucket": "sniper-scalper-763c5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169188114633:android:397c5daec22b33075dcd18",
+        "android_client_info": {
+          "package_name": "com.sniperscalperapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "169188114633-05llmpc194p4lgnfek9ttnugt5ed3p6f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVBxP2MXtCjfzTU-LeBnV28MMxZ_J7tWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "169188114633-05llmpc194p4lgnfek9ttnugt5ed3p6f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

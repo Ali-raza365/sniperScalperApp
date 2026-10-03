@@ -1,4 +1,5 @@
-import { API_BASE_URL, IS_LIVE_DATA_ENABLED, SIGNAL_API_KEY } from './apiConfig';
+import { getAuth, getIdToken } from '@react-native-firebase/auth';
+import { API_BASE_URL, IS_LIVE_DATA_ENABLED } from './apiConfig';
 import { mapIncomingSignal } from './mapSignal';
 import type { AssetCategory, FaqCategory, OhlcBar, Signal, SignalStatus, WatchlistAsset } from './types';
 import {
@@ -22,20 +23,36 @@ import {
   WATCHLIST_PULSE,
 } from './mockData';
 
+async function bearerHeaders(): Promise<Record<string, string> | null> {
+  const user = getAuth().currentUser;
+  if (!user) return null;
+  try {
+    const idToken = await getIdToken(user);
+    return { Authorization: `Bearer ${idToken}` };
+  } catch {
+    return null;
+  }
+}
+
 /**
- * LiveMarketProvider — talks to the local MT5 ingest server (see /server).
- * Returns `null` on any failure (server down, unset URL, bad response) so
- * callers can fall back to the bundled mock catalogs. Disabled entirely
- * unless EXPO_PUBLIC_API_URL is set.
+ * LiveMarketProvider — talks to the public MT5 ingest server (see /server).
+ * App routes require a Firebase ID token. Returns `null` on any failure so
+ * callers can fall back to the bundled mock catalogs.
  */
 const LiveMarketProvider = {
-  async fetchSignals(status: SignalStatus | 'all'): Promise<Signal[] | null> {
+  async fetchSignals(
+    status: SignalStatus | 'all',
+    account?: string,
+  ): Promise<Signal[] | null> {
     if (!IS_LIVE_DATA_ENABLED) return null;
+    const headers = await bearerHeaders();
+    if (!headers) return null;
     try {
-      const qs = status === 'all' ? '' : `?status=${status}`;
-      const res = await fetch(`${API_BASE_URL}/signals${qs}`, {
-        headers: { 'x-api-key': SIGNAL_API_KEY },
-      });
+      const params = new URLSearchParams();
+      if (status !== 'all') params.set('status', status);
+      if (account?.trim()) params.set('account', account.trim());
+      const qs = params.toString() ? `?${params.toString()}` : '';
+      const res = await fetch(`${API_BASE_URL}/signals${qs}`, { headers });
       if (!res.ok) return null;
       const json = await res.json();
       const raw = Array.isArray(json?.signals) ? json.signals : [];
@@ -68,12 +85,14 @@ export const marketRepository = {
   getSignals: () => SIGNALS,
 
   /**
-   * Live-first signal fetch with mock fallback. `live: true` only when the
-   * ingest server was actually reached (an empty live result still counts
-   * as live — only network/config failures fall back to mocks).
+   * Live-first signal fetch with mock fallback. Pass `account` (MT5 login) to
+   * filter; the server also enforces the caller's registered accounts.
    */
-  fetchSignals: async (status: SignalStatus | 'all' = 'all'): Promise<{ signals: Signal[]; live: boolean }> => {
-    const live = await LiveMarketProvider.fetchSignals(status);
+  fetchSignals: async (
+    status: SignalStatus | 'all' = 'all',
+    account?: string,
+  ): Promise<{ signals: Signal[]; live: boolean }> => {
+    const live = await LiveMarketProvider.fetchSignals(status, account);
     if (live !== null) {
       return { signals: live, live: true };
     }

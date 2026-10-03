@@ -2,6 +2,7 @@ import type { Signal, SignalSide, SignalStatus } from './types';
 
 interface IncomingSignal {
   ticket?: string | number;
+  account?: string | number;
   symbol?: string;
   side?: string;
   status?: string;
@@ -33,9 +34,15 @@ export function mapIncomingSignal(raw: IncomingSignal): Signal {
   const symbol = String(raw.symbol || '').toUpperCase();
   const ticket = raw.ticket != null ? String(raw.ticket) : undefined;
 
+  const account =
+    raw.account != null && String(raw.account).trim() !== ''
+      ? String(raw.account).trim()
+      : undefined;
+
   return {
     id: ticket || `${symbol}-${raw.openedAt ?? Date.now()}`,
     ticket,
+    account,
     pair: symbol,
     symbol,
     bias: side === 'SELL' ? 'BEARISH' : 'BULLISH',

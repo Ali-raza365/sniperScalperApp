@@ -14,6 +14,7 @@
     "android": {
       "package": "com.sniperscalperapp",
       "versionCode": 2,
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#121212",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -28,6 +29,10 @@
     "plugins": [
       "expo-asset",
       "expo-font",
+      "expo-dev-client",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      "@react-native-firebase/messaging",
       [
         "expo-splash-screen",
         {

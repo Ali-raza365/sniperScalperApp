@@ -1,14 +1,15 @@
 {
   "name": "sniper-scalper-signals",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "MT5 ingest server for Sniper Scalper — live tickets + OHLC bars",
+  "description": "MT5 ingest server for Sniper Scalper — tickets, OHLC, FCM push",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "firebase-admin": "^13.0.2"
   }
 }

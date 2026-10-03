@@ -23,6 +23,7 @@ export const dashboardStack: StackEntry[] = [
   { name: 'Faqs', component: FaqsScreen },
 ];
 
+/** Auth screens live in AuthNavigator (gated by Firebase Auth), not this stack. */
 export const authStack: StackEntry[] = [];
 
-export const mergedStacks: StackEntry[] = [...dashboardStack, ...authStack];
+export const mergedStacks: StackEntry[] = [...dashboardStack];

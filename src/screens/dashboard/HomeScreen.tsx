@@ -23,8 +23,17 @@ const BENTO_THEME: Record<string, { iconColor: string; bg: string }> = {
   news: { iconColor: Colors.secondary, bg: 'rgba(175,198,255,0.12)' },
 };
 
-const SignalCard: FC<{ signal: Signal }> = ({ signal }) => {
+const SignalCard: FC<{ signal: Signal; live?: boolean }> = ({ signal, live }) => {
   const biasColor = BIAS_COLOR[signal.bias];
+  const sideLabel = signal.side ?? (signal.bias === 'BEARISH' ? 'SELL' : 'BUY');
+  const metaParts: string[] = [];
+  if (live && signal.volume != null) metaParts.push(`${signal.volume} lots`);
+  if (live && signal.price != null) metaParts.push(`@ ${signal.price}`);
+  const desc =
+    live && metaParts.length
+      ? `${sideLabel} · ${metaParts.join(' · ')}${signal.comment ? ` — ${signal.comment}` : ''}`
+      : signal.desc;
+
   return (
     <View style={s.signalCard}>
       <View style={[s.signalIcon, { backgroundColor: Colors.surfaceContainerHigh }]}>
@@ -32,10 +41,12 @@ const SignalCard: FC<{ signal: Signal }> = ({ signal }) => {
       </View>
       <View style={{ flex: 1 }}>
         <View style={s.signalRow}>
-          <Text style={[s.signalPair, { color: biasColor }]}>{signal.pair} • {signal.bias}</Text>
+          <Text style={[s.signalPair, { color: biasColor }]}>
+            {signal.pair} • {live ? sideLabel : signal.bias}
+          </Text>
           <Text style={s.signalTime}>{signal.time}</Text>
         </View>
-        <Text style={s.signalDesc}>{signal.desc}</Text>
+        <Text style={s.signalDesc}>{desc}</Text>
       </View>
     </View>
   );
@@ -125,7 +136,7 @@ const HomeScreen: FC = () => {
         </View>
         {signals.map((signal, index) => (
           <View key={signal.id} style={{ marginBottom: index === signals.length - 1 ? 0 : 10 }}>
-            <SignalCard signal={signal} />
+            <SignalCard signal={signal} live={signalsLive} />
           </View>
         ))}
       </View>

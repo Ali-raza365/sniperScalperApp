@@ -1,22 +1,25 @@
 # sniperScalperApp
 
-SMC-style trading terminal app. Built with **Expo SDK 57**, using **Expo Go** for day-to-day development and **EAS Build** for Play Store releases (package `com.sniperscalperapp`, same identity as the live listing).
+SMC-style trading terminal app. Built with **Expo SDK 57**, **Expo Dev Client** (required for Firebase Auth + FCM), and **EAS Build** for Play Store releases (package `com.sniperscalperapp`).
 
 ## Stack
 
-- Expo SDK 57 (React Native 0.86, React 19.2)
+- Expo SDK 57 (React Native 0.86, React 19.2) + `expo-dev-client`
 - React Navigation (native-stack + bottom-tabs) — **not** Expo Router
-- `@expo/vector-icons` for iconography
-- `react-native-webview` for the live TradingView-style chart terminal (Phase 2)
+- `@react-native-firebase/auth` + `@react-native-firebase/messaging` (not Expo Go)
+- `react-native-webview` for the live TradingView-style chart terminal
+- `server/` — MT5 ingest API, Firebase Admin FCM push, account filter
 
 ## Getting started
 
 ```sh
 npm install
-npx expo start
+# Place google-services.json at repo root (Firebase Android app com.sniperscalperapp)
+npx eas-cli build -p android --profile development   # Dev Client APK
+npx expo start --dev-client
 ```
 
-Scan the QR code with **Expo Go** (Android/iOS) or press `a` / `i` for an emulator/simulator.
+Live signals + push: see [`docs/LIVE_SIGNALS_SETUP.md`](docs/LIVE_SIGNALS_SETUP.md).
 
 ## Project structure
 
@@ -25,7 +28,9 @@ Scan the QR code with **Expo Go** (Android/iOS) or press `a` / `i` for an emulat
 - `src/data` — mock data + repository layer (swappable for live providers)
 - `src/components`, `src/utils`, `src/constants` — shared UI/helpers
 - `desgin/` — original Stitch HTML design references (typo kept intentionally to match design source)
-- `server/` — local MT5 ingest server (signals/OHLC) for live data, added in Phase 3
+- `server/` — MT5 ingest (signals/OHLC), `/devices` FCM registration, Firebase Admin push
+- `docs/LIVE_SIGNALS_SETUP.md` — Firebase, Railway, EA, Dev Client checklist
+- `src/auth` — Firebase Auth gate (Login / Register)
 
 ## Testing
 

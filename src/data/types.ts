@@ -15,6 +15,8 @@ export interface Signal {
   time: string;
   /** Present when this signal was sourced live from the MT5 ingest server. */
   ticket?: string;
+  /** MT5 ACCOUNT_LOGIN from the EA payload. */
+  account?: string;
   symbol?: string;
   side?: SignalSide;
   status?: SignalStatus;

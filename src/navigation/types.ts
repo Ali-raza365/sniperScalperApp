@@ -10,6 +10,11 @@ export type TabParamList = {
   Settings: undefined;
 };
 
+export type AuthStackParamList = {
+  Login: undefined;
+  Register: undefined;
+};
+
 export type RootStackParamList = {
   Splash: undefined;
   BottomTab: { screen?: keyof TabParamList; params?: ChartsParams } | undefined;

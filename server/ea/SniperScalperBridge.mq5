@@ -1,7 +1,9 @@
 #property copyright "Sniper Scalper"
-#property version   "1.10"
-#property description "Posts MT5 deals and OHLC bars to the Sniper Scalper ingest server"
+#property version   "1.20"
+#property description "Posts MT5 deals (+ account login) and OHLC bars to the Sniper Scalper ingest server"
 
+// Set InpServerUrl to your public HTTPS API (e.g. https://your-app.up.railway.app).
+// MT5 → Tools → Options → Expert Advisors → Allow WebRequest for listed URL → add that exact origin.
 input string InpServerUrl      = "http://127.0.0.1:8787";
 input string InpApiKey         = "sniper-scalper-dev-key";
 input string InpOhlcTimeframe  = "15m"; // label sent to the server; match the chart period below
@@ -95,8 +97,11 @@ void PostSignal(const long ticket,
 {
    const string url = InpServerUrl + "/signals";
    const string iso = TimeToString(openedAt, TIME_DATE | TIME_SECONDS);
+   const long account = AccountInfoInteger(ACCOUNT_LOGIN);
+
    string body = "{";
    body += "\"ticket\":" + IntegerToString(ticket) + ",";
+   body += "\"account\":" + IntegerToString(account) + ",";
    body += "\"symbol\":\"" + symbol + "\",";
    body += "\"side\":\"" + side + "\",";
    body += "\"volume\":" + DoubleToString(volume, 2) + ",";
