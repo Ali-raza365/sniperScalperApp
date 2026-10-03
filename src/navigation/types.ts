@@ -10,11 +10,6 @@ export type TabParamList = {
   Settings: undefined;
 };
 
-export type AuthStackParamList = {
-  Login: undefined;
-  Register: undefined;
-};
-
 export type RootStackParamList = {
   Splash: undefined;
   BottomTab: { screen?: keyof TabParamList; params?: ChartsParams } | undefined;
@@ -23,4 +18,7 @@ export type RootStackParamList = {
   AboutUs: undefined;
   ContactUs: undefined;
   Faqs: undefined;
+  /** Optional — app works without signing in. */
+  Login: undefined;
+  Register: undefined;
 };

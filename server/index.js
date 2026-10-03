@@ -5,6 +5,8 @@ const cors = require('cors');
 
 const PORT = Number(process.env.PORT) || 8787;
 const API_KEY = process.env.SIGNAL_API_KEY || 'sniper-scalper-dev-key';
+/** Single admin MT5 login that publishes signals to every app user. */
+const ADMIN_MT5_ACCOUNT = String(process.env.ADMIN_MT5_ACCOUNT || '').trim();
 const SIGNALS_FILE = path.join(__dirname, 'data', 'signals.json');
 const OHLC_FILE = path.join(__dirname, 'data', 'ohlc.json');
 const DEVICES_FILE = path.join(__dirname, 'data', 'devices.json');
@@ -14,14 +16,13 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '256kb' }));
 
-// ---------- Firebase Admin (optional until credentials are configured) ----------
+// ---------- Firebase Admin (FCM push only — no end-user auth) ----------
 
 let admin = null;
 let firebaseReady = false;
 
 function initFirebase() {
   try {
-    // Lazy require so local EA-only testing works without firebase-admin installed yet.
     // eslint-disable-next-line global-require
     admin = require('firebase-admin');
     if (admin.apps.length) {
@@ -50,7 +51,7 @@ function initFirebase() {
     }
 
     console.warn(
-      'Firebase Admin not configured — app Bearer auth and FCM push disabled until you set FIREBASE_SERVICE_ACCOUNT_JSON or place server/firebase-service-account.json',
+      'Firebase Admin not configured — FCM push disabled until you set FIREBASE_SERVICE_ACCOUNT_JSON or place server/firebase-service-account.json',
     );
   } catch (err) {
     console.warn('Firebase Admin init failed:', err.message);
@@ -112,38 +113,12 @@ function requireApiKey(req, res, next) {
   return next();
 }
 
-async function requireFirebaseUser(req, res, next) {
-  if (!firebaseReady || !admin) {
-    return res.status(503).json({
-      error: 'firebase_unavailable',
-      message: 'Configure Firebase Admin credentials on the server',
-    });
-  }
-  const header = req.header('authorization') || '';
-  const match = header.match(/^Bearer\s+(.+)$/i);
-  if (!match) {
-    return res.status(401).json({ error: 'missing_bearer_token' });
-  }
-  try {
-    const decoded = await admin.auth().verifyIdToken(match[1].trim());
-    req.user = { uid: decoded.uid, email: decoded.email || null };
-    return next();
-  } catch {
-    return res.status(401).json({ error: 'invalid_token' });
-  }
+function isAdminAccount(account) {
+  if (!ADMIN_MT5_ACCOUNT) return true; // unset = accept any (local/dev)
+  return account != null && String(account) === ADMIN_MT5_ACCOUNT;
 }
 
-function accountsForUid(uid) {
-  return [
-    ...new Set(
-      readDevices()
-        .filter(d => d.uid === uid && d.account)
-        .map(d => String(d.account)),
-    ),
-  ];
-}
-
-// ---------- signals (MT5 deal tickets) ----------
+// ---------- signals (admin MT5 → all users) ----------
 
 function normalizeSide(value) {
   return String(value || '').toUpperCase() === 'SELL' ? 'SELL' : 'BUY';
@@ -185,14 +160,11 @@ function toSignal(body) {
   };
 }
 
-async function sendPushForSignal(signal, isNew) {
-  if (!firebaseReady || !admin || !signal.account) return;
+async function sendPushToAllDevices(signal, isNew) {
+  if (!firebaseReady || !admin) return;
   if (!isNew && signal.status !== 'closed') return;
 
-  const devices = readDevices().filter(
-    d => d.fcmToken && String(d.account) === String(signal.account),
-  );
-  const tokens = [...new Set(devices.map(d => d.fcmToken))];
+  const tokens = [...new Set(readDevices().map(d => d.fcmToken).filter(Boolean))];
   if (!tokens.length) return;
 
   const title =
@@ -203,7 +175,7 @@ async function sendPushForSignal(signal, isNew) {
   if (signal.volume) bodyParts.push(`${signal.volume} lots`);
   if (signal.price != null) bodyParts.push(`@ ${signal.price}`);
   if (signal.comment) bodyParts.push(signal.comment);
-  const body = bodyParts.join(' · ') || `Account ${signal.account}`;
+  const body = bodyParts.join(' · ') || 'New Sniper Scalper signal';
 
   try {
     const result = await admin.messaging().sendEachForMulticast({
@@ -213,13 +185,12 @@ async function sendPushForSignal(signal, isNew) {
         ticket: String(signal.ticket),
         symbol: String(signal.symbol),
         side: String(signal.side),
-        account: String(signal.account),
+        account: String(signal.account || ''),
         status: String(signal.status),
       },
       android: { priority: 'high' },
     });
 
-    // Drop invalid tokens
     if (result.failureCount > 0) {
       const invalid = new Set();
       result.responses.forEach((r, i) => {
@@ -247,29 +218,19 @@ app.get('/health', (_req, res) => {
     ok: true,
     service: 'sniper-scalper-signals',
     firebase: firebaseReady,
+    adminAccount: ADMIN_MT5_ACCOUNT || null,
   });
 });
 
-app.get('/signals', requireFirebaseUser, (req, res) => {
+/** Public — every app user sees admin account signals. */
+app.get('/signals', (req, res) => {
   const status = String(req.query.status || '').toLowerCase();
-  const registered = accountsForUid(req.user.uid);
-  const requested = String(req.query.account || '').trim();
+  let signals = readSignals();
 
-  // Prefer explicit ?account= (Settings MT5 login). Otherwise fall back to
-  // accounts linked via FCM device registration. No account → empty list
-  // (never leak other users' tickets).
-  let accountFilter = [];
-  if (requested) {
-    accountFilter = [requested];
-  } else if (registered.length) {
-    accountFilter = registered;
-  } else {
-    return res.json({ signals: [] });
+  if (ADMIN_MT5_ACCOUNT) {
+    signals = signals.filter(item => String(item.account) === ADMIN_MT5_ACCOUNT);
   }
 
-  let signals = readSignals().filter(
-    item => item.account != null && accountFilter.includes(String(item.account)),
-  );
   if (status === 'open' || status === 'closed') {
     signals = signals.filter(item => item.status === status);
   }
@@ -286,6 +247,14 @@ app.post('/signals', requireApiKey, async (req, res) => {
   if (mapped.error) {
     return res.status(400).json({ error: mapped.error });
   }
+
+  if (!isAdminAccount(mapped.account)) {
+    return res.status(403).json({
+      error: 'not_admin_account',
+      message: `Only ADMIN_MT5_ACCOUNT (${ADMIN_MT5_ACCOUNT}) may publish signals`,
+    });
+  }
+
   const store = readSignals();
   const index = store.findIndex(item => String(item.ticket) === mapped.ticket);
   const isNew = index < 0;
@@ -296,29 +265,21 @@ app.post('/signals', requireApiKey, async (req, res) => {
   }
   writeSignals(store);
 
-  // Fire-and-forget push
-  sendPushForSignal(mapped, isNew).catch(() => undefined);
+  sendPushToAllDevices(mapped, isNew).catch(() => undefined);
 
   return res.status(isNew ? 201 : 200).json({ signal: mapped });
 });
 
-// ---------- devices (FCM tokens) ----------
+// ---------- devices (public FCM token register — no user auth) ----------
 
-app.post('/devices', requireFirebaseUser, (req, res) => {
+app.post('/devices', (req, res) => {
   const fcmToken = String(req.body?.fcmToken || '').trim();
-  const account = String(req.body?.account || '').trim();
   if (!fcmToken) return res.status(400).json({ error: 'fcmToken is required' });
-  if (!account) return res.status(400).json({ error: 'account is required' });
 
   const devices = readDevices();
-  const idx = devices.findIndex(
-    d => d.uid === req.user.uid && d.fcmToken === fcmToken,
-  );
+  const idx = devices.findIndex(d => d.fcmToken === fcmToken);
   const entry = {
-    uid: req.user.uid,
-    email: req.user.email,
     fcmToken,
-    account,
     updatedAt: new Date().toISOString(),
   };
   if (idx >= 0) {
@@ -330,13 +291,10 @@ app.post('/devices', requireFirebaseUser, (req, res) => {
   return res.status(idx >= 0 ? 200 : 201).json({ device: entry });
 });
 
-app.delete('/devices', requireFirebaseUser, (req, res) => {
+app.delete('/devices', (req, res) => {
   const fcmToken = String(req.body?.fcmToken || req.query.fcmToken || '').trim();
   if (!fcmToken) return res.status(400).json({ error: 'fcmToken is required' });
-  const next = readDevices().filter(
-    d => !(d.uid === req.user.uid && d.fcmToken === fcmToken),
-  );
-  writeDevices(next);
+  writeDevices(readDevices().filter(d => d.fcmToken !== fcmToken));
   return res.json({ ok: true });
 });
 
@@ -413,5 +371,10 @@ app.post('/ohlc', requireApiKey, (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Sniper Scalper ingest server listening on http://0.0.0.0:${PORT}`);
   console.log('POST /signals and POST /ohlc require header x-api-key');
-  console.log('GET /signals and /devices require Firebase Bearer ID token');
+  console.log(
+    ADMIN_MT5_ACCOUNT
+      ? `Admin MT5 account (broadcast source): ${ADMIN_MT5_ACCOUNT}`
+      : 'ADMIN_MT5_ACCOUNT unset — accepting signals from any account (dev)',
+  );
+  console.log('GET /signals and /devices are public (no user auth)');
 });

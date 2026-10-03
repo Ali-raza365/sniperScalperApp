@@ -1,13 +1,10 @@
-const user = null;
-
 export type User = {
   uid: string;
   email: string | null;
-  getIdToken?: () => Promise<string>;
 };
 
 export function getAuth() {
-  return { currentUser: user };
+  return { currentUser: null };
 }
 
 export function onAuthStateChanged(

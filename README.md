@@ -1,14 +1,16 @@
 # sniperScalperApp
 
-SMC-style trading terminal app. Built with **Expo SDK 57**, **Expo Dev Client** (required for Firebase Auth + FCM), and **EAS Build** for Play Store releases (package `com.sniperscalperapp`).
+SMC-style trading terminal app. Built with **Expo SDK 57**, **Expo Dev Client** (required for FCM push), and **EAS Build** for Play Store releases (package `com.sniperscalperapp`).
+
+**Login is optional.** One admin MetaTrader 5 account publishes signals; every user (guest or signed-in) sees them.
 
 ## Stack
 
 - Expo SDK 57 (React Native 0.86, React 19.2) + `expo-dev-client`
 - React Navigation (native-stack + bottom-tabs) — **not** Expo Router
-- `@react-native-firebase/auth` + `@react-native-firebase/messaging` (not Expo Go)
+- `@react-native-firebase/messaging` for FCM (not Expo Go)
 - `react-native-webview` for the live TradingView-style chart terminal
-- `server/` — MT5 ingest API, Firebase Admin FCM push, account filter
+- `server/` — admin MT5 ingest, public signals, Firebase Admin FCM broadcast
 
 ## Getting started
 
@@ -28,9 +30,9 @@ Live signals + push: see [`docs/LIVE_SIGNALS_SETUP.md`](docs/LIVE_SIGNALS_SETUP.
 - `src/data` — mock data + repository layer (swappable for live providers)
 - `src/components`, `src/utils`, `src/constants` — shared UI/helpers
 - `desgin/` — original Stitch HTML design references (typo kept intentionally to match design source)
-- `server/` — MT5 ingest (signals/OHLC), `/devices` FCM registration, Firebase Admin push
-- `docs/LIVE_SIGNALS_SETUP.md` — Firebase, Railway, EA, Dev Client checklist
-- `src/auth` — Firebase Auth gate (Login / Register)
+- `server/` — admin MT5 ingest, public `/signals`, `/devices` FCM registration
+- `docs/LIVE_SIGNALS_SETUP.md` — admin broadcast + FCM checklist
+- `src/providers` — AlertsProvider (optional push registration)
 
 ## Testing
 

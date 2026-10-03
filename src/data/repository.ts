@@ -1,4 +1,3 @@
-import { getAuth, getIdToken } from '@react-native-firebase/auth';
 import { API_BASE_URL, IS_LIVE_DATA_ENABLED } from './apiConfig';
 import { mapIncomingSignal } from './mapSignal';
 import type { AssetCategory, FaqCategory, OhlcBar, Signal, SignalStatus, WatchlistAsset } from './types';
@@ -23,36 +22,16 @@ import {
   WATCHLIST_PULSE,
 } from './mockData';
 
-async function bearerHeaders(): Promise<Record<string, string> | null> {
-  const user = getAuth().currentUser;
-  if (!user) return null;
-  try {
-    const idToken = await getIdToken(user);
-    return { Authorization: `Bearer ${idToken}` };
-  } catch {
-    return null;
-  }
-}
-
 /**
- * LiveMarketProvider — talks to the public MT5 ingest server (see /server).
- * App routes require a Firebase ID token. Returns `null` on any failure so
- * callers can fall back to the bundled mock catalogs.
+ * LiveMarketProvider — public MT5 ingest API. Admin account signals are
+ * broadcast to every user; no app login required.
  */
 const LiveMarketProvider = {
-  async fetchSignals(
-    status: SignalStatus | 'all',
-    account?: string,
-  ): Promise<Signal[] | null> {
+  async fetchSignals(status: SignalStatus | 'all'): Promise<Signal[] | null> {
     if (!IS_LIVE_DATA_ENABLED) return null;
-    const headers = await bearerHeaders();
-    if (!headers) return null;
     try {
-      const params = new URLSearchParams();
-      if (status !== 'all') params.set('status', status);
-      if (account?.trim()) params.set('account', account.trim());
-      const qs = params.toString() ? `?${params.toString()}` : '';
-      const res = await fetch(`${API_BASE_URL}/signals${qs}`, { headers });
+      const qs = status === 'all' ? '' : `?status=${status}`;
+      const res = await fetch(`${API_BASE_URL}/signals${qs}`);
       if (!res.ok) return null;
       const json = await res.json();
       const raw = Array.isArray(json?.signals) ? json.signals : [];
@@ -76,30 +55,19 @@ const LiveMarketProvider = {
   },
 };
 
-/**
- * App data repository.
- * Screens read from these getters so mock catalogs can later be swapped for API calls.
- */
 export const marketRepository = {
-  /** Synchronous mock accessor — kept for callers that don't need live data. */
   getSignals: () => SIGNALS,
 
-  /**
-   * Live-first signal fetch with mock fallback. Pass `account` (MT5 login) to
-   * filter; the server also enforces the caller's registered accounts.
-   */
   fetchSignals: async (
     status: SignalStatus | 'all' = 'all',
-    account?: string,
   ): Promise<{ signals: Signal[]; live: boolean }> => {
-    const live = await LiveMarketProvider.fetchSignals(status, account);
+    const live = await LiveMarketProvider.fetchSignals(status);
     if (live !== null) {
       return { signals: live, live: true };
     }
     return { signals: SIGNALS, live: false };
   },
 
-  /** Live-first OHLC fetch; returns null (no fallback data) when live data is unavailable. */
   fetchOhlc: (symbol: string, timeframe: string, limit?: number) =>
     LiveMarketProvider.fetchOhlc(symbol, timeframe, limit),
 

@@ -1,5 +1,5 @@
 /**
- * SettingsScreen — profile, MT5 account, Signal Alerts, sign out
+ * SettingsScreen — optional account, Signal Alerts, info
  */
 import React, { FC, useCallback, useState } from 'react';
 import {
@@ -10,9 +10,8 @@ import {
   StyleSheet,
   StatusBar,
   Switch,
-  TextInput,
-  TouchableOpacity,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -23,10 +22,9 @@ import { TopBar, SectionHeader, ListRow } from '../../components/ds';
 import { ProImages } from '../../assets/images/pro';
 import { accountRepository } from '../../data/repository';
 import { useAuth } from '../../auth/AuthContext';
+import { useAlerts } from '../../providers/AlertsProvider';
 import {
-  getMt5Account,
   getSignalAlertsEnabled,
-  setMt5Account,
   setSignalAlertsEnabled,
 } from '../../services/prefs';
 import { showToast } from '../../utils/CustomToast';
@@ -36,9 +34,9 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 const SettingsScreen: FC = () => {
   const navigation = useNavigation<Nav>();
-  const { user, signOut, syncPushRegistration } = useAuth();
+  const { user, signOut } = useAuth();
+  const { syncPushRegistration } = useAlerts();
   const profile = accountRepository.getProfile();
-  const [mt5Account, setMt5AccountLocal] = useState('');
   const [signalAlerts, setSignalAlertsLocal] = useState(true);
   const [newsUpdates, setNewsUpdates] = useState(false);
   const [newsletter, setNewsletter] = useState(true);
@@ -49,12 +47,8 @@ const SettingsScreen: FC = () => {
     useCallback(() => {
       let active = true;
       (async () => {
-        const [account, alerts] = await Promise.all([
-          getMt5Account(),
-          getSignalAlertsEnabled(),
-        ]);
+        const alerts = await getSignalAlertsEnabled();
         if (!active) return;
-        setMt5AccountLocal(account);
         setSignalAlertsLocal(alerts);
       })();
       return () => {
@@ -63,31 +57,19 @@ const SettingsScreen: FC = () => {
     }, []),
   );
 
-  const persistMt5AndSync = async (account: string, alerts: boolean) => {
-    setSaving(true);
-    try {
-      await setMt5Account(account);
-      await setSignalAlertsEnabled(alerts);
-      await syncPushRegistration();
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const onMt5Blur = async () => {
-    const trimmed = mt5Account.trim();
-    setMt5AccountLocal(trimmed);
-    await persistMt5AndSync(trimmed, signalAlerts);
-    if (trimmed && signalAlerts) {
-      showToast.success('MT5 account saved. Alerts will use this login.');
-    }
-  };
-
   const onSignalAlertsChange = async (value: boolean) => {
     setSignalAlertsLocal(value);
-    await persistMt5AndSync(mt5Account.trim(), value);
-    if (value && !mt5Account.trim()) {
-      showToast.error('Enter your MT5 account login to receive alerts.');
+    setSaving(true);
+    try {
+      await setSignalAlertsEnabled(value);
+      await syncPushRegistration();
+      showToast.success(
+        value
+          ? 'You will get push alerts for admin signals.'
+          : 'Signal alerts turned off.',
+      );
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -95,6 +77,7 @@ const SettingsScreen: FC = () => {
     setSigningOut(true);
     try {
       await signOut();
+      showToast.success('Signed out.');
     } catch (e: any) {
       showToast.error(e?.message ?? 'Sign out failed.');
     } finally {
@@ -120,33 +103,54 @@ const SettingsScreen: FC = () => {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={s.name}>{user?.email ?? profile.name}</Text>
-            <Text style={s.role}>{profile.role}</Text>
+            <Text style={s.role}>
+              {user ? 'Signed in' : `${profile.role} · Guest`}
+            </Text>
           </View>
+          {saving ? <ActivityIndicator color={Colors.primary} /> : null}
         </View>
 
         <View style={s.sectionGap}>
-          <SectionHeader label="MT5 Live Signals" color="blue" />
+          <SectionHeader label="Account" color="blue" />
         </View>
         <View style={s.group}>
-          <View style={s.inputRow}>
-            <MaterialIcons name="account-balance" size={24} color={Colors.primary} />
-            <View style={s.inputCol}>
-              <Text style={s.inputLabel}>MT5 Account Login</Text>
-              <TextInput
-                style={s.input}
-                value={mt5Account}
-                onChangeText={setMt5AccountLocal}
-                onBlur={onMt5Blur}
-                placeholder="e.g. 12345678"
-                placeholderTextColor={Colors.textMuted}
-                keyboardType="number-pad"
-                autoCapitalize="none"
-                autoCorrect={false}
+          {user ? (
+            <TouchableOpacity
+              style={s.accountRow}
+              onPress={onSignOut}
+              disabled={signingOut}
+              activeOpacity={0.75}
+            >
+              <MaterialIcons name="logout" size={24} color={Colors.tertiary} />
+              <Text style={[s.accountLabel, { color: Colors.tertiary }]}>
+                {signingOut ? 'Signing out…' : 'Sign out'}
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <>
+              <ListRow
+                icon="login"
+                label="Sign in"
+                onPress={() => navigation.navigate('Login')}
               />
-            </View>
-            {saving ? <ActivityIndicator color={Colors.primary} /> : null}
-          </View>
-          <ListRow icon="notifications" label="Signal Alerts" trailing="none" divider>
+              <ListRow
+                icon="person-add"
+                label="Create account"
+                divider
+                onPress={() => navigation.navigate('Register')}
+              />
+            </>
+          )}
+        </View>
+        <Text style={s.hint}>
+          Login is optional. Live signals and alerts work for guests too.
+        </Text>
+
+        <View style={s.sectionGap}>
+          <SectionHeader label="Notification Preferences" color="blue" />
+        </View>
+        <View style={s.group}>
+          <ListRow icon="notifications" label="Signal Alerts" trailing="none">
             <Switch
               value={signalAlerts}
               onValueChange={onSignalAlertsChange}
@@ -155,17 +159,7 @@ const SettingsScreen: FC = () => {
               ios_backgroundColor={Colors.surfaceContainerHigh}
             />
           </ListRow>
-        </View>
-        <Text style={s.hint}>
-          Only trades from this MT5 login appear in LIVE SIGNALS. Turn Signal Alerts on to get
-          push notifications when the app is closed.
-        </Text>
-
-        <View style={s.sectionGap}>
-          <SectionHeader label="Notification Preferences" color="blue" />
-        </View>
-        <View style={s.group}>
-          <ListRow icon="article" label="Market News Updates" trailing="none">
+          <ListRow icon="article" label="Market News Updates" trailing="none" divider>
             <Switch
               value={newsUpdates}
               onValueChange={setNewsUpdates}
@@ -184,6 +178,9 @@ const SettingsScreen: FC = () => {
             />
           </ListRow>
         </View>
+        <Text style={s.hint}>
+          Live signals come from the admin MetaTrader 5 account and are shared with every user.
+        </Text>
 
         <View style={s.sectionGap}>
           <SectionHeader label="Information" color="muted" />
@@ -203,22 +200,6 @@ const SettingsScreen: FC = () => {
             onPress={() => navigation.navigate('Faqs')}
           />
         </View>
-
-        <TouchableOpacity
-          style={s.signOutBtn}
-          onPress={onSignOut}
-          disabled={signingOut}
-          activeOpacity={0.8}
-        >
-          {signingOut ? (
-            <ActivityIndicator color={Colors.tertiary} />
-          ) : (
-            <>
-              <MaterialIcons name="logout" size={20} color={Colors.tertiary} />
-              <Text style={s.signOutTxt}>Sign out</Text>
-            </>
-          )}
-        </TouchableOpacity>
 
         <View style={s.office}>
           <MaterialIcons name="location-on" size={16} color={Colors.textMuted} />
@@ -265,22 +246,14 @@ const s = StyleSheet.create({
     borderRadius: Radii.cardSm,
     overflow: 'hidden',
   },
-  inputRow: {
+  accountRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 18,
-    paddingVertical: 14,
+    paddingVertical: 18,
     paddingHorizontal: 20,
   },
-  inputCol: { flex: 1 },
-  inputLabel: { fontSize: 13, color: Colors.onSurfaceVariant, marginBottom: 4 },
-  input: {
-    fontSize: 16,
-    color: Colors.text,
-    paddingVertical: 4,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
-  },
+  accountLabel: { flex: 1, fontSize: 16, fontWeight: '600' },
   hint: {
     marginTop: 10,
     fontSize: 13,
@@ -288,17 +261,6 @@ const s = StyleSheet.create({
     color: Colors.textMuted,
     paddingHorizontal: 4,
   },
-  signOutBtn: {
-    marginTop: 28,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 16,
-    backgroundColor: Colors.surfaceContainerLow,
-    borderRadius: Radii.cardSm,
-  },
-  signOutTxt: { fontSize: 16, fontWeight: '600', color: Colors.tertiary },
   office: {
     flexDirection: 'row',
     alignItems: 'center',

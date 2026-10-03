@@ -1,15 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const MT5_ACCOUNT_KEY = '@sniper/mt5Account';
 const SIGNAL_ALERTS_KEY = '@sniper/signalAlerts';
-
-export async function getMt5Account(): Promise<string> {
-  return (await AsyncStorage.getItem(MT5_ACCOUNT_KEY))?.trim() ?? '';
-}
-
-export async function setMt5Account(account: string): Promise<void> {
-  await AsyncStorage.setItem(MT5_ACCOUNT_KEY, account.trim());
-}
 
 export async function getSignalAlertsEnabled(): Promise<boolean> {
   const raw = await AsyncStorage.getItem(SIGNAL_ALERTS_KEY);

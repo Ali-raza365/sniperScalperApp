@@ -6,6 +6,8 @@ import WatchlistScreen from '../screens/dashboard/WatchlistScreen';
 import AboutUsScreen from '../screens/dashboard/AboutUsScreen';
 import ContactUsScreen from '../screens/dashboard/ContactUsScreen';
 import FaqsScreen from '../screens/dashboard/FaqsScreen';
+import LoginScreen from '../screens/auth/LoginScreen';
+import RegisterScreen from '../screens/auth/RegisterScreen';
 import type { RootStackParamList } from './types';
 
 type StackEntry = {
@@ -21,9 +23,8 @@ export const dashboardStack: StackEntry[] = [
   { name: 'AboutUs', component: AboutUsScreen },
   { name: 'ContactUs', component: ContactUsScreen },
   { name: 'Faqs', component: FaqsScreen },
+  { name: 'Login', component: LoginScreen },
+  { name: 'Register', component: RegisterScreen },
 ];
-
-/** Auth screens live in AuthNavigator (gated by Firebase Auth), not this stack. */
-export const authStack: StackEntry[] = [];
 
 export const mergedStacks: StackEntry[] = [...dashboardStack];

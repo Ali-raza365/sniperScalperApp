@@ -1,70 +1,66 @@
-# Live MT5 signals + Firebase Auth + FCM
+# Live MT5 signals (admin broadcast) + FCM push
 
-End-to-end setup for account-filtered live signals and push notifications when the app is closed. Requires an **Expo Dev Client** build — `@react-native-firebase/*` does **not** work in Expo Go.
+One **admin MetaTrader 5 account** publishes trades. **Every app user** sees those signals and can get push alerts — **no per-user MT5 account**.
 
-## 1. Firebase Console
+**Login is optional** (Settings → Sign in / Create account). Guests can use the full app; Firebase Email/Password is only for optional accounts.
 
-1. Create (or open) a Firebase project.
-2. Add an **Android** app with package name **`com.sniperscalperapp`** (must match [`app.json`](../app.json)).
-3. Download **`google-services.json`** and place it at the **repo root** (same folder as `app.json`). This file is safe to commit (client config).
-4. Authentication → Sign-in method → enable **Email/Password**.
-5. Project settings → Service accounts → Generate new private key → save as `server/firebase-service-account.json` locally **or** paste the JSON into Railway as `FIREBASE_SERVICE_ACCOUNT_JSON`. **Never commit** the service account file (see `.gitignore`).
+Requires an **Expo Dev Client** build for FCM (`@react-native-firebase/messaging` does not work in Expo Go).
 
-Optional later: add an iOS app + `GoogleService-Info.plist`.
+## Architecture
 
-## 2. Deploy the ingest server
+1. Admin EA on MT5 → `POST /signals` (API key) with `account` = admin login  
+2. Server stores only that admin account’s tickets (`ADMIN_MT5_ACCOUNT`)  
+3. App `GET /signals` (public) → Home LIVE SIGNALS for all users  
+4. Server FCM → every registered device when Signal Alerts is on  
+
+## 1. Firebase (push only)
+
+1. Firebase project → Android app package **`com.sniperscalperapp`**  
+2. Drop **`google-services.json`** at repo root  
+3. Service account private key → server env `FIREBASE_SERVICE_ACCOUNT_JSON` (never commit)  
+
+Enable **Email/Password** in Firebase Auth if you want optional Sign in / Register in Settings.
+
+## 2. Deploy ingest server
 
 ```bash
 cd server
 npm install
-# Local: place firebase-service-account.json, then npm start
 ```
 
-Or deploy with Docker / Railway (see [`server/README.md`](../server/README.md)):
+Env:
 
-- `SIGNAL_API_KEY` — same value you put in the EA `InpApiKey`
-- `FIREBASE_SERVICE_ACCOUNT_JSON` — full JSON string of the service account
+| Var | Purpose |
+|-----|---------|
+| `SIGNAL_API_KEY` | EA `x-api-key` |
+| `ADMIN_MT5_ACCOUNT` | Admin MT5 login number (only this account can publish) |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | FCM Admin SDK |
 
-Note the public HTTPS URL, e.g. `https://your-service.up.railway.app`.
+Docker / Railway: see [`server/README.md`](../server/README.md).
 
-## 3. App env + Dev Client
-
-Create `.env` in the repo root (gitignored):
+## 3. App
 
 ```env
 EXPO_PUBLIC_API_URL=https://your-service.up.railway.app
 ```
 
-Build and install a development client (native Firebase modules):
-
 ```bash
-npm install
 npx eas-cli build -p android --profile development
-# install the APK, then:
 npx expo start --dev-client
 ```
 
-Or locally after prebuild: `npx expo prebuild` + run on a device/emulator.
+Open the app (guest by default). Settings → **Signal Alerts** on for push. Optional: Sign in / Create account.
 
-## 4. Sign in and configure Settings
+## 4. Admin MT5 EA
 
-1. Open the Dev Client → Register / Login (Firebase email/password).
-2. Settings → enter your **MT5 Account Login** (the number shown in MT5).
-3. Turn **Signal Alerts** on (grants notification permission and registers the FCM token with `POST /devices`).
+1. Copy [`server/ea/SniperScalperBridge.mq5`](../server/ea/SniperScalperBridge.mq5)  
+2. Allow WebRequest for the public API URL  
+3. Attach EA on the **admin** account; `InpServerUrl` + `InpApiKey`  
 
-## 5. MetaTrader 5 EA
+Trades from any other MT5 login are rejected when `ADMIN_MT5_ACCOUNT` is set.
 
-1. Copy [`server/ea/SniperScalperBridge.mq5`](../server/ea/SniperScalperBridge.mq5) into `MQL5/Experts`, compile.
-2. Tools → Options → Expert Advisors → **Allow WebRequest for listed URL** → add your API origin (exact HTTPS URL, no path).
-3. Attach EA; set `InpServerUrl` to that origin and `InpApiKey` to match the server.
+## 5. Smoke test
 
-## 6. Smoke test
-
-1. Place a trade on the configured MT5 account.
-2. Home → **LIVE SIGNALS** should show the ticket (side / volume when live).
-3. Background or kill the app → another trade should deliver an **FCM** notification.
-4. Trades on a different MT5 login must not appear for this user.
-
-## Mock fallback
-
-If `EXPO_PUBLIC_API_URL` is unset, Home still shows bundled mock signals. Firebase Auth can still run; live fetch / device registration simply no-ops until the URL is set.
+1. Admin places a trade → all users see it on Home LIVE SIGNALS  
+2. With alerts on + app backgrounded → FCM notification  
+3. Non-admin account posts → `403 not_admin_account`  
