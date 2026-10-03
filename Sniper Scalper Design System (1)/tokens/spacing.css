@@ -1,0 +1,32 @@
+/* Sniper Scalper — Spacing, radius, elevation */
+:root {
+  /* Spacing scale (dp) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --page-margin: 20px;        /* screen edge inset */
+
+  /* Corner radii */
+  --radius-chip: 999px;       /* pills: chips, CTA buttons, toggles */
+  --radius-card: 24px;        /* large content cards */
+  --radius-card-sm: 16px;     /* nested cards, list groups */
+  --radius-media: 16px;       /* imagery inside cards */
+  --radius-icon-tile: 28%;    /* app icon squircle */
+
+  /* Elevation — dark theme: lighter surface = higher, shadows minimal */
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --shadow-cta: 0 6px 20px rgba(246, 177, 122, 0.25);
+
+  /* Hit targets */
+  --hit-min: 48px;
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1); /* @kind other */
+  --dur-fast: 150ms; /* @kind other */
+  --dur-base: 250ms; /* @kind other */
+}

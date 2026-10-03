@@ -3,6 +3,7 @@ import { mapIncomingSignal } from './mapSignal';
 import type { AssetCategory, FaqCategory, OhlcBar, Signal, SignalStatus, WatchlistAsset } from './types';
 import {
   ABOUT_PHILOSOPHY,
+  ACADEMY_CATALOG,
   ACADEMY_COURSE,
   CHART_SNAPSHOT,
   CONTACT_CATEGORIES,
@@ -108,6 +109,8 @@ export const marketRepository = {
 
 export const academyRepository = {
   getCourse: () => ACADEMY_COURSE,
+  getCatalog: () => ACADEMY_CATALOG,
+  getCourseById: (id: string) => ACADEMY_CATALOG.find(c => c.id === id) ?? ACADEMY_CATALOG[0],
 };
 
 export const newsRepository = {

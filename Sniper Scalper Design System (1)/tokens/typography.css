@@ -1,0 +1,31 @@
+/* Sniper Scalper — Typography tokens */
+:root {
+  /* Families — Android Material stack */
+  --font-sans: 'Roboto', system-ui, sans-serif;
+  --font-condensed: 'Roboto Condensed', 'Roboto', sans-serif;
+
+  /* Display / headings */
+  --type-display-size: 64px;        /* "Courses" hero heading */
+  --type-display-weight: 500;
+  --type-h1-size: 40px;             /* course title */
+  --type-h2-size: 28px;             /* card titles */
+  --type-h3-size: 22px;
+
+  /* Body */
+  --type-body-size: 17px;
+  --type-body-lh: 1.55;
+  --type-small-size: 14px;
+
+  /* Brand label — the signature tracked uppercase */
+  --type-appbar-size: 22px;
+  --type-appbar-weight: 700;
+  --type-appbar-tracking: 0.12em;   /* SNIPER SCALPER */
+  --type-eyebrow-size: 13px;
+  --type-eyebrow-weight: 700;
+  --type-eyebrow-tracking: 0.28em;  /* INSTITUTIONAL TRAINING */
+  --type-label-tracking: 0.08em;    /* buttons, chips */
+
+  /* Semantic aliases */
+  --text-display: var(--type-display-weight) var(--type-display-size)/1.05 var(--font-sans);
+  --text-body: 400 var(--type-body-size)/var(--type-body-lh) var(--font-sans);
+}

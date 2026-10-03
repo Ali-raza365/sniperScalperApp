@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Play Store Screenshots" description="Google Play promotional screenshot set (1080×1920) wrapping real Sniper Scalper app screens" -->
+<helmet>
+  <script src="./ds-base.js"></script>
+  <style>
+    body { margin: 0; background: #000; }
+    @keyframes none_ { }
+  </style>
+</helmet>
+<div style="display:flex; gap:40px; padding:48px; overflow-x:auto; align-items:flex-start; font-family:var(--font-sans, 'Roboto', sans-serif)">
+
+  <!-- FRAME 1 — Introduction -->
+  <div style="width:432px; height:768px; flex:none; position:relative">
+    <div data-screen-label="01 Intro" style="width:1080px; height:1920px; transform:scale(0.4); transform-origin:top left; background:#121212; overflow:hidden; position:relative; display:flex; flex-direction:column; align-items:center">
+      <div style="margin-top:110px; text-align:center; padding:0 90px">
+        <div style="font-size:34px; font-weight:700; letter-spacing:0.3em; color:#f5820d">SNIPER SCALPER</div>
+        <h2 style="margin:36px 0 0; font-size:88px; font-weight:700; line-height:1.08; color:#eceae7">Your precision trading terminal</h2>
+        <p style="margin:30px 0 0; font-size:38px; line-height:1.5; color:#c9b8a4">Charts, courses and market news in one app.</p>
+      </div>
+      <img src="../../assets/screens/splash.png" alt="Splash screen" style="width:640px; margin-top:80px; border-radius:56px; box-shadow:0 40px 120px rgba(246,177,122,0.18), 0 30px 80px rgba(0,0,0,0.7); display:block" />
+      <sc-if value="{{ showDisclaimer }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute; bottom:44px; left:0; right:0; text-align:center; font-size:26px; color:#8a8078">For educational purposes only. Trading involves risk of loss.</div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- FRAME 2 — Charts -->
+  <div style="width:432px; height:768px; flex:none; position:relative">
+    <div data-screen-label="02 Charts" style="width:1080px; height:1920px; transform:scale(0.4); transform-origin:top left; background:#0d0d0d; overflow:hidden; position:relative; display:flex; flex-direction:column; align-items:center">
+      <div style="margin-top:110px; text-align:center; padding:0 90px">
+        <div style="font-size:30px; font-weight:700; letter-spacing:0.28em; color:#f6b17a">LIVE CHARTS</div>
+        <h2 style="margin:32px 0 0; font-size:80px; font-weight:700; line-height:1.1; color:#eceae7">Professional charting, in your pocket</h2>
+        <p style="margin:28px 0 0; font-size:38px; line-height:1.5; color:#c9b8a4">Candles, moving averages, RSI and volume across timeframes.</p>
+      </div>
+      <img src="../../assets/screens/chart.png" alt="XAUUSD chart screen" style="width:640px; margin-top:70px; border-radius:56px; box-shadow:0 30px 100px rgba(0,0,0,0.75); display:block" />
+    </div>
+  </div>
+
+  <!-- FRAME 3 — Academy -->
+  <div style="width:432px; height:768px; flex:none; position:relative">
+    <div data-screen-label="03 Academy" style="width:1080px; height:1920px; transform:scale(0.4); transform-origin:top left; background:#121212; overflow:hidden; position:relative; display:flex; flex-direction:column; align-items:center">
+      <div style="margin-top:110px; text-align:center; padding:0 90px">
+        <div style="font-size:30px; font-weight:700; letter-spacing:0.28em; color:#f6b17a">ACADEMY</div>
+        <h2 style="margin:32px 0 0; font-size:80px; font-weight:700; line-height:1.1; color:#eceae7">Learn an institutional approach</h2>
+        <p style="margin:28px 0 0; font-size:38px; line-height:1.5; color:#c9b8a4">Structured trading courses taught module by module.</p>
+      </div>
+      <img src="../../assets/screens/academy.png" alt="Academy courses screen" style="width:640px; margin-top:70px; border-radius:56px; box-shadow:0 30px 100px rgba(0,0,0,0.75); display:block" />
+      <sc-if value="{{ showDisclaimer }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute; bottom:44px; left:0; right:0; text-align:center; font-size:26px; color:#8a8078">For educational purposes only. Not financial advice.</div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- FRAME 4 — Course detail -->
+  <div style="width:432px; height:768px; flex:none; position:relative">
+    <div data-screen-label="04 Course" style="width:1080px; height:1920px; transform:scale(0.4); transform-origin:top left; background:#0d0d0d; overflow:hidden; position:relative; display:flex; flex-direction:column; align-items:center">
+      <div style="margin-top:110px; text-align:center; padding:0 90px">
+        <div style="font-size:30px; font-weight:700; letter-spacing:0.28em; color:#f6b17a">SMART MONEY CONCEPTS</div>
+        <h2 style="margin:32px 0 0; font-size:80px; font-weight:700; line-height:1.1; color:#eceae7">Go deep on market structure</h2>
+        <p style="margin:28px 0 0; font-size:38px; line-height:1.5; color:#c9b8a4">Liquidity, order blocks and fair value gaps — explained.</p>
+      </div>
+      <img src="../../assets/screens/course.png" alt="Course detail screen" style="width:640px; margin-top:70px; border-radius:56px; box-shadow:0 30px 100px rgba(0,0,0,0.75); display:block" />
+    </div>
+  </div>
+
+  <!-- FRAME 5 — News -->
+  <div style="width:432px; height:768px; flex:none; position:relative">
+    <div data-screen-label="05 News" style="width:1080px; height:1920px; transform:scale(0.4); transform-origin:top left; background:#121212; overflow:hidden; position:relative; display:flex; flex-direction:column; align-items:center">
+      <div style="margin-top:110px; text-align:center; padding:0 90px">
+        <div style="font-size:30px; font-weight:700; letter-spacing:0.28em; color:#f6b17a">MARKET NEWS</div>
+        <h2 style="margin:32px 0 0; font-size:80px; font-weight:700; line-height:1.1; color:#eceae7">Catch the story as it breaks</h2>
+        <p style="margin:28px 0 0; font-size:38px; line-height:1.5; color:#c9b8a4">A curated business feed with breaking-news ticker.</p>
+      </div>
+      <img src="../../assets/screens/news.png" alt="News feed screen" style="width:640px; margin-top:70px; border-radius:56px; box-shadow:0 30px 100px rgba(0,0,0,0.75); display:block" />
+    </div>
+  </div>
+
+  <!-- FRAME 6 — Alerts & settings -->
+  <div style="width:432px; height:768px; flex:none; position:relative">
+    <div data-screen-label="06 Alerts" style="width:1080px; height:1920px; transform:scale(0.4); transform-origin:top left; background:#0d0d0d; overflow:hidden; position:relative; display:flex; flex-direction:column; align-items:center">
+      <div style="margin-top:110px; text-align:center; padding:0 90px">
+        <div style="font-size:30px; font-weight:700; letter-spacing:0.28em; color:#f6b17a">STAY IN CONTROL</div>
+        <h2 style="margin:32px 0 0; font-size:80px; font-weight:700; line-height:1.1; color:#eceae7">Signal alerts, your way</h2>
+        <p style="margin:28px 0 0; font-size:38px; line-height:1.5; color:#c9b8a4">Toggle alerts, news updates and newsletters in one place.</p>
+      </div>
+      <img src="../../assets/screens/settings.png" alt="Settings screen" style="width:640px; margin-top:70px; border-radius:56px; box-shadow:0 30px 100px rgba(0,0,0,0.75); display:block" />
+    </div>
+  </div>
+
+</div>
+<div style="padding:0 48px 40px; color:#8a8078; font-size:13px; font-family:var(--font-sans, 'Roboto', sans-serif); max-width:900px">
+  Frames are authored at 1080×1920 (scaled 40% for preview) and use only real app screens — no invented features, ratings or claims, per Google Play metadata policy. Export each frame as PNG/JPEG under 8 MB.
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showDisclaimer&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Compliance&quot;}}"></script>
+</body>
+</html>

@@ -44,7 +44,7 @@ export const buildTradingViewHtml = (tvSymbol: string, tvInterval: string): stri
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <style>
-      html, body { margin: 0; padding: 0; background: #131313; height: 100%; overflow: hidden; }
+      html, body { margin: 0; padding: 0; background: #0d0d0d; height: 100%; overflow: hidden; }
       #tv_chart_container { height: 100%; width: 100%; }
     </style>
   </head>
@@ -69,8 +69,8 @@ export const buildTradingViewHtml = (tvSymbol: string, tvInterval: string): stri
           theme: 'dark',
           style: '1',
           locale: 'en',
-          toolbar_bg: '#131313',
-          backgroundColor: '#131313',
+          toolbar_bg: '#0d0d0d',
+          backgroundColor: '#0d0d0d',
           gridColor: 'rgba(86,67,52,0.12)',
           enable_publishing: false,
           hide_top_toolbar: false,

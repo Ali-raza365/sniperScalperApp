@@ -11,7 +11,9 @@ export type TabParamList = {
 };
 
 export type RootStackParamList = {
+  Splash: undefined;
   BottomTab: { screen?: keyof TabParamList; params?: ChartsParams } | undefined;
+  CourseDetail: { courseId: string };
   Watchlist: undefined;
   AboutUs: undefined;
   ContactUs: undefined;

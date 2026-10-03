@@ -23,7 +23,7 @@ const SMCTabIcon: FC<TabIconProps> = ({ name, focused, label }) => (
     <MaterialIcons
       name={name as any}
       size={22}
-      color={focused ? Colors.primary : 'rgba(221,193,174,0.60)'}
+      color={focused ? Colors.primary : Colors.textMuted}
     />
     <Text style={[styles.tabLabel, focused ? styles.tabLabelActive : styles.tabLabelInactive]}>
       {label}
@@ -39,7 +39,7 @@ const BottomTab: FC = () => {
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: 'rgba(19,19,19,0.92)',
+          backgroundColor: 'rgba(18,18,18,0.96)',
           borderTopWidth: 0,
           height: Platform.OS === 'ios' ? 85 : 68,
           paddingBottom: Platform.OS === 'ios' ? 20 : 8,
@@ -52,7 +52,7 @@ const BottomTab: FC = () => {
           shadowRadius: 32,
         },
         tabBarActiveTintColor: Colors.primary,
-        tabBarInactiveTintColor: 'rgba(221,193,174,0.60)',
+        tabBarInactiveTintColor: Colors.textMuted,
       }}>
 
       <Tab.Screen
@@ -60,7 +60,7 @@ const BottomTab: FC = () => {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <SMCTabIcon name="home" focused={focused} label="HOME" />
+            <SMCTabIcon name="home" focused={focused} label="Home" />
           ),
         }}
       />
@@ -70,7 +70,7 @@ const BottomTab: FC = () => {
         component={ChartScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <SMCTabIcon name="show-chart" focused={focused} label="CHARTS" />
+            <SMCTabIcon name="show-chart" focused={focused} label="Charts" />
           ),
         }}
       />
@@ -80,7 +80,7 @@ const BottomTab: FC = () => {
         component={AcademyScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <SMCTabIcon name="school" focused={focused} label="ACADEMY" />
+            <SMCTabIcon name="school" focused={focused} label="Academy" />
           ),
         }}
       />
@@ -90,7 +90,7 @@ const BottomTab: FC = () => {
         component={NewsScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <SMCTabIcon name="article" focused={focused} label="NEWS" />
+            <SMCTabIcon name="article" focused={focused} label="News" />
           ),
         }}
       />
@@ -100,7 +100,7 @@ const BottomTab: FC = () => {
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <SMCTabIcon name="settings" focused={focused} label="SETTINGS" />
+            <SMCTabIcon name="settings" focused={focused} label="Settings" />
           ),
         }}
       />
@@ -112,26 +112,25 @@ const styles = StyleSheet.create({
   tabItem: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    minWidth: 56,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    minWidth: 60,
   },
   tabItemActive: {
-    backgroundColor: 'rgba(255,140,0,0.12)',
+    backgroundColor: 'rgba(246,177,122,0.16)',
   },
   tabLabel: {
-    fontSize: 8.5,
-    fontWeight: '700',
-    letterSpacing: 1.1,
+    fontSize: 10,
+    fontWeight: '600',
+    letterSpacing: 0.3,
     marginTop: 2,
-    textTransform: 'uppercase',
   },
   tabLabelActive: {
     color: Colors.primary,
   },
   tabLabelInactive: {
-    color: 'rgba(221,193,174,0.60)',
+    color: Colors.textMuted,
   },
 });
 

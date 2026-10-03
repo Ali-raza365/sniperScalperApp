@@ -140,6 +140,22 @@ export interface NewsArticle {
   title: string;
   summary: string;
   alert?: string;
+  tag?: string;
+  /** Local require() image key from ProImages, e.g. 'newsSample1' */
+  imageKey?: 'newsSample1' | 'newsSample2' | 'courseChart';
+}
+
+export interface CatalogCourse {
+  id: string;
+  level: string;
+  title: string;
+  body: string;
+  lessons: string;
+  duration: string;
+  author: string;
+  imageKey: 'courseChart' | 'newsSample1' | 'newsSample2';
+  protocol: string;
+  architecture: Array<{ icon: string; title: string; body: string }>;
 }
 
 export interface CalendarEvent {
@@ -222,4 +238,5 @@ export interface SettingsProfile {
   name: string;
   role: string;
   plan: string;
+  office?: string;
 }

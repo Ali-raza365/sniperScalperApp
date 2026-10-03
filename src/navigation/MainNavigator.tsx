@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const MainNavigator: FC = () => {
   return (
     <Stack.Navigator
-      initialRouteName="BottomTab"
+      initialRouteName="Splash"
       screenOptions={() => ({
         headerShown: false,
         animation: 'slide_from_right',

@@ -1,0 +1,29 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Layout" subtitle="Card, ListRow, StatPair, FeatureTile" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--bg-1);padding:24px;box-sizing:border-box}</style></head>
+<body><div id="root"></div>
+<script type="text/babel">
+const { Card, ListRow, StatPair, FeatureTile, Toggle } = window.SniperScalperDesignSystem_1bcd68;
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:18}}>
+    <Card size="sm">
+      <ListRow icon="notifications" label="Signal Alerts" trailing="none"><Toggle defaultChecked /></ListRow>
+      <ListRow icon="info" label="About Us" divider />
+      <ListRow icon="help" label="Contact & Support" divider />
+    </Card>
+    <div style={{display:'flex', flexDirection:'column', gap:16}}>
+      <FeatureTile icon="water_drop" title="Liquidity" body="Locate the fuel that drives institutional moves." />
+      <div style={{display:'flex', gap:36, padding:'6px 8px'}}>
+        <StatPair icon="menu_book" label="Lessons" value="12 Modules" />
+        <StatPair icon="schedule" label="Duration" value="8 Hours" />
+      </div>
+    </div>
+  </div>
+);
+</script></body></html>

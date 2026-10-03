@@ -1,0 +1,45 @@
+/* Sniper Scalper — Color tokens (sourced from app screenshots) */
+:root {
+  /* Base surfaces — layered near-blacks, warm-tinted */
+  --bg-0: #000000;            /* status bar / device chrome */
+  --bg-1: #121212;            /* app background */
+  --bg-2: #1c1a18;            /* raised card */
+  --bg-3: #262320;            /* nested card / input */
+  --bg-chart: #0d0d0d;        /* chart canvas */
+
+  /* Brand accent — signature orange ramp */
+  --accent-peach: #f6b17a;    /* primary accent: headings, icons, CTA fill */
+  --accent-orange: #f5820d;   /* vivid orange: toggles, active pill, links */
+  --accent-peach-dim: #c8935f;
+
+  /* Text — warm-tinted neutrals */
+  --text-primary: #eceae7;
+  --text-secondary: #c9b8a4;  /* warm tan body text */
+  --text-muted: #8a8078;
+  --text-on-accent: #1c1207;  /* dark text on peach CTA */
+
+  /* Semantic — market colors */
+  --up: #26a69a;              /* teal green (candles up, price gain) */
+  --down: #ef5350;            /* red (candles down) */
+  --info-blue: #1a6ce0;       /* level badge (BEGINNER) */
+  --info-blue-soft: #aecbfa;  /* $BUSINESS tag text */
+  --rsi-purple: #9c27b0;      /* RSI plot */
+
+  /* Lines & borders */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-accent: rgba(246, 177, 122, 0.35);
+  --grid-line: rgba(255, 255, 255, 0.06);
+
+  /* Semantic aliases */
+  --surface-app: var(--bg-1);
+  --surface-card: var(--bg-2);
+  --surface-card-nested: var(--bg-3);
+  --text-body: var(--text-secondary);
+  --text-heading: var(--text-primary);
+  --cta-bg: var(--accent-peach);
+  --cta-text: var(--text-on-accent);
+  --nav-active: var(--accent-peach);
+  --nav-inactive: var(--text-muted);
+  --toggle-on: var(--accent-orange);
+}

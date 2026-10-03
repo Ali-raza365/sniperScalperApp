@@ -3,6 +3,7 @@ import type {
   AboutPhilosophy,
   AcademyCourse,
   AssetCategory,
+  CatalogCourse,
   ChartSnapshot,
   ContactChannel,
   ContactStat,
@@ -120,10 +121,10 @@ export const CHART_SNAPSHOT: ChartSnapshot = {
 };
 
 export const ACADEMY_COURSE: AcademyCourse = {
-  title: 'Mastering Institutional Order Flow & Liquidity',
-  badge: 'Premium Course',
-  students: '12.4k Students',
-  progress: 64,
+  title: 'Smart Money Concepts (SMC)',
+  badge: 'Beginner',
+  students: '12 Modules',
+  progress: 0,
   instructor: {
     name: 'FX Ramzan',
     role: 'Founder & Lead Strategist',
@@ -137,89 +138,78 @@ export const ACADEMY_COURSE: AcademyCourse = {
     label: 'Live Session Today',
     desc: 'Market Review: NY Session Open with FX Ramzan',
   },
-  modules: [
-    {
-      id: 'mod-01',
-      number: 'Module 01',
-      name: 'Foundation of Smart Money',
-      duration: '02:45:00 TOTAL',
-      locked: false,
-      lessons: [
-        {
-          id: 'l1',
-          state: 'done',
-          title: 'The Myth of Retail Support/Resistance',
-          meta: 'Lesson 1.1 • Video • 42 mins',
-        },
-        {
-          id: 'l2',
-          state: 'current',
-          title: 'Market Structure & Break of Structure (BOS)',
-          meta: 'Current Lesson • 58 mins',
-          badge: 'WATCHING',
-        },
-        {
-          id: 'l3',
-          state: 'locked',
-          title: 'Identifying Change of Character (CHOCH)',
-          meta: 'Lesson 1.3 • Video • 65 mins',
-        },
-      ],
-    },
-    {
-      id: 'mod-02',
-      number: 'Module 02',
-      name: 'Liquidity Concepts & FVG',
-      duration: '03:12:00 TOTAL',
-      locked: true,
-      lockHint: 'Complete Module 01 to unlock institutional entry patterns.',
-      lessons: [],
-    },
-  ],
+  modules: [],
 };
+
+export const ACADEMY_CATALOG: CatalogCourse[] = [
+  {
+    id: 'smc',
+    level: 'Beginner',
+    title: 'Smart Money Concepts (SMC)',
+    body: 'Master the mechanics of institutional liquidity and order flow. Understand how major players move price and learn to identify high-probability setups.',
+    lessons: '12 Modules',
+    duration: '8 Hours',
+    author: 'FX Ramzan',
+    imageKey: 'courseChart',
+    protocol:
+      'Deconstruct the financial matrix. This program is an Architectural Protocol designed to rewire your perception of liquidity. We move beyond retail noise, focusing exclusively on how institutional algorithms deliver price through the lens of Smart Money Concepts.',
+    architecture: [
+      { icon: 'account-tree', title: 'Market Structure', body: 'Identify the true narrative behind price swings.' },
+      { icon: 'opacity', title: 'Liquidity', body: 'Locate the fuel that drives institutional moves.' },
+      { icon: 'apps', title: 'Order Blocks', body: 'Pinpoint the footprints of large institutional orders.' },
+      { icon: 'call-split', title: 'FVG', body: 'Exploit Fair Value Gaps and algorithmic inefficiencies.' },
+    ],
+  },
+  {
+    id: 'scalping',
+    level: 'Intermediate',
+    title: 'Precision Scalping System',
+    body: 'A complete intraday execution framework: entries, risk, and trade management.',
+    lessons: '10 Modules',
+    duration: '6 Hours',
+    author: 'FX Ramzan',
+    imageKey: 'newsSample1',
+    protocol:
+      'Build a repeatable scalping protocol for liquid majors and gold. Focus on session timing, micro structure, and risk that survives noise.',
+    architecture: [
+      { icon: 'schedule', title: 'Session Timing', body: 'Trade only when institutional volume is present.' },
+      { icon: 'gps-fixed', title: 'Entry Triggers', body: 'Define precise confirmation before you strike.' },
+      { icon: 'shield', title: 'Risk Shield', body: 'Cap downside with volatility-aware stops.' },
+      { icon: 'trending-up', title: 'Management', body: 'Scale out with structure, not emotion.' },
+    ],
+  },
+];
 
 export const NEWS_FEED: NewsFeed = {
   tickerItems: [
-    '$GOLD Hits All-Time High at 2154.30 Amid Global Uncertainty',
-    'FED Chair Powell Hints at Quantitative Tightening Strategy Shifts',
-    '$EURUSD Technical Rejection at Daily Supply Zone 1.09450',
-    'ECB Maintains Interest Rates; Lagarde Emphasizes Data-Dependent Approach',
+    "BITGET LAUNCHES CRYPTO INDUSTRY'S FIRST EVER US STOCK OPTIONS TRADING",
+    'FROM CRYPTO TO GOLD: UEX LAUNCHES FIRST CROSS-ASSET TRADING TOURNAMENT',
   ],
   articles: [
     {
-      id: 'pmi',
-      source: 'Bloomberg',
-      time: '1m ago',
-      tickers: ['$EURUSD', '$DXY'],
-      title: 'German Manufacturing PMI Drops to 42.1; Euro Slumps as Recession Fears Deepen',
+      id: 'bitget',
+      source: 'Pakistan News Express',
+      time: '22h ago',
+      tickers: ['$BUSINESS'],
+      tag: '$BUSINESS',
+      imageKey: 'newsSample1',
+      title: "Bitget Launches Crypto Industry's First Ever US Stock Options Trading",
       summary:
-        "European markets react sharply as industrial output data from the Eurozone's largest economy misses estimates by a wide margin. Liquidity grabs observed at 1.08200 level...",
+        "VICTORIA, Seychelles, July 03, 2026 (GLOBE NEWSWIRE) — Bitget, the world's largest Universal Exchange, expands access to US equity options.",
     },
     {
-      id: 'gold-of',
-      source: 'Archive Desk',
-      time: '8m ago',
-      tickers: ['$GOLD'],
-      title: 'Smart Money Order Flow: Significant Institutional Bids Spotted at $2140.00 Level',
+      id: 'uex',
+      source: 'Riauone.com | Berita Nusantara Terkini',
+      time: '23h ago',
+      tickers: ['$BUSINESS'],
+      tag: '$BUSINESS',
+      imageKey: 'newsSample2',
+      title: 'From Crypto to Gold: UEX Launches First Cross-Asset Trading Tournament',
       summary:
-        'XAUUSD is currently testing a Daily FVG (Fair Value Gap). Order flow depth suggests massive accumulation by institutional desks before the NY open...',
-      alert: 'High Volatility Alert',
-    },
-    {
-      id: 'btc-etf',
-      source: 'Reuters',
-      time: '14m ago',
-      tickers: ['$BTC'],
-      title: 'ETF Inflows Surge as Institutional Adoption Reaches Critical Inflection Point',
-      summary:
-        'Major asset managers signal increased allocation to digital assets as institutional infrastructure matures globally...',
+        "VICTORIA, Seychelles, July 01, 2026 (GLOBE NEWSWIRE) — the world's first cross-asset trading tournament spanning crypto, gold and indices.",
     },
   ],
-  calendar: [
-    { id: 'ppi', time: '14:30', currency: 'USD', title: 'Core PPI m/m', impact: 'high', detail: 'Forecast: 0.2%' },
-    { id: 'boe', time: '16:15', currency: 'GBP', title: 'BOE Gov Bailey Speaks', impact: 'medium', detail: 'Impact: Med' },
-    { id: 'nzd', time: '19:00', currency: 'NZD', title: 'Business Confidence', impact: 'low', detail: 'Impact: Low' },
-  ],
+  calendar: [],
   sentiment: { label: 'BULLISH', value: 68 },
   volatility: { label: '18.42', value: '18.42', fill: 42 },
 };
@@ -448,7 +438,8 @@ export const ABOUT_PHILOSOPHY: AboutPhilosophy[] = [
 ];
 
 export const SETTINGS_PROFILE: SettingsProfile = {
-  name: 'Alex Sterling',
-  role: 'Institutional Tier Member',
-  plan: 'Pro Elite Plan',
+  name: 'FX Ramzan',
+  role: 'Founder & Lead Strategist',
+  plan: 'Sniper Scalper',
+  office: 'Ahmadpur East',
 };

@@ -1,13 +1,21 @@
 /**
- * ChartScreen — "SMC TERMINAL" Chart View
- * Pixel-perfect from: desgin/stitch_sniper_scalper_mobile_app/live_chart_tv_style/code.html
+ * ChartScreen — TradingView chrome around live terminal
+ * Matches pro-assets/screens/chart.png (chrome only; body is LiveChartTerminal)
  */
 import React, { FC, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, StatusBar } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  StatusBar,
+} from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Colors } from '../../constants/Colors';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Colors } from '../../constants/Colors';
+import { Radii, Spacing } from '../../constants/Spacing';
 import { marketRepository } from '../../data/repository';
 import LiveChartTerminal from '../../components/charts/LiveChartTerminal';
 import type { RootStackParamList, TabParamList } from '../../navigation/types';
@@ -22,7 +30,6 @@ const ChartScreen: FC = () => {
   const snapshot = marketRepository.getChartSnapshot();
   const [activeTF, setActiveTF] = useState(snapshot.defaultTimeframeIndex);
 
-  // A symbol tapped from Watchlist overrides the default archive snapshot symbol.
   const displaySymbol = route.params?.symbol ?? snapshot.symbol;
   const displayCategory = route.params?.category ?? 'metals';
   const activeTimeframe = snapshot.timeframes[activeTF];
@@ -31,211 +38,165 @@ const ChartScreen: FC = () => {
     <View style={s.root}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
 
-      {/* Header */}
       <View style={s.header}>
-        <View style={s.headerLeft}>
-          <View style={s.avatar}>
-            <MaterialIcons name="person" size={18} color={Colors.onSurfaceVariant} />
-          </View>
-          <View>
-            <Text style={s.headerTitle}>SMC TERMINAL</Text>
-            <Text style={s.headerSymbol}>{displaySymbol}</Text>
-          </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Watchlist')}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+          <MaterialIcons name="arrow-back" size={24} color={Colors.primary} />
+        </TouchableOpacity>
+        <View style={s.headerCenter}>
+          <Text style={s.symbol}>{displaySymbol}</Text>
+          <Text style={s.meta}>
+            {activeTimeframe} • TradingView
+          </Text>
         </View>
-        <TouchableOpacity style={s.notifBtn} activeOpacity={0.75} onPress={() => navigation.navigate('Watchlist')}>
-          <MaterialIcons name="notifications" size={22} color={Colors.primary} />
+        <View style={s.headerRight}>
+          <TouchableOpacity
+            style={s.iconBtn}
+            activeOpacity={0.75}
+            onPress={() => showToast.success('Alerts desk is standing by.')}>
+            <MaterialIcons name="notifications-none" size={22} color={Colors.text} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={s.iconBtn}
+            activeOpacity={0.75}
+            onPress={() => showToast.success('Chart settings opened.')}>
+            <MaterialIcons name="settings" size={22} color={Colors.text} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={s.toolbar}>
+        <View style={s.symbolChip}>
+          <Text style={s.symbolChipTxt}>{displaySymbol}</Text>
+        </View>
+        <TouchableOpacity
+          style={s.plusBtn}
+          activeOpacity={0.75}
+          onPress={() => showToast.success('Compare symbols from Watchlist.')}>
+          <MaterialIcons name="add" size={20} color={Colors.text} />
+        </TouchableOpacity>
+        <View style={s.tfRow}>
+          {snapshot.timeframes.slice(0, 4).map((tf, i) => {
+            const idx = snapshot.timeframes.indexOf(tf);
+            const active = idx === activeTF;
+            return (
+              <TouchableOpacity
+                key={tf}
+                style={[s.tfBtn, active && s.tfBtnActive]}
+                onPress={() => setActiveTF(idx)}
+                activeOpacity={0.7}>
+                <Text style={[s.tfTxt, active && s.tfTxtActive]}>{tf}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+        <TouchableOpacity
+          style={s.toolBtn}
+          activeOpacity={0.75}
+          onPress={() => showToast.success('Indicator overlays loaded.')}>
+          <MaterialIcons name="insights" size={18} color={Colors.text} />
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
-        {/* Timeframe Selector */}
-        <View style={s.toolbar}>
-          <View style={s.tfRow}>
-            {snapshot.timeframes.map((tf, i) => (
-              <TouchableOpacity
-                key={tf}
-                style={[s.tfBtn, i === activeTF && s.tfBtnActive]}
-                onPress={() => setActiveTF(i)}
-                activeOpacity={0.7}>
-                <Text style={[s.tfTxt, i === activeTF && s.tfTxtActive]}>{tf}</Text>
-              </TouchableOpacity>
-            ))}
+      <View style={s.chartBox}>
+        <LiveChartTerminal
+          symbol={displaySymbol}
+          category={displayCategory}
+          timeframe={activeTimeframe}
+          height={480}>
+          <View style={s.fallback}>
+            <MaterialIcons name="show-chart" size={40} color={Colors.primary} />
+            <Text style={s.fallbackTitle}>
+              {displaySymbol} · {activeTimeframe.toUpperCase()}
+            </Text>
+            <Text style={s.fallbackBody}>
+              Live TradingView chart loads when network is available.
+            </Text>
           </View>
-          <View style={s.toolbarRight}>
-            <TouchableOpacity style={s.toolBtn} activeOpacity={0.8} onPress={() => showToast.success('Indicator overlays are loaded from the archive snapshot.')}>
-              <MaterialIcons name="settings-input-component" size={16} color={Colors.text} />
-              <Text style={s.toolBtnTxt}>Indicators</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={s.toolBtn} activeOpacity={0.8} onPress={() => showToast.success('Chart snapshot captured.')}>
-              <MaterialIcons name="camera-alt" size={16} color={Colors.text} />
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Main Chart — live TradingView terminal, falls back to the archive snapshot canvas offline */}
-        <View style={s.chartBox}>
-          <LiveChartTerminal
-            symbol={displaySymbol}
-            category={displayCategory}
-            timeframe={activeTimeframe}
-            height={260}>
-            {/* Offline fallback: SMC archive snapshot canvas */}
-            <View style={s.candleArea}>
-              {snapshot.candles.map((c, i) => (
-                <View key={i} style={s.candleCol}>
-                  <View style={[s.wick, { height: c.h * 0.35, backgroundColor: c.bear ? 'rgba(255,177,196,0.45)' : 'rgba(175,198,255,0.45)' }]} />
-                  <View style={[s.candleBody, {
-                    height: c.h,
-                    backgroundColor: c.bear ? Colors.tertiaryContainer : Colors.secondaryContainer,
-                    ...(i === snapshot.candles.length - 1 && { shadowColor: Colors.secondary, shadowOpacity: 0.4, shadowRadius: 8, elevation: 4 }),
-                  }]} />
-                  <View style={[s.wick, { height: c.h * 0.2, backgroundColor: c.bear ? 'rgba(255,177,196,0.45)' : 'rgba(175,198,255,0.45)' }]} />
-                  {i === snapshot.candles.length - 1 && (
-                    <View style={s.sellSignal}><Text style={s.sellSignalTxt}>SELL SIGNAL</Text></View>
-                  )}
-                </View>
-              ))}
-            </View>
-            <View style={s.priceScale}>
-              {snapshot.priceScale.map((p, i) => (
-                <Text key={i} style={[s.priceLabel, i === snapshot.activePriceIndex && s.priceLabelActive]}>{p}</Text>
-              ))}
-            </View>
-            <View style={s.timeScale}>
-              {snapshot.timeScale.map(t => (
-                <Text key={t} style={s.timeLabel}>{t}</Text>
-              ))}
-            </View>
-          </LiveChartTerminal>
-
-          {/* Institutional annotation chrome from the live_chart_tv_style design —
-              always visible on top of the chart, live or offline. */}
-          <View style={s.chartOverlay} pointerEvents="none">
-            <Text style={s.volLabel}>{snapshot.volumeLabel}</Text>
-            <Text style={s.volValue}>{snapshot.volumeValue}</Text>
-          </View>
-          <View style={s.fvgZone} pointerEvents="none">
-            <Text style={s.fvgLabel}>{snapshot.fvgLabel}</Text>
-          </View>
-          <View style={s.obZone} pointerEvents="none">
-            <Text style={s.obLabel}>{snapshot.obLabel}</Text>
-          </View>
-        </View>
-
-        {/* Stats Row */}
-        <View style={s.statsRow}>
-          {/* Sentiment Matrix */}
-          <View style={[s.statCard, { flex: 1 }]}>
-            <View style={s.statAccent} />
-            <Text style={s.statTitle}>Sentiment Matrix</Text>
-            {snapshot.sentiment.map((item, index) => (
-              <View key={item.label}>
-                {index > 0 ? <View style={{ height: 12 }} /> : null}
-                <View style={s.statItem}>
-                  <Text style={s.statLabel}>{item.label}</Text>
-                  <Text style={[s.statValue, { color: item.tone === 'bearish' ? Colors.tertiary : Colors.secondary }]}>{item.value}%</Text>
-                </View>
-                <View style={s.progressBg}>
-                  <View style={[s.progressFill, { width: `${item.value}%`, backgroundColor: item.tone === 'bearish' ? Colors.tertiary : Colors.secondary }]} />
-                </View>
-              </View>
-            ))}
-          </View>
-
-          {/* Execution Engine */}
-          <View style={[s.statCard, { flex: 1.6 }]}>
-            <Text style={s.statTitle}>Execution Engine</Text>
-            <Text style={s.execDesc}>{snapshot.executionNote}</Text>
-            <View style={s.execChips}>
-              <View style={s.execChip}><Text style={s.execChipLabel}>Spread</Text><Text style={s.execChipValue}>{snapshot.spread}</Text></View>
-              <View style={s.execChip}><Text style={s.execChipLabel}>Leverage</Text><Text style={s.execChipValue}>{snapshot.leverage}</Text></View>
-            </View>
-            <View style={s.execBtns}>
-              <TouchableOpacity style={[s.execBtn, { backgroundColor: Colors.secondaryContainer }]} activeOpacity={0.85} onPress={() => showToast.success('Buy ticket queued against the liquidity map.')}>
-                <MaterialIcons name="trending-up" size={18} color={Colors.text} />
-                <Text style={s.execBtnTxt}>INSTITUTIONAL BUY</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[s.execBtn, { backgroundColor: Colors.tertiaryContainer }]} activeOpacity={0.85} onPress={() => showToast.success('Sell ticket queued against the liquidity map.')}>
-                <MaterialIcons name="trending-down" size={18} color={Colors.text} />
-                <Text style={s.execBtnTxt}>LIQUIDITY SELL</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        <View style={{ height: 100 }} />
-      </ScrollView>
-
-      {/* Decorative gradients (simulated) */}
-      <View style={s.glowTL} />
-      <View style={s.glowBR} />
+        </LiveChartTerminal>
+      </View>
     </View>
   );
 };
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: Colors.background },
+  root: { flex: 1, backgroundColor: Colors.surfaceContainerLowest },
   header: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    paddingHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: Spacing.pageMargin,
     paddingTop: Platform.OS === 'ios' ? 54 : (StatusBar.currentHeight ?? 24) + 10,
-    paddingBottom: 14,
-    backgroundColor: 'rgba(19,19,19,0.92)',
-    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(86,67,52,0.12)',
+    paddingBottom: 12,
+    backgroundColor: Colors.background,
   },
-  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  avatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.surfaceContainerHigh, alignItems: 'center', justifyContent: 'center', borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.2)' },
-  headerTitle: { fontSize: 18, fontWeight: '900', color: Colors.primaryContainer, letterSpacing: 2 },
-  headerSymbol: { fontSize: 10, fontWeight: '700', color: Colors.onSurfaceVariant, letterSpacing: 1, marginTop: 1 },
-  notifBtn: { padding: 6 },
-  scroll: { paddingHorizontal: 16, paddingTop: 8 },
-  toolbar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, gap: 10 },
-  tfRow: { flexDirection: 'row', backgroundColor: Colors.surfaceContainerLow, borderRadius: 12, padding: 4, gap: 2 },
-  tfBtn: { paddingHorizontal: 10, paddingVertical: 7, borderRadius: 8 },
-  tfBtnActive: { backgroundColor: 'rgba(255,183,125,0.12)' },
-  tfTxt: { fontSize: 11, fontWeight: '700', color: Colors.onSurfaceVariant },
+  headerCenter: { flex: 1 },
+  symbol: { fontSize: 18, fontWeight: '700', color: Colors.text },
+  meta: { fontSize: 12, color: Colors.textMuted, marginTop: 2 },
+  headerRight: { flexDirection: 'row', gap: 4 },
+  iconBtn: { padding: 4 },
+  toolbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: Spacing.pageMargin,
+    paddingBottom: 10,
+    backgroundColor: Colors.background,
+  },
+  symbolChip: {
+    backgroundColor: Colors.surfaceContainerHigh,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: Radii.chip,
+  },
+  symbolChipTxt: { fontSize: 12, fontWeight: '700', color: Colors.text },
+  plusBtn: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: Colors.surfaceContainerHigh,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tfRow: { flexDirection: 'row', alignItems: 'center', gap: 4, flex: 1 },
+  tfBtn: { paddingHorizontal: 10, paddingVertical: 7, borderRadius: Radii.chip },
+  tfBtnActive: { backgroundColor: 'rgba(246,177,122,0.18)' },
+  tfTxt: { fontSize: 12, fontWeight: '700', color: Colors.textMuted },
   tfTxtActive: { color: Colors.primary },
-  toolbarRight: { flexDirection: 'row', gap: 8 },
-  toolBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: Colors.surfaceContainerHigh, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10 },
-  toolBtnTxt: { fontSize: 11, fontWeight: '700', color: Colors.text },
-  chartBox: { backgroundColor: Colors.surfaceContainerLowest, borderRadius: 20, overflow: 'hidden', minHeight: 260, marginBottom: 20, borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.10)', position: 'relative' },
-  chartOverlay: { position: 'absolute', top: 14, left: 16, zIndex: 2 },
-  volLabel: { fontSize: 9, fontWeight: '700', color: Colors.onSurfaceVariant, textTransform: 'uppercase', letterSpacing: 1 },
-  volValue: { fontSize: 18, fontWeight: '700', color: Colors.text },
-  fvgZone: { position: 'absolute', top: '20%', left: '18%', width: '18%', height: '14%', backgroundColor: 'rgba(175,198,255,0.10)', borderTopWidth: 1, borderBottomWidth: 1, borderColor: 'rgba(175,198,255,0.4)', borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center', zIndex: 2 },
-  fvgLabel: { fontSize: 7, fontWeight: '900', color: Colors.secondary, letterSpacing: 1, textTransform: 'uppercase' },
-  obZone: { position: 'absolute', bottom: '20%', right: '8%', width: '28%', height: '18%', backgroundColor: 'rgba(255,183,125,0.10)', borderLeftWidth: 2, borderColor: Colors.primary, justifyContent: 'flex-start', padding: 6, zIndex: 2 },
-  obLabel: { fontSize: 7, fontWeight: '900', color: Colors.primary, letterSpacing: 1, textTransform: 'uppercase' },
-  candleArea: { flexDirection: 'row', alignItems: 'flex-end', gap: 8, padding: 16, paddingTop: 60, paddingBottom: 44, paddingRight: 70, flex: 1, minHeight: 260 },
-  candleCol: { flex: 1, alignItems: 'center', justifyContent: 'flex-end', position: 'relative' },
-  wick: { width: 2 },
-  candleBody: { width: 14, borderRadius: 3, opacity: 0.85 },
-  sellSignal: { position: 'absolute', top: -22, backgroundColor: Colors.primary, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
-  sellSignalTxt: { fontSize: 8, fontWeight: '900', color: Colors.background },
-  priceScale: { position: 'absolute', right: 0, top: 0, bottom: 44, width: 60, backgroundColor: 'rgba(27,27,27,0.85)', justifyContent: 'space-between', paddingVertical: 12, alignItems: 'center' },
-  priceLabel: { fontSize: 9, color: 'rgba(221,193,174,0.6)', fontWeight: '500' },
-  priceLabelActive: { color: Colors.primary, fontWeight: '700', backgroundColor: 'rgba(255,183,125,0.15)', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
-  timeScale: { position: 'absolute', bottom: 0, left: 0, right: 60, height: 36, backgroundColor: 'rgba(27,27,27,0.85)', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16, alignItems: 'center' },
-  timeLabel: { fontSize: 9, color: 'rgba(221,193,174,0.6)', fontWeight: '500' },
-  statsRow: { flexDirection: 'row', gap: 14, marginBottom: 20 },
-  statCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: 16, padding: 16, position: 'relative', overflow: 'hidden' },
-  statAccent: { position: 'absolute', top: 0, left: 0, width: 3, height: '100%', backgroundColor: Colors.primary },
-  statTitle: { fontSize: 9, fontWeight: '900', color: Colors.onSurfaceVariant, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 },
-  statItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 6 },
-  statLabel: { fontSize: 10, fontWeight: '700', color: 'rgba(226,226,226,0.6)', textTransform: 'uppercase' },
-  statValue: { fontSize: 18, fontWeight: '700' },
-  progressBg: { height: 3, backgroundColor: Colors.surfaceContainerHigh, borderRadius: 4, overflow: 'hidden' },
-  progressFill: { height: '100%', borderRadius: 4 },
-  execDesc: { fontSize: 10, color: 'rgba(226,226,226,0.4)', marginBottom: 14, lineHeight: 14 },
-  execChips: { flexDirection: 'row', gap: 8, marginBottom: 16 },
-  execChip: { backgroundColor: Colors.surfaceContainerHigh, borderRadius: 12, padding: 10, alignItems: 'center', flex: 1, borderWidth: StyleSheet.hairlineWidth, borderColor: 'rgba(86,67,52,0.10)' },
-  execChipLabel: { fontSize: 8, color: Colors.onSurfaceVariant, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 2 },
-  execChipValue: { fontSize: 12, fontWeight: '700', color: Colors.text },
-  execBtns: { gap: 10 },
-  execBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 14, borderRadius: 12 },
-  execBtnTxt: { fontSize: 10, fontWeight: '900', color: Colors.text, letterSpacing: 1.5 },
-  glowTL: { position: 'absolute', top: -80, left: -80, width: 200, height: 200, backgroundColor: 'rgba(255,183,125,0.04)', borderRadius: 100 },
-  glowBR: { position: 'absolute', bottom: -80, right: -80, width: 200, height: 200, backgroundColor: 'rgba(175,198,255,0.04)', borderRadius: 100 },
+  toolBtn: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: Colors.surfaceContainerHigh,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chartBox: {
+    flex: 1,
+    backgroundColor: Colors.surfaceContainerLowest,
+    marginBottom: Platform.OS === 'ios' ? 85 : 68,
+  },
+  fallback: {
+    flex: 1,
+    minHeight: 320,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    paddingHorizontal: 32,
+  },
+  fallbackTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: Colors.text,
+    letterSpacing: 1.2,
+  },
+  fallbackBody: {
+    fontSize: 13,
+    lineHeight: 19,
+    color: Colors.textMuted,
+    textAlign: 'center',
+  },
 });
 
 export default ChartScreen;
