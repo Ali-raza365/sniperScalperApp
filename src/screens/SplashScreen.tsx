@@ -7,17 +7,23 @@ import { View, Text, StyleSheet, Animated, Easing, StatusBar } from 'react-nativ
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import * as ExpoSplashScreen from 'expo-splash-screen';
 import { Colors } from '../constants/Colors';
 import { Radii } from '../constants/Spacing';
 import type { RootStackParamList } from '../navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
+// Keep native splash up until this screen is ready to paint.
+ExpoSplashScreen.preventAutoHideAsync().catch(() => undefined);
+
 const SplashScreen: FC = () => {
   const navigation = useNavigation<Nav>();
-  const progress = useRef(new Animated.Value(0)).current;
+  const progress = useRef(new Animated.Value(0.08)).current;
 
   useEffect(() => {
+    ExpoSplashScreen.hideAsync().catch(() => undefined);
+
     Animated.timing(progress, {
       toValue: 1,
       duration: 1800,
@@ -33,7 +39,7 @@ const SplashScreen: FC = () => {
 
   const barWidth = progress.interpolate({
     inputRange: [0, 1],
-    outputRange: ['8%', '100%'],
+    outputRange: ['0%', '100%'],
   });
 
   return (
@@ -48,17 +54,19 @@ const SplashScreen: FC = () => {
           <Text style={styles.brandWhite}> SCALPER</Text>
         </Text>
         <Text style={styles.tagline}>PRECISION TRADING TERMINAL</Text>
+
         <View style={styles.track}>
           <Animated.View style={[styles.fill, { width: barWidth }]} />
         </View>
         <Text style={styles.status}>CONNECTING TO SERVER</Text>
       </View>
+
       <View style={styles.footer}>
         <View>
           <Text style={styles.footLabel}>SERVER STATUS</Text>
           <Text style={styles.footValue}>OPTIMAL</Text>
         </View>
-        <View style={{ alignItems: 'flex-end' }}>
+        <View style={styles.footerRight}>
           <Text style={styles.footLabel}>PROTOCOL</Text>
           <Text style={styles.footValue}>V.4.22.8</Text>
         </View>
@@ -76,37 +84,38 @@ const styles = StyleSheet.create({
   center: {
     alignItems: 'center',
     paddingHorizontal: 28,
+    marginTop: -40,
   },
   mark: {
-    width: 130,
-    height: 130,
+    width: 120,
+    height: 120,
     borderRadius: Radii.iconTile,
     backgroundColor: Colors.surfaceContainerLow,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: Colors.border,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 36,
+    marginBottom: 40,
   },
   brand: {
-    fontSize: 30,
+    fontSize: 32,
     fontWeight: '500',
-    letterSpacing: 2,
-    marginBottom: 10,
+    letterSpacing: 1.5,
+    marginBottom: 12,
   },
   brandPeach: { color: Colors.primary },
   brandWhite: { color: Colors.text },
   tagline: {
     color: Colors.textMuted,
     fontSize: 11,
-    fontWeight: '600',
-    letterSpacing: 4,
-    marginBottom: 56,
+    fontWeight: '500',
+    letterSpacing: 3.5,
+    marginBottom: 72,
   },
   track: {
-    width: '80%',
-    height: 2,
-    backgroundColor: 'rgba(246,177,122,0.2)',
+    width: '78%',
+    height: 1.5,
+    backgroundColor: 'rgba(246,177,122,0.18)',
     borderRadius: 2,
     overflow: 'hidden',
   },
@@ -115,20 +124,21 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
   },
   status: {
-    marginTop: 18,
-    color: Colors.primaryContainer,
+    marginTop: 20,
+    color: Colors.primary,
     fontSize: 12,
     fontWeight: '700',
-    letterSpacing: 3,
+    letterSpacing: 2.8,
   },
   footer: {
     position: 'absolute',
-    bottom: 40,
+    bottom: 48,
     left: 28,
     right: 28,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  footerRight: { alignItems: 'flex-end' },
   footLabel: {
     color: Colors.textMuted,
     fontSize: 10,
