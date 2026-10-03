@@ -34,7 +34,12 @@ const SettingsScreen: FC = () => {
   return (
     <View style={s.root}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
-      <TopBar title="Sniper Scalper" avatar={ProImages.avatar} />
+      <TopBar
+        title="Sniper Scalper"
+        showBack
+        onBack={() => navigation.navigate('BottomTab', { screen: 'Home' })}
+        avatar={ProImages.avatar}
+      />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
         <View style={s.profileCard}>
@@ -42,7 +47,7 @@ const SettingsScreen: FC = () => {
             <Image source={ProImages.avatar} style={s.avatar} />
             <View style={s.onlineDot} />
           </View>
-          <View>
+          <View style={{ flex: 1 }}>
             <Text style={s.name}>{profile.name}</Text>
             <Text style={s.role}>{profile.role}</Text>
           </View>
@@ -105,7 +110,7 @@ const SettingsScreen: FC = () => {
           <Text style={s.officeTxt}>Office: {profile.office ?? 'Ahmadpur East'}</Text>
         </View>
 
-        <View style={{ height: 100 }} />
+        <View style={{ height: 110 }} />
       </ScrollView>
     </View>
   );

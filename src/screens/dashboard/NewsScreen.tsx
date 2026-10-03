@@ -12,11 +12,17 @@ import {
   Animated,
   Easing,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Colors } from '../../constants/Colors';
 import { Spacing } from '../../constants/Spacing';
 import { TopBar, NewsCard } from '../../components/ds';
 import { ProImages } from '../../assets/images/pro';
 import { newsRepository } from '../../data/repository';
+import type { RootStackParamList } from '../../navigation/types';
+import { showToast } from '../../utils/CustomToast';
+
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 const imageMap = {
   newsSample1: ProImages.newsSample1,
@@ -25,6 +31,7 @@ const imageMap = {
 } as const;
 
 const NewsScreen: FC = () => {
+  const navigation = useNavigation<Nav>();
   const feed = newsRepository.getFeed();
   const tickerAnim = useRef(new Animated.Value(0)).current;
   const [tickerWidth] = useState(720);
@@ -49,8 +56,13 @@ const NewsScreen: FC = () => {
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
       <TopBar
         title="Sniper Scalper"
-        avatar={ProImages.avatar}
-        icons={[{ name: 'refresh' }, { name: 'menu' }]}
+        showBack
+        onBack={() => navigation.navigate('BottomTab', { screen: 'Home' })}
+        leadingAvatar={ProImages.avatar}
+        icons={[
+          { name: 'refresh', onPress: () => showToast.success('Feed refreshed.') },
+          { name: 'menu', onPress: () => showToast.success('Menu opened.') },
+        ]}
       />
 
       <View style={s.ticker}>
@@ -77,7 +89,7 @@ const NewsScreen: FC = () => {
             excerpt={art.summary}
           />
         ))}
-        <View style={{ height: 100 }} />
+        <View style={{ height: 110 }} />
       </ScrollView>
     </View>
   );
@@ -110,6 +122,7 @@ const s = StyleSheet.create({
     color: Colors.text,
     letterSpacing: 0.5,
     paddingHorizontal: 12,
+    textTransform: 'uppercase',
   },
   scroll: {
     paddingHorizontal: Spacing.pageMargin,

@@ -97,7 +97,7 @@ export const CHART_SNAPSHOT: ChartSnapshot = {
   volumeValue: '12.4B USD',
   fvgLabel: 'FVG Bearish',
   obLabel: 'H4 Bullish OB',
-  timeframes: ['1m', '5m', '15m', '1h', '4h', 'D'],
+  timeframes: ['1m', '5m', '15m', '30m', '1h', '4h', 'D'],
   defaultTimeframeIndex: 2,
   candles: [
     { h: 60, bear: false },

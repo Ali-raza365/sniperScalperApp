@@ -25,7 +25,10 @@ const SMCTabIcon: FC<TabIconProps> = ({ name, focused, label }) => (
       size={22}
       color={focused ? Colors.primary : Colors.textMuted}
     />
-    <Text style={[styles.tabLabel, focused ? styles.tabLabelActive : styles.tabLabelInactive]}>
+    <Text
+      numberOfLines={1}
+      allowFontScaling={false}
+      style={[styles.tabLabel, focused ? styles.tabLabelActive : styles.tabLabelInactive]}>
       {label}
     </Text>
   </View>
@@ -50,6 +53,10 @@ const BottomTab: FC = () => {
           shadowOffset: { width: 0, height: -8 },
           shadowOpacity: 0.5,
           shadowRadius: 32,
+        },
+        tabBarItemStyle: {
+          flex: 1,
+          paddingHorizontal: 0,
         },
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.textMuted,
@@ -112,10 +119,10 @@ const styles = StyleSheet.create({
   tabItem: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: 999,
-    minWidth: 60,
+    minWidth: 72,
   },
   tabItemActive: {
     backgroundColor: 'rgba(246,177,122,0.16)',
@@ -123,8 +130,9 @@ const styles = StyleSheet.create({
   tabLabel: {
     fontSize: 10,
     fontWeight: '600',
-    letterSpacing: 0.3,
+    letterSpacing: 0,
     marginTop: 2,
+    textAlign: 'center',
   },
   tabLabelActive: {
     color: Colors.primary,

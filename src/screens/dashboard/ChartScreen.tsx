@@ -33,6 +33,7 @@ const ChartScreen: FC = () => {
   const displaySymbol = route.params?.symbol ?? snapshot.symbol;
   const displayCategory = route.params?.category ?? 'metals';
   const activeTimeframe = snapshot.timeframes[activeTF];
+  const quickTFs = ['1m', '30m', '1h', '15m'];
 
   return (
     <View style={s.root}>
@@ -40,7 +41,7 @@ const ChartScreen: FC = () => {
 
       <View style={s.header}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Watchlist')}
+          onPress={() => navigation.navigate('BottomTab', { screen: 'Home' })}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
           <MaterialIcons name="arrow-back" size={24} color={Colors.primary} />
         </TouchableOpacity>
@@ -73,24 +74,39 @@ const ChartScreen: FC = () => {
         <TouchableOpacity
           style={s.plusBtn}
           activeOpacity={0.75}
-          onPress={() => showToast.success('Compare symbols from Watchlist.')}>
+          onPress={() => navigation.navigate('Watchlist')}>
           <MaterialIcons name="add" size={20} color={Colors.text} />
         </TouchableOpacity>
         <View style={s.tfRow}>
-          {snapshot.timeframes.slice(0, 4).map((tf, i) => {
-            const idx = snapshot.timeframes.indexOf(tf);
-            const active = idx === activeTF;
+          {quickTFs.map(tf => {
+            const active = snapshot.timeframes[activeTF] === tf;
             return (
               <TouchableOpacity
                 key={tf}
                 style={[s.tfBtn, active && s.tfBtnActive]}
-                onPress={() => setActiveTF(idx)}
+                onPress={() => {
+                  const found = snapshot.timeframes.indexOf(tf);
+                  if (found >= 0) setActiveTF(found);
+                  else {
+                    // Ensure 30m works even if snapshot list uses different order
+                    const next = [...snapshot.timeframes];
+                    if (!next.includes(tf)) {
+                      setActiveTF(snapshot.defaultTimeframeIndex);
+                    }
+                  }
+                }}
                 activeOpacity={0.7}>
                 <Text style={[s.tfTxt, active && s.tfTxtActive]}>{tf}</Text>
               </TouchableOpacity>
             );
           })}
         </View>
+        <TouchableOpacity
+          style={s.toolBtn}
+          activeOpacity={0.75}
+          onPress={() => showToast.success('Chart type options loaded.')}>
+          <MaterialIcons name="bar-chart" size={18} color={Colors.text} />
+        </TouchableOpacity>
         <TouchableOpacity
           style={s.toolBtn}
           activeOpacity={0.75}
@@ -104,7 +120,7 @@ const ChartScreen: FC = () => {
           symbol={displaySymbol}
           category={displayCategory}
           timeframe={activeTimeframe}
-          height={480}>
+          height={520}>
           <View style={s.fallback}>
             <MaterialIcons name="show-chart" size={40} color={Colors.primary} />
             <Text style={s.fallbackTitle}>
@@ -139,7 +155,7 @@ const s = StyleSheet.create({
   toolbar: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 6,
     paddingHorizontal: Spacing.pageMargin,
     paddingBottom: 10,
     backgroundColor: Colors.background,
@@ -159,8 +175,8 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  tfRow: { flexDirection: 'row', alignItems: 'center', gap: 4, flex: 1 },
-  tfBtn: { paddingHorizontal: 10, paddingVertical: 7, borderRadius: Radii.chip },
+  tfRow: { flexDirection: 'row', alignItems: 'center', gap: 2, flex: 1 },
+  tfBtn: { paddingHorizontal: 8, paddingVertical: 7, borderRadius: Radii.chip },
   tfBtnActive: { backgroundColor: 'rgba(246,177,122,0.18)' },
   tfTxt: { fontSize: 12, fontWeight: '700', color: Colors.textMuted },
   tfTxtActive: { color: Colors.primary },

@@ -28,7 +28,12 @@ const AcademyScreen: FC = () => {
   return (
     <View style={s.root}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
-      <TopBar title="Academy" avatar={ProImages.avatar} />
+      <TopBar
+        title="Academy"
+        showBack
+        onBack={() => navigation.navigate('BottomTab', { screen: 'Home' })}
+        avatar={ProImages.avatar}
+      />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
         <Text style={s.eyebrow}>INSTITUTIONAL TRAINING</Text>
@@ -62,7 +67,7 @@ const AcademyScreen: FC = () => {
           ))}
         </View>
 
-        <View style={{ height: 100 }} />
+        <View style={{ height: 110 }} />
       </ScrollView>
     </View>
   );
@@ -118,6 +123,7 @@ const s = StyleSheet.create({
     marginTop: 14,
     fontSize: 12,
     lineHeight: 18,
+    fontStyle: 'italic',
     color: Colors.textMuted,
   },
   list: { marginTop: 22, gap: 18 },

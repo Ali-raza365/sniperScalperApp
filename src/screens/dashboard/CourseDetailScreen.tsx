@@ -97,7 +97,7 @@ const s = StyleSheet.create({
   heroImg: { width: '100%', height: '100%', opacity: 0.85 },
   heroFade: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(13,13,13,0.45)',
   },
   heroContent: {
     ...StyleSheet.absoluteFill,
@@ -105,7 +105,6 @@ const s = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 20,
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(13,13,13,0.35)',
   },
   badgeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   levelBadge: {
