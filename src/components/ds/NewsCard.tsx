@@ -16,6 +16,8 @@ interface NewsCardProps {
   source: string;
   timestamp: string;
   tag?: string;
+  tickers?: string[];
+  alert?: string;
   image?: ImageSourcePropType;
   headline: string;
   excerpt: string;
@@ -26,85 +28,140 @@ const NewsCard: FC<NewsCardProps> = ({
   source,
   timestamp,
   tag = '$BUSINESS',
+  tickers,
+  alert,
   image,
   headline,
   excerpt,
   onFullReport,
-}) => (
-  <View style={styles.card}>
-    <View style={styles.meta}>
-      <View style={styles.sourceBadge}>
-        <Text style={styles.source} numberOfLines={1}>
-          {source.toUpperCase()}
-        </Text>
-      </View>
-      <Text style={styles.time}>{timestamp}</Text>
-      <View style={styles.tag}>
-        <Text style={styles.tagTxt}>{tag}</Text>
+}) => {
+  const tags = tickers?.length ? tickers : [tag];
+
+  return (
+    <View style={[styles.card, image ? styles.cardFlushMedia : null]}>
+      {image ? (
+        <View style={styles.mediaFlush}>
+          <Image source={image} style={styles.image} resizeMode="cover" />
+        </View>
+      ) : null}
+
+      <View style={styles.body}>
+        <View style={styles.meta}>
+          <View style={styles.sourceRow}>
+            <View style={styles.sourceBadge}>
+              <Text style={styles.source} numberOfLines={1}>
+                {source.toUpperCase()}
+              </Text>
+            </View>
+            <Text style={styles.time}>{timestamp}</Text>
+          </View>
+          <View style={styles.tagRow}>
+            {tags.map(t => (
+              <View key={t} style={styles.tag}>
+                <Text style={styles.tagTxt}>{t}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+
+        {!image ? (
+          <>
+            <Text style={styles.headline}>{headline}</Text>
+            <Text style={styles.excerpt} numberOfLines={2}>
+              {excerpt}
+            </Text>
+          </>
+        ) : (
+          <Text style={styles.headline}>{headline}</Text>
+        )}
+
+        <View style={styles.footer}>
+          <View style={styles.actions}>
+            <TouchableOpacity
+              style={styles.action}
+              activeOpacity={0.7}
+              onPress={() => showToast.success('Article saved to archive.')}>
+              <MaterialIcons name="bookmark-border" size={16} color={Colors.onSurfaceVariant} />
+              <Text style={styles.actionTxt}>SAVE</Text>
+            </TouchableOpacity>
+            {!alert ? (
+              <TouchableOpacity
+                style={styles.action}
+                activeOpacity={0.7}
+                onPress={() => showToast.success('Share sheet opened.')}>
+                <MaterialIcons name="share" size={16} color={Colors.onSurfaceVariant} />
+                <Text style={styles.actionTxt}>SHARE</Text>
+              </TouchableOpacity>
+            ) : null}
+          </View>
+          {alert ? (
+            <Text style={styles.alertTxt}>{alert.toUpperCase()}</Text>
+          ) : (
+            <TouchableOpacity
+              style={styles.fullReport}
+              activeOpacity={0.75}
+              onPress={
+                onFullReport ??
+                (() => showToast.success('Full report is reserved for the archive desk.'))
+              }>
+              <Text style={styles.fullReportTxt}>
+                {image ? 'FULL REPORT →' : 'ANALYSIS AVAILABLE →'}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </View>
-    {image ? (
-      <View style={styles.media}>
-        <Image source={image} style={styles.image} resizeMode="cover" />
-      </View>
-    ) : null}
-    <Text style={styles.headline}>{headline}</Text>
-    <Text style={styles.excerpt} numberOfLines={3}>
-      {excerpt}
-    </Text>
-    <View style={styles.footer}>
-      <TouchableOpacity
-        style={styles.action}
-        activeOpacity={0.7}
-        onPress={() => showToast.success('Article saved to archive.')}>
-        <MaterialIcons name="bookmark-border" size={18} color={Colors.text} />
-        <Text style={styles.actionTxt}>SAVE</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.action}
-        activeOpacity={0.7}
-        onPress={() => showToast.success('Share sheet opened.')}>
-        <MaterialIcons name="share" size={18} color={Colors.text} />
-        <Text style={styles.actionTxt}>SHARE</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.fullReport}
-        activeOpacity={0.75}
-        onPress={onFullReport ?? (() => showToast.success('Full report is reserved for the archive desk.'))}>
-        <Text style={styles.fullReportTxt}>FULL REPORT →</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: Colors.surfaceContainerLow,
     borderRadius: Radii.cardSm,
+    overflow: 'hidden',
+  },
+  cardFlushMedia: {
+    padding: 0,
+  },
+  body: {
     padding: 18,
   },
-  meta: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  meta: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: 10,
+    marginBottom: 12,
+  },
+  sourceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    flexShrink: 1,
+  },
   sourceBadge: {
+    backgroundColor: 'rgba(246,177,122,0.12)',
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(246,177,122,0.45)',
-    borderRadius: 6,
+    borderColor: 'rgba(246,177,122,0.28)',
+    borderRadius: 4,
     paddingHorizontal: 8,
     paddingVertical: 3,
-    maxWidth: '48%',
+    maxWidth: 160,
   },
   source: {
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: '800',
     color: Colors.primary,
-    letterSpacing: 0.6,
+    letterSpacing: 0.4,
   },
-  time: { fontSize: 12, color: Colors.textMuted },
+  time: { fontSize: 11, color: 'rgba(201,184,164,0.6)', fontWeight: '500' },
+  tagRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, justifyContent: 'flex-end' },
   tag: {
-    marginLeft: 'auto',
     backgroundColor: Colors.surfaceContainerHigh,
     paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
+    paddingVertical: 4,
+    borderRadius: 4,
   },
   tagTxt: {
     fontSize: 10,
@@ -112,11 +169,8 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     letterSpacing: 0.5,
   },
-  media: {
+  mediaFlush: {
     height: 168,
-    borderRadius: Radii.media,
-    overflow: 'hidden',
-    marginVertical: 14,
     backgroundColor: Colors.surfaceContainerHigh,
   },
   image: { width: '100%', height: '100%' },
@@ -127,7 +181,7 @@ const styles = StyleSheet.create({
     color: Colors.text,
   },
   excerpt: {
-    marginTop: 8,
+    marginTop: 10,
     fontSize: 14,
     lineHeight: 21,
     color: Colors.onSurfaceVariant,
@@ -135,25 +189,34 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 18,
+    justifyContent: 'space-between',
+    gap: 12,
     marginTop: 16,
     paddingTop: 14,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: Colors.border,
+    borderTopColor: 'rgba(138,128,120,0.18)',
   },
-  action: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  actions: { flexDirection: 'row', alignItems: 'center', gap: 16 },
+  action: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   actionTxt: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '700',
-    color: Colors.text,
-    letterSpacing: 1,
+    color: Colors.onSurfaceVariant,
+    letterSpacing: 1.2,
   },
   fullReport: { marginLeft: 'auto' },
   fullReportTxt: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: '700',
-    color: Colors.primary,
-    letterSpacing: 0.8,
+    color: Colors.secondary,
+    letterSpacing: 1.2,
+  },
+  alertTxt: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: Colors.tertiary,
+    letterSpacing: 1.2,
+    marginLeft: 'auto',
   },
 });
 
